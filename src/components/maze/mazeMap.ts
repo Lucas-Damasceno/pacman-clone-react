@@ -12,7 +12,7 @@ x.....x.... x ....x.....x
 xxxxx.xxxx_ x _xxxx.xxxxx
 ____x.x____ _ ____x.x____
 xxxxx.x_xxx - xxx_x.xxxxx
-_____.__xGG _ GGx__._____
+_____.__x12 _ 34x__._____
 xxxxx.x_xxx x xxx_x.xxxxx
 ____x.x____ _ ____x.x____
 xxxxx.x_xxx x xxx_x.xxxxx

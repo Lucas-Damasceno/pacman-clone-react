@@ -106,9 +106,23 @@ function Tile(props: Props): ReactElement{
     return <PacMan index={props.index}/>
   }
 
-  if(props.tileChar === Tiles.ghost){
-    return <Ghost/>
+  if(props.tileChar === Tiles.ghost1){
+    return <Ghost type="1"/>
   }
+
+  if(props.tileChar === Tiles.ghost2){
+    return <Ghost type="2"/>
+  }
+
+  if(props.tileChar === Tiles.ghost3){
+    return <Ghost type="3"/>
+  }
+
+  if(props.tileChar === Tiles.ghost4){
+    return <Ghost type="4"/>
+  }
+
+
 
   return(
     <div style={tileStyle}/>

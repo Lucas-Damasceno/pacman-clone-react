@@ -3,8 +3,12 @@ import styled from "styled-components";
 import { useRecoilState } from 'recoil';
 import GhostColor from "../../states/ghostColor.state";
 
-const GhostBody = styled.div`
-  background-color: red;
+type PropsStyled = {
+  color: string
+}
+
+const GhostBody = styled.div<PropsStyled>`
+  background-color: ${p => p.color};
   height: 25px;
   width: 28px;
   place-self: center;
@@ -12,7 +16,7 @@ const GhostBody = styled.div`
   position: relative;
 
   &::after{
-    background: linear-gradient(-45deg,#ff0000 5px,transparent 0),linear-gradient(45deg,#ff0000 5px,transparent 0);
+    background: linear-gradient(-45deg,${p => p.color} 5px,transparent 0),linear-gradient(45deg,${p => p.color} 5px,transparent 0);
     background-position: left-bottom;
     background-repeat: repeat-x;
     background-size: 9px;
@@ -76,19 +80,25 @@ const GhostPupils = styled.div`
 `
 
 type Props = {
-
+  type: '1' | '2' | '3' | '4';
 }
 
 function Ghost(props: Props): ReactElement{
-  const [color, setColor] = useState('red');
-  const [ghostColor, setGhostColor] = useRecoilState(GhostColor);
+  const [colorState, setColor] = useState('red');
 
   useEffect(() => {
+    const possibleType = {
+      '1': '#F70000',
+      '2': '#F7B2F7',
+      '3': '#FFB851',
+      '4': '#009999',
+    };
 
+    setColor(possibleType[props.type]);
   }, [])
 
   return (
-    <GhostBody>
+    <GhostBody color={colorState}>
       <GhostEyes>
         <GhostPupils/>
       </GhostEyes>
@@ -96,4 +106,4 @@ function Ghost(props: Props): ReactElement{
   )
 }
 
-export default Ghost
+export default React.memo(Ghost)

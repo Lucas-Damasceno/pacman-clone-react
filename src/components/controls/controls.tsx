@@ -184,9 +184,6 @@ function Controls(props: Props) {
   //Controla o sumiço dos pontos
   useEffect(() => {
     mazeState.forEach((tile, index) => {
-      // if(tile.power){
-      //   console.log(tile.status)
-      // }
       if(tile.status === Tiles.withoutPoint){
         document.documentElement.style.setProperty(`${config.pointCssVar}${index}`, '0');
       }
