@@ -1,7 +1,7 @@
 export enum Tiles {
   wall = 'x',
   point = '.',
-  withOutPoint = '_',
+  withoutPoint = '_',
   power = 'O',
   pacman = 'P'
 }

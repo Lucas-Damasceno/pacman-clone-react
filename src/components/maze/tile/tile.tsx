@@ -4,6 +4,7 @@ import PacMan from "../../pacman/pacman";
 import PossibleTiles from "../../types/possibleTiles";
 import { useRecoilState } from 'recoil';
 import MazeState, { MazeStateType } from "../../../states/maze.state";
+import { Tiles } from "../../../enums/tiles.enum";
 
 
 function Tile(tileChar: PossibleTiles, index: number, map: string): ReactElement{
@@ -19,9 +20,9 @@ function Tile(tileChar: PossibleTiles, index: number, map: string): ReactElement
     }
 
     const tile = mazeMap[index] as PossibleTiles;
-    const tileWall = tile === 'x';
-    const tilePoint = tile === '.';
-    const tilePower = tile === 'O';
+    const tileWall = tile === Tiles.wall;
+    const tilePoint = tile === Tiles.point;
+    const tilePower = tile === Tiles.power;
     const rightTile = mazeMap[index + 1];
     const leftTile = mazeMap[index -1];
     const topTile = mazeMap[index - mapColumns];
@@ -87,7 +88,8 @@ function Tile(tileChar: PossibleTiles, index: number, map: string): ReactElement
       }
     }
 
-    if(mazeState[index]?.status === '_' || mazeState[index]?.status === 'P'){
+    if(mazeState[index]?.status === Tiles.withoutPoint || mazeState[index]?.status === Tiles.pacman){
+      //Some com os pontos na tela
       tileStyle.transition = 'all .5s';
       tileStyle.opacity = 0
     }
