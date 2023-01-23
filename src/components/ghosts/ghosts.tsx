@@ -1,5 +1,7 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import styled from "styled-components";
+import { useRecoilState } from 'recoil';
+import GhostColor from "../../states/ghostColor.state";
 
 const GhostBody = styled.div`
   background-color: red;
@@ -78,6 +80,12 @@ type Props = {
 }
 
 function Ghost(props: Props): ReactElement{
+  const [color, setColor] = useState('red');
+  const [ghostColor, setGhostColor] = useRecoilState(GhostColor);
+
+  useEffect(() => {
+
+  }, [])
 
   return (
     <GhostBody>

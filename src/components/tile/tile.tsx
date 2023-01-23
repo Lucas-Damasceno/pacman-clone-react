@@ -97,10 +97,6 @@ function Tile(props: Props): ReactElement{
       }
     }
 
-    // if(){
-
-    // }
-
     return tileStyle
   }
   

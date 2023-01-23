@@ -192,9 +192,9 @@ function Controls(props: Props) {
       }
     })
   }, [mazeState])
+
   return (
     <>
-      {props.children}
     </>
   )
 }
