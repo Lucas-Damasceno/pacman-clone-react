@@ -82,6 +82,7 @@ function Tile(props: Props): ReactElement{
         justifySelf: 'center',
         alignSelf: 'center',
         borderRadius: '50%',
+        opacity: `var(${config.pointCssVar}${index})`
       }
     }
 
