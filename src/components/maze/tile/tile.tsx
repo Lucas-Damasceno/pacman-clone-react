@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react"
+import React, { ReactElement, useEffect, useState } from "react"
 import config from "../../../config/config";
 import PacMan from "../../pacman/pacman";
 import PossibleTiles from "../../types/possibleTiles";
@@ -7,8 +7,16 @@ import MazeState, { MazeStateType } from "../../../states/maze.state";
 import { Tiles } from "../../../enums/tiles.enum";
 
 
-function Tile(tileChar: PossibleTiles, index: number, map: string): ReactElement{
-  const [mazeState, setMazeState] = useRecoilState(MazeState);
+type Props = {
+  tileChar: PossibleTiles;
+  index: number;
+  map: string;
+}
+
+function Tile(props: Props): ReactElement{
+  console.count('TileRender')
+  // const [mazeState, setMazeState] = useRecoilState(MazeState);
+  // const [tileStyle, setTileStyle] = useState<React.CSSProperties>({})
 
   function generateTileStyle(mazeMap: string, mapColumns: number,index: number){
 
@@ -88,26 +96,25 @@ function Tile(tileChar: PossibleTiles, index: number, map: string): ReactElement
       }
     }
 
-    if(mazeState[index]?.status === Tiles.withoutPoint || mazeState[index]?.status === Tiles.pacman){
-      //Some com os pontos na tela
-      tileStyle.transition = 'all .5s';
-      tileStyle.opacity = 0
-    }
+    // if(mazeState[index]?.status === Tiles.withoutPoint || mazeState[index]?.status === Tiles.pacman){
+    //   //Some com os pontos na tela
+    //   tileStyle.transition = 'all .5s';
+    //   tileStyle.opacity = 0
+    // }
 
     return tileStyle
   }
-  //TODO retirar esse magic Number
-  const tileStyle = generateTileStyle(map, config.mazeColumns, index);
+  
+  const tileStyle = generateTileStyle(props.map, config.mazeColumns, props.index);
 
-
-  if(tileChar === 'P'){
-    return <PacMan map={map} index={index} key={index}/>
+  if(props.tileChar === Tiles.pacman){
+    return <PacMan index={props.index}/>
   }
 
   return(
-    <div key={index} style={tileStyle} />
+    <div style={tileStyle}/>
   )
 
 }
 
-export default Tile
+export default React.memo(Tile)

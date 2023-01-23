@@ -8,7 +8,7 @@ import config from "../../config/config";
 import { Direction } from "../../enums/direction.enum";
 
 interface Props {
-  children: ReactElement
+  children?: ReactElement
 }
 
 function Controls(props: Props) {
@@ -58,6 +58,9 @@ function Controls(props: Props) {
       return true
     }
 
+    if(mazeState[pacmanState.index - 1]?.status === undefined){
+      return false
+    }
     if (directions === 'left' && mazeState[pacmanState.index - 1].status !== Tiles.wall) {
       return true
     }
@@ -75,8 +78,24 @@ function Controls(props: Props) {
     return false
   }
 
-  const autoMove = (keyPressed: string) => {
+  const autoMove = () => {
+    const timeOutSpeed = config.pacmanSpeed * 1000;
 
+    if(moving === false){
+      return
+    }
+
+    const timer = setTimeout(() => {  
+      // const moved = move(Direction[pacmanState.direction]);
+      const moved = move(Direction[nextDirection]) || move(Direction[pacmanState.direction]);
+
+      setMoving(moved);
+      
+    }, timeOutSpeed)
+
+    return () =>{
+      clearTimeout(timer)
+    }
   }
 
   const handleMove = (keyPressed: string) => {
@@ -158,24 +177,7 @@ function Controls(props: Props) {
 
 
   useEffect(() => {
-    const timeOutSpeed = config.pacmanSpeed * 1000;
-
-    if(moving === false){
-      return
-    }
-
-    const timer = setTimeout(() => {  
-      // const moved = move(Direction[pacmanState.direction]);
-      const moved = move(Direction[nextDirection]) || move(Direction[pacmanState.direction]);
-
-      setMoving(moved);
-      
-    }, timeOutSpeed)
-
-    return () =>{
-      clearTimeout(timer)
-    }
-
+    return autoMove()
   }, [mazeState, nextDirection, moving])
 
 

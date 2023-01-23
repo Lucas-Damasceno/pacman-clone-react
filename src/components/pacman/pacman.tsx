@@ -41,12 +41,10 @@ const PacManBottom = styled.div`
 `;
 
 type Props = {
-  map: string;
   index: number;
 }
 
 function PacMan(props: Props): ReactElement {
-  const pacmanRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [pacmanState, setPacmanState] = useRecoilState(PacmanState);
   const pacmanStyle: React.CSSProperties = {
     transform: `translateX(${pacmanState.positionX}px) translateY(${pacmanState.positionY}px)
@@ -66,7 +64,7 @@ function PacMan(props: Props): ReactElement {
 
   return(
     <>
-      <PacManCharacter ref={pacmanRef} style={pacmanStyle}>
+      <PacManCharacter style={pacmanStyle}>
         <PacManTop/>
         <PacManBottom/>
       </PacManCharacter>
@@ -74,4 +72,4 @@ function PacMan(props: Props): ReactElement {
   )
 }
 
-export default PacMan
+export default React.memo(PacMan);
