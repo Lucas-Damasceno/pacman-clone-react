@@ -7,6 +7,7 @@ import MazeState, { MazeStateType } from "../../states/maze.state";
 import PossibleTiles from "../types/possibleTiles";
 import Controls from "../controls/controls";
 import { Tiles } from "../../enums/tiles.enum";
+import GhostControls from "../ghost-controls/ghost-controls";
 
 
 function Maze(): ReactElement {
@@ -34,6 +35,7 @@ function Maze(): ReactElement {
   return (
     <>
       <Controls />
+      <GhostControls />
       <S.maze>
         {tileMap}
       </S.maze>

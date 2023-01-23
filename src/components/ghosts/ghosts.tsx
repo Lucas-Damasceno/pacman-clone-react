@@ -1,7 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import styled from "styled-components";
-import { useRecoilState } from 'recoil';
-import GhostColor from "../../states/ghostColor.state";
+import { GhostKey } from "../types/ghostKey";
 
 type PropsStyled = {
   color: string
@@ -80,13 +79,10 @@ const GhostPupils = styled.div`
 `
 
 type Props = {
-  type: '1' | '2' | '3' | '4';
+  type: GhostKey;
 }
 
 function Ghost(props: Props): ReactElement{
-  const [colorState, setColor] = useState('red');
-
-  useEffect(() => {
     const possibleType = {
       '1': '#F70000',
       '2': '#F7B2F7',
@@ -94,11 +90,8 @@ function Ghost(props: Props): ReactElement{
       '4': '#009999',
     };
 
-    setColor(possibleType[props.type]);
-  }, [])
-
   return (
-    <GhostBody color={colorState}>
+    <GhostBody color={possibleType[props.type]}>
       <GhostEyes>
         <GhostPupils/>
       </GhostEyes>

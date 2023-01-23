@@ -104,10 +104,32 @@ function Controls(props: Props) {
       const moved = move(keyPressed);
     }
 
-    if(keyPressed === 'ArrowUp') setNextDirection('up');
-    if(keyPressed === 'ArrowDown') setNextDirection('down');
-    if(keyPressed === 'ArrowRight') setNextDirection('right');
-    if(keyPressed === 'ArrowLeft') setNextDirection('left');
+    // const avaiableValues = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft'];
+
+    // if(!avaiableValues.includes(keyPressed)){
+    //   return
+    // }
+
+    // const keyPresseTyped = keyPressed as keyof typeof dictionary;
+
+    const dictionary = {
+      'ArrowUp': () => setNextDirection('up'),
+      'ArrowDown': () => setNextDirection('down'),
+      'ArrowRight': () => setNextDirection('right'),
+      'ArrowLeft': () => setNextDirection('left'),
+    }
+
+    const dicionaryFunctionToRun = dictionary[keyPressed as keyof typeof dictionary];
+    if(dicionaryFunctionToRun !== undefined){
+      dicionaryFunctionToRun()
+    }
+
+    // dictionary[keyPresseTyped]();
+
+    // if(keyPressed === 'ArrowUp') setNextDirection('up');
+    // if(keyPressed === 'ArrowDown') setNextDirection('down');
+    // if(keyPressed === 'ArrowRight') setNextDirection('right');
+    // if(keyPressed === 'ArrowLeft') setNextDirection('left');
   }
 
   const move = (keyPressed: string): boolean => {
