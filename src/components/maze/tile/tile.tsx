@@ -1,8 +1,7 @@
 import React, { ReactElement } from "react"
+import config from "../../../config/config";
 import PacMan from "../../pacman/pacman";
-import S from './styles'
-
-type PossibleTiles = 'x' | '.' | '_' | 'O' | 'P';
+import PossibleTiles from "../../types/possibleTiles";
 
 function Tile(tileChar: PossibleTiles, index: number, map: string): ReactElement{
 
@@ -86,12 +85,11 @@ function Tile(tileChar: PossibleTiles, index: number, map: string): ReactElement
     return tileStyle
   }
   //TODO retirar esse magic Number
-  const mazeColumns = 23;
-  const tileStyle = generateTileStyle(map, mazeColumns, index);
+  const tileStyle = generateTileStyle(map, config.mazeColumns, index);
 
 
   if(tileChar === 'P'){
-    return <PacMan key={index}/>
+    return <PacMan map={map} index={index} key={index}/>
   }
 
   return(

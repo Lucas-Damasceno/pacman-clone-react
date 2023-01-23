@@ -16,50 +16,64 @@ function Controls(props: Props) {
 
 
   const canMove = (directions: Directions): boolean => {
-    console.log(mazeState[pacmanState.index + 1])
-    if(directions === 'right' && mazeState[pacmanState.index + 1].status !== Tiles.wall){
+    console.log(mazeState[pacmanState.index - 1])
+    if (directions === 'right' && mazeState[pacmanState.index + 1].status !== Tiles.wall) {
       return true
     }
 
-    if(directions === 'left' && mazeState[pacmanState.index - 1].status !== Tiles.wall){
+    if (directions === 'left' && mazeState[pacmanState.index - 1].status !== Tiles.wall) {
       return true
     }
 
     const topTile = mazeState[pacmanState.index - config.mazeColumns];
-    if(directions === 'up' && topTile !== undefined && topTile.status !== Tiles.wall){
+    if (directions === 'up' && topTile !== undefined && topTile.status !== Tiles.wall) {
       return true
     }
 
     const downTile = mazeState[pacmanState.index + config.mazeColumns];
-    if(directions === 'down' && downTile !== undefined && downTile.status !== Tiles.wall){
+    if (directions === 'down' && downTile !== undefined && downTile.status !== Tiles.wall) {
       return true
     }
 
-    
+
     return false
   }
 
-  const returnTilesValue = (): MazeStateType[] => {
+  const createNewMazeState = (directions: Directions, index: number): MazeStateType[] => {
+    console.log('Chegou aqui')
     const newMazeState = [...mazeState];
 
-        let actualTileValue: MazeStateType = {
-          point: false,
-          power: false,
-          status: '_'
-        }
-        
-        let nextTileValue: MazeStateType = {
-          point: false,
-          power: false,
-          status: 'P'
-        }
+    const actualTileValue: MazeStateType = {
+      point: false,
+      power: false,
+      status: '_'
+    }
 
-        if(){
-          
-        }
-        newMazeState[pacmanState.index] = actualTileValue;
-        newMazeState[pacmanState.index + 1] = nextTileValue;
-    return []
+    const nextTileValue: MazeStateType = {
+      point: false,
+      power: false,
+      status: 'P'
+    }
+
+    newMazeState[index] = actualTileValue;
+
+    if (directions === 'down') {
+      newMazeState[index + config.mazeColumns] = nextTileValue;
+    }
+
+    if (directions === 'left') {
+      newMazeState[index - 1] = nextTileValue;
+    }
+
+    if (directions === 'right') {
+      newMazeState[index + 1] = nextTileValue;
+    }
+
+    if (directions === 'up') {
+      newMazeState[index - config.mazeColumns] = nextTileValue;
+    }
+
+    return newMazeState
   }
 
   const _handleKeyDown = (event: KeyboardEvent) => {
@@ -72,48 +86,40 @@ function Controls(props: Props) {
           positionX: pacmanState.positionX + config.tileSizeInPx,
         });
 
-        const newMazeState = [...mazeState];
-
-        let actualTileValue: MazeStateType = {
-          point: false,
-          power: false,
-          status: '_'
-        }
-        newMazeState[pacmanState.index] = actualTileValue;
-
-        let nextTileValue: MazeStateType = {
-          point: false,
-          power: false,
-          status: 'P'
-        }
-        newMazeState[pacmanState.index + 1] = nextTileValue;
-
-        setMazeState(newMazeState);
+        setMazeState(createNewMazeState('right', pacmanState.index));
       }
 
       if (keyPressed === 'ArrowLeft' && canMove('left')) {
         setPacmanState({
           ...pacmanState,
+          index: pacmanState.index - 1,
           direction: 'left',
           positionX: pacmanState.positionX - config.tileSizeInPx,
         });
+
+        setMazeState(createNewMazeState('left', pacmanState.index));
       }
 
       if (keyPressed === 'ArrowDown' && canMove('down')) {
-        console.log('Ta aqui')
         setPacmanState({
           ...pacmanState,
+          index: pacmanState.index + config.mazeColumns,
           direction: 'down',
           positionY: pacmanState.positionY + config.tileSizeInPx,
         });
+
+        setMazeState(createNewMazeState('down', pacmanState.index));
       }
 
       if (keyPressed === 'ArrowUp' && canMove('up')) {
         setPacmanState({
           ...pacmanState,
+          index: pacmanState.index - config.mazeColumns,
           direction: 'up',
           positionY: pacmanState.positionY - config.tileSizeInPx,
         });
+
+        setMazeState(createNewMazeState('up', pacmanState.index));
       }
     }
 
@@ -122,7 +128,7 @@ function Controls(props: Props) {
     move(keyPressed);
   }
 
-  useEffect(() => {    
+  useEffect(() => {
     window.addEventListener('keydown', _handleKeyDown);
 
     return () => {

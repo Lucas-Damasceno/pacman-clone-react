@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 import styled, {keyframes} from "styled-components";
 import PacmanState from "../../states/pacman.state";
 import Controls from "../controls/controls";
@@ -9,7 +9,7 @@ const PacManCharacter = styled.div`
   width: 28px;
   height: 28px;
   place-self: center;
-  transition: all 1s;
+  transition: all .3s;
 `;
 
 const PacManTopAnimation = keyframes`
@@ -40,20 +40,33 @@ const PacManBottom = styled.div`
   animation: ${PacManBottomAnimation} .5s linear infinite;
 `;
 
+type Props = {
+  map: string;
+  index: number;
+}
 
-
-function PacMan(): ReactElement {
+function PacMan(props: Props): ReactElement {
+  const pacmanRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [pacmanState, setPacmanState] = useRecoilState(PacmanState);
-  const tileSizeInPixels = '40';
+  const pacmanStyle: React.CSSProperties = {
+    transform: `translateX(${pacmanState.positionX}px) translateY(${pacmanState.positionY}px)
+    ${pacmanState.direction === 'right' ? 'rotate(180deg)' : ''}
+    ${pacmanState.direction === 'left' ? 'rotate(0deg)' : ''}
+    ${pacmanState.direction === 'up' ? 'rotate(90deg)' : ''}
+    ${pacmanState.direction === 'down' ? 'rotate(-90deg)' : ''}
+    `
+  }
 
   useEffect(() => {
-    
-  }, [])
+    setPacmanState({
+      ...pacmanState,
+      index: props.index,
+    })
+  }, []);
 
   return(
     <>
-      <Controls initialTile="a" index={0} map={'aaaa'}/>
-      <PacManCharacter>
+      <PacManCharacter ref={pacmanRef} style={pacmanStyle}>
         <PacManTop/>
         <PacManBottom/>
       </PacManCharacter>
