@@ -7,7 +7,6 @@ import MazeState, { MazeStateType } from "../../states/maze.state";
 import PossibleTiles from "../types/possibleTiles";
 import Controls from "../controls/controls";
 import { Tiles } from "../../enums/tiles.enum";
-import Pacman from "../pacman/pacman";
 
 
 
@@ -18,7 +17,6 @@ function Maze(): ReactElement {
   const map = MazeMap.original;
   const mapFiltered = map.replace(/(\r\n|\n|\r)/gm, "").replaceAll(' ', '');
   const mapChars = mapFiltered.split('') as PossibleTiles[];
-  // const tileMap = mapChars.map((char: any, index) => Tile(char, index, mapFiltered));
 
   useEffect(() => {
     const tileMapState = mapChars.map((char: any, index) => <Tile key={index} index={index} tileChar={char} map={mapFiltered}></Tile>);
@@ -37,7 +35,6 @@ function Maze(): ReactElement {
   return (
     <>
       <Controls />
-      {/* <Pacman index={1} /> */}
       <S.maze>
         {tileMap}
       </S.maze>

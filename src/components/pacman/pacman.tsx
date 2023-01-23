@@ -1,7 +1,6 @@
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect } from "react";
 import styled, {keyframes} from "styled-components";
 import PacmanState from "../../states/pacman.state";
-import Controls from "../controls/controls";
 import { useRecoilState } from 'recoil';
 import config from "../../config/config";
 

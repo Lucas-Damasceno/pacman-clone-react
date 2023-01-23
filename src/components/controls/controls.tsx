@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import PacmanState from "../../states/pacman.state";
 import { useRecoilState } from 'recoil';
 import MazeState, { MazeStateType } from "../../states/maze.state";
@@ -181,9 +181,12 @@ function Controls(props: Props) {
   }, [mazeState, nextDirection, moving])
 
 
-  //Controla os pontos
+  //Controla o sumiço dos pontos
   useEffect(() => {
     mazeState.forEach((tile, index) => {
+      // if(tile.power){
+      //   console.log(tile.status)
+      // }
       if(tile.status === Tiles.withoutPoint){
         document.documentElement.style.setProperty(`${config.pointCssVar}${index}`, '0');
       }

@@ -1,9 +1,7 @@
-import React, { ReactElement, useEffect, useState } from "react"
+import React, { ReactElement } from "react"
 import config from "../../../config/config";
 import PacMan from "../../pacman/pacman";
 import PossibleTiles from "../../types/possibleTiles";
-import { useRecoilState } from 'recoil';
-import MazeState, { MazeStateType } from "../../../states/maze.state";
 import { Tiles } from "../../../enums/tiles.enum";
 
 
@@ -14,19 +12,9 @@ type Props = {
 }
 
 function Tile(props: Props): ReactElement{
-  console.count('TileRender')
-  // const [mazeState, setMazeState] = useRecoilState(MazeState);
-  // const [tileStyle, setTileStyle] = useState<React.CSSProperties>({})
+  // console.count('TileRender')
 
   function generateTileStyle(mazeMap: string, mapColumns: number,index: number){
-
-    const tileType = {
-      wall: 'x',
-      point: '.',
-      withOutPoint: '_',
-      power: 'O',
-    }
-
     const tile = mazeMap[index] as PossibleTiles;
     const tileWall = tile === Tiles.wall;
     const tilePoint = tile === Tiles.point;
@@ -49,25 +37,25 @@ function Tile(props: Props): ReactElement{
         borderLeft: borderStyle,
       };
 
-      if(rightTile === tileType.wall){
+      if(rightTile === Tiles.wall){
         tileStyle.borderRight = 'none'
         tileStyle.borderTopRightRadius = '0';
         tileStyle.borderBottomRightRadius = '0';
       }
 
-      if(leftTile === tileType.wall){
+      if(leftTile === Tiles.wall){
         tileStyle.borderLeft = 'none'
         tileStyle.borderTopLeftRadius = '0';
         tileStyle.borderBottomLeftRadius = '0';
       }
 
-      if(topTile === tileType.wall){
+      if(topTile === Tiles.wall){
         tileStyle.borderTop = 'none'
         tileStyle.borderTopRightRadius = '0';
         tileStyle.borderTopLeftRadius = '0';
       }
     
-      if(bottomTile === tileType.wall){
+      if(bottomTile === Tiles.wall){
         tileStyle.borderBottom = 'none'
         tileStyle.borderBottomRightRadius = '0';
         tileStyle.borderBottomLeftRadius = '0';
@@ -94,14 +82,9 @@ function Tile(props: Props): ReactElement{
         justifySelf: 'center',
         alignSelf: 'center',  
         borderRadius: '50%',
+        opacity: `var(${config.pointCssVar}${index})`
       }
     }
-
-    // if(mazeState[index]?.status === Tiles.withoutPoint || mazeState[index]?.status === Tiles.pacman){
-    //   //Some com os pontos na tela
-    //   tileStyle.transition = 'all .5s';
-    //   tileStyle.opacity = 0
-    // }
 
     return tileStyle
   }

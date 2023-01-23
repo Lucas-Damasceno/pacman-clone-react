@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Maze from './components/maze/maze';
 import { RecoilRoot } from 'recoil';

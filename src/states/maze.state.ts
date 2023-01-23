@@ -1,5 +1,4 @@
 import { atom } from 'recoil'
-import Directions from '../components/types/directions';
 import PossibleTiles from '../components/types/possibleTiles';
 
 export type MazeStateType = {
