@@ -7,6 +7,7 @@ const GhostBody = styled.div`
   width: 28px;
   place-self: center;
   border-radius: 12px 12px 0 0px ;
+  position: relative;
 
   &::after{
     background: linear-gradient(-45deg,#ff0000 5px,transparent 0),linear-gradient(45deg,#ff0000 5px,transparent 0);
@@ -18,8 +19,58 @@ const GhostBody = styled.div`
     width: 100%;
     height: 8px;
     rotate: 180deg;
-    margin-top: 22px;
+    margin-top: 16px;
+    position: absolute;
+    bottom: -5px;
+    left: 0;
   }
+`
+
+const GhostEyes = styled.div`
+    //Left Eye
+    width: 8px;
+    height: 8px;
+    background-color: #fff;
+    border-radius: 5px;
+    position: absolute;
+    top: 9px;
+    left: 4px;
+
+    //Right Eye
+    &::before{
+      display: block;
+      content: '';
+      width: 8px;
+      height: 8px;
+      background-color: #fff;
+      border-radius: 5px;
+      position: absolute;
+      top: 0px;
+      left: 12px;
+
+    }
+`
+
+const GhostPupils = styled.div`
+    width: 4px;
+    height: 4px;
+    border-radius: 4px;
+    background-color: black;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+
+    &::after{
+      content: '';
+      display: block;
+      width: 4px;
+      height: 4px;
+      border-radius: 4px;
+      background-color: black;
+      position: absolute;
+      top: 0px;
+      left: 10px;
+    }
 `
 
 type Props = {
@@ -28,7 +79,13 @@ type Props = {
 
 function Ghost(props: Props): ReactElement{
 
-  return <GhostBody></GhostBody>
+  return (
+    <GhostBody>
+      <GhostEyes>
+        <GhostPupils/>
+      </GhostEyes>
+    </GhostBody>
+  )
 }
 
 export default Ghost
