@@ -1,13 +1,12 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import MazeMap from "./mazeMap";
 import S from "./styles";
-import Tile from "./tile/tile";
+import Tile from "../tile/tile";
 import { useRecoilState } from 'recoil';
 import MazeState, { MazeStateType } from "../../states/maze.state";
 import PossibleTiles from "../types/possibleTiles";
 import Controls from "../controls/controls";
 import { Tiles } from "../../enums/tiles.enum";
-
 
 
 function Maze(): ReactElement {

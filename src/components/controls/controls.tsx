@@ -66,12 +66,12 @@ function Controls(props: Props) {
     }
 
     const topTile = mazeState[pacmanState.index - config.mazeColumns];
-    if (directions === 'up' && topTile !== undefined && topTile.status !== Tiles.wall) {
+    if (directions === 'up' && topTile !== undefined && topTile.status !== Tiles.wall && topTile.status !== Tiles.ghostGate) {
       return true
     }
 
     const downTile = mazeState[pacmanState.index + config.mazeColumns];
-    if (directions === 'down' && downTile !== undefined && downTile.status !== Tiles.wall) {
+    if (directions === 'down' && downTile !== undefined && downTile.status !== Tiles.wall && downTile.status !== Tiles.ghostGate) {
       return true
     }
 

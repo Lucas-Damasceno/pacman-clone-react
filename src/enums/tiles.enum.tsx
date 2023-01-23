@@ -3,5 +3,7 @@ export enum Tiles {
   point = '.',
   withoutPoint = '_',
   power = 'O',
-  pacman = 'P'
+  pacman = 'P',
+  ghostGate = '-',
+  ghost = 'G'
 }

@@ -1,8 +1,9 @@
 import React, { ReactElement } from "react"
-import config from "../../../config/config";
-import PacMan from "../../pacman/pacman";
-import PossibleTiles from "../../types/possibleTiles";
-import { Tiles } from "../../../enums/tiles.enum";
+import config from "../../config/config";
+import PacMan from "../pacman/pacman";
+import PossibleTiles from "../types/possibleTiles";
+import { Tiles } from "../../enums/tiles.enum";
+import Ghost from "../ghosts/ghosts";
 
 
 type Props = {
@@ -19,6 +20,7 @@ function Tile(props: Props): ReactElement{
     const tileWall = tile === Tiles.wall;
     const tilePoint = tile === Tiles.point;
     const tilePower = tile === Tiles.power;
+    const tileGate = tile === Tiles.ghostGate;
     const rightTile = mazeMap[index + 1];
     const leftTile = mazeMap[index -1];
     const topTile = mazeMap[index - mapColumns];
@@ -86,6 +88,19 @@ function Tile(props: Props): ReactElement{
       }
     }
 
+    if(tileGate){
+      tileStyle = {
+        width: '100%',
+        height: '5px',
+        backgroundColor: '#fff',
+        placeSelf: 'center',  
+      }
+    }
+
+    // if(){
+
+    // }
+
     return tileStyle
   }
   
@@ -93,6 +108,10 @@ function Tile(props: Props): ReactElement{
 
   if(props.tileChar === Tiles.pacman){
     return <PacMan index={props.index}/>
+  }
+
+  if(props.tileChar === Tiles.ghost){
+    return <Ghost/>
   }
 
   return(
