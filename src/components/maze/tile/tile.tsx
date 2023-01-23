@@ -89,13 +89,15 @@ function Tile(tileChar: PossibleTiles, index: number, map: string): ReactElement
   const mazeColumns = 23;
   const tileStyle = generateTileStyle(map, mazeColumns, index);
 
-  if(tileChar != 'P'){
-    return(
-      <div key={index} style={tileStyle} />
-    )
+
+  if(tileChar === 'P'){
+    return <PacMan key={index}/>
   }
 
-  return <PacMan key={index}/>
+  return(
+    <div key={index} style={tileStyle} />
+  )
+
 }
 
 export default Tile
