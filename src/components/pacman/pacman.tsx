@@ -3,12 +3,13 @@ import styled, {keyframes} from "styled-components";
 import PacmanState from "../../states/pacman.state";
 import Controls from "../controls/controls";
 import { useRecoilState } from 'recoil';
+import config from "../../config/config";
 
 const PacManCharacter = styled.div`
   width: 28px;
   height: 28px;
   place-self: center;
-  transition: all .3s;
+  transition: all ${config.pacmanSpeed}s;
 `;
 
 const PacManTopAnimation = keyframes`
