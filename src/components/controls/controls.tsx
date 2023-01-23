@@ -16,7 +16,6 @@ function Controls(props: Props) {
 
 
   const canMove = (directions: Directions): boolean => {
-    console.log(mazeState[pacmanState.index - 1])
     if (directions === 'right' && mazeState[pacmanState.index + 1].status !== Tiles.wall) {
       return true
     }
@@ -35,12 +34,10 @@ function Controls(props: Props) {
       return true
     }
 
-
     return false
   }
 
   const createNewMazeState = (directions: Directions, index: number): MazeStateType[] => {
-    console.log('Chegou aqui')
     const newMazeState = [...mazeState];
 
     const actualTileValue: MazeStateType = {

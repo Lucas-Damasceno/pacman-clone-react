@@ -5,7 +5,6 @@ import Controls from "../controls/controls";
 import { useRecoilState } from 'recoil';
 
 const PacManCharacter = styled.div`
-  /* background-color: yellow; */
   width: 28px;
   height: 28px;
   place-self: center;

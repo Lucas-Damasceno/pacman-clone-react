@@ -2,10 +2,15 @@ import React, { ReactElement } from "react"
 import config from "../../../config/config";
 import PacMan from "../../pacman/pacman";
 import PossibleTiles from "../../types/possibleTiles";
+import { useRecoilState } from 'recoil';
+import MazeState, { MazeStateType } from "../../../states/maze.state";
+
 
 function Tile(tileChar: PossibleTiles, index: number, map: string): ReactElement{
+  const [mazeState, setMazeState] = useRecoilState(MazeState);
 
   function generateTileStyle(mazeMap: string, mapColumns: number,index: number){
+
     const tileType = {
       wall: 'x',
       point: '.',
@@ -80,6 +85,11 @@ function Tile(tileChar: PossibleTiles, index: number, map: string): ReactElement
         alignSelf: 'center',  
         borderRadius: '50%',
       }
+    }
+
+    if(mazeState[index]?.status === '_' || mazeState[index]?.status === 'P'){
+      tileStyle.transition = 'all .5s';
+      tileStyle.opacity = 0
     }
 
     return tileStyle
