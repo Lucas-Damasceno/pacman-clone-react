@@ -10,7 +10,7 @@ const PacManCharacter = styled.div`
   place-self: center;
   transition: translate linear ${config.pacmanSpeed}s;
   overflow: hidden;
-  /* background-color: red; */
+  /* background-color: yellow; */
   border-radius: 50%;
 `;
 

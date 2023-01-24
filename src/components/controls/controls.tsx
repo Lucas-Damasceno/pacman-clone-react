@@ -179,7 +179,7 @@ function Controls(props: Props) {
 
   useEffect(() => {
     return autoMove()
-  }, [mazeState, nextDirection, moving])
+  }, [mazeState, moving])
 
 
   //Controla o sumiço dos pontos
