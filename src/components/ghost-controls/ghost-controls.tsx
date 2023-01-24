@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from "react";
-import Directions from "../types/directions";
-import { GhostKey } from "../types/ghostKey";
+import Directions from "../../types/directions";
+import { GhostKey } from "../../types/ghostKey";
 import { useRecoilState } from 'recoil';
 import Ghost1State from "../../states/ghosts.state";
 import Ghost2State from "../../states/ghosts.state";
@@ -27,7 +27,7 @@ function GhostControls(): ReactElement{
   }
 
   useEffect(() => {
-    
+
   }, [mazeState])
 
   return <></>

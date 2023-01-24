@@ -1,10 +1,11 @@
 import React, { ReactElement } from "react"
 import config from "../../config/config";
 import PacMan from "../pacman/pacman";
-import PossibleTiles from "../types/possibleTiles";
+import PossibleTiles from "../../types/possibleTiles";
 import { Tiles } from "../../enums/tiles.enum";
 import Ghost from "../ghosts/ghosts";
-
+import { useRecoilState } from 'recoil';
+import Ghost1State from "../../states/ghosts.state";
 
 type Props = {
   tileChar: PossibleTiles;
@@ -13,14 +14,15 @@ type Props = {
 }
 
 function Tile(props: Props): ReactElement{
-  // console.count('TileRender')
+  // console.count('Rodou Tile')
+  const [ghost1, setGhost1] = useRecoilState(Ghost1State)
 
   function generateTileStyle(mazeMap: string, mapColumns: number,index: number){
     const tile = mazeMap[index] as PossibleTiles;
-    const tileWall = tile === Tiles.wall;
-    const tilePoint = tile === Tiles.point;
-    const tilePower = tile === Tiles.power;
-    const tileGate = tile === Tiles.ghostGate;
+    const tileWall = (tile === Tiles.wall);
+    const tilePoint = (tile === Tiles.point);
+    const tilePower = (tile === Tiles.power);
+    const tileGate = (tile === Tiles.ghostGate);
     const rightTile = mazeMap[index + 1];
     const leftTile = mazeMap[index -1];
     const topTile = mazeMap[index - mapColumns];
@@ -107,22 +109,20 @@ function Tile(props: Props): ReactElement{
   }
 
   if(props.tileChar === Tiles.ghost1){
-    return <Ghost type="1"/>
+    return <Ghost type="ghost1"/>
   }
 
   if(props.tileChar === Tiles.ghost2){
-    return <Ghost type="2"/>
+    return <Ghost type="ghost2"/>
   }
 
   if(props.tileChar === Tiles.ghost3){
-    return <Ghost type="3"/>
+    return <Ghost type="ghost3"/>
   }
 
   if(props.tileChar === Tiles.ghost4){
-    return <Ghost type="4"/>
+    return <Ghost type="ghost4"/>
   }
-
-
 
   return(
     <div style={tileStyle}/>

@@ -1,5 +1,5 @@
 import { atom } from 'recoil'
-import PossibleTiles from '../components/types/possibleTiles';
+import PossibleTiles from '../types/possibleTiles';
 
 export type MazeStateType = {
   status: PossibleTiles,

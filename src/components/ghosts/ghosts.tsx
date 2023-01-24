@@ -1,9 +1,12 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement } from "react";
 import styled from "styled-components";
-import { GhostKey } from "../types/ghostKey";
+import { GhostKey } from "../../types/ghostKey";
+import { useRecoilValue } from 'recoil';
+import GhostSelector from "../../states/ghost.selector";
+import { PossibleGhostState } from "../../types/possibleGhostState";
 
 type PropsStyled = {
-  color: string
+  color: string,
 }
 
 const GhostBody = styled.div<PropsStyled>`
@@ -79,21 +82,25 @@ const GhostPupils = styled.div`
 `
 
 type Props = {
-  type: GhostKey;
+  type: PossibleGhostState;
 }
 
-function Ghost(props: Props): ReactElement{
-    const possibleType = {
-      '1': '#F70000',
-      '2': '#F7B2F7',
-      '3': '#FFB851',
-      '4': '#009999',
-    };
+function Ghost(props: Props): ReactElement {
+
+  const teste = useRecoilValue(GhostSelector('ghost1'));
+  console.count('Ghost Rodou')
+
+  const possibleType = {
+    'ghost1': '#F70000',
+    'ghost2': '#F7B2F7',
+    'ghost3': '#FFB851',
+    'ghost4': '#009999',
+  };
 
   return (
     <GhostBody color={possibleType[props.type]}>
       <GhostEyes>
-        <GhostPupils/>
+        <GhostPupils />
       </GhostEyes>
     </GhostBody>
   )

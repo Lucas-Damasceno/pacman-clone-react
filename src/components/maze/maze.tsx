@@ -4,7 +4,7 @@ import S from "./styles";
 import Tile from "../tile/tile";
 import { useRecoilState } from 'recoil';
 import MazeState, { MazeStateType } from "../../states/maze.state";
-import PossibleTiles from "../types/possibleTiles";
+import PossibleTiles from "../../types/possibleTiles";
 import Controls from "../controls/controls";
 import { Tiles } from "../../enums/tiles.enum";
 import GhostControls from "../ghost-controls/ghost-controls";

@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import PacmanState from "../../states/pacman.state";
 import { useRecoilState } from 'recoil';
 import MazeState, { MazeStateType } from "../../states/maze.state";
-import Directions from "../types/directions";
+import Directions from "../../types/directions";
 import { Tiles } from "../../enums/tiles.enum";
 import config from "../../config/config";
 import { Direction } from "../../enums/direction.enum";
@@ -104,32 +104,10 @@ function Controls(props: Props) {
       const moved = move(keyPressed);
     }
 
-    // const avaiableValues = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft'];
-
-    // if(!avaiableValues.includes(keyPressed)){
-    //   return
-    // }
-
-    // const keyPresseTyped = keyPressed as keyof typeof dictionary;
-
-    const dictionary = {
-      'ArrowUp': () => setNextDirection('up'),
-      'ArrowDown': () => setNextDirection('down'),
-      'ArrowRight': () => setNextDirection('right'),
-      'ArrowLeft': () => setNextDirection('left'),
-    }
-
-    const dicionaryFunctionToRun = dictionary[keyPressed as keyof typeof dictionary];
-    if(dicionaryFunctionToRun !== undefined){
-      dicionaryFunctionToRun()
-    }
-
-    // dictionary[keyPresseTyped]();
-
-    // if(keyPressed === 'ArrowUp') setNextDirection('up');
-    // if(keyPressed === 'ArrowDown') setNextDirection('down');
-    // if(keyPressed === 'ArrowRight') setNextDirection('right');
-    // if(keyPressed === 'ArrowLeft') setNextDirection('left');
+    if(keyPressed === 'ArrowUp') setNextDirection('up');
+    if(keyPressed === 'ArrowDown') setNextDirection('down');
+    if(keyPressed === 'ArrowRight') setNextDirection('right');
+    if(keyPressed === 'ArrowLeft') setNextDirection('left');
   }
 
   const move = (keyPressed: string): boolean => {

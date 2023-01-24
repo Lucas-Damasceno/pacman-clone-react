@@ -1,5 +1,5 @@
 import { atom } from 'recoil'
-import Directions from '../components/types/directions';
+import Directions from '../types/directions';
 
 type PacmanStateType = {
   direction: Directions;
