@@ -1,5 +1,5 @@
 
-const MazeMap = 
+const MazeMap =
 {original:
 `
 xxxxxxxxxxx x xxxxxxxxxxx
@@ -24,7 +24,10 @@ x.....x.... x ....x.....x
 x.xxxxxxxx. x .xxxxxxxx.x
 x.......... . ..........x
 xxxxxxxxxxx x xxxxxxxxxxx
-`
+`,
+filteredMap: function() {
+  return this.original.replace(/(\r\n|\n|\r)/gm, "").replaceAll(' ', '');
+}
 }
 
 export default MazeMap

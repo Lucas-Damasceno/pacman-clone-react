@@ -6,7 +6,6 @@ import Directions from "../../types/directions";
 import { Tiles } from "../../enums/tiles.enum";
 import config from "../../config/config";
 import { Direction } from "../../enums/direction.enum";
-import MovingState from "../../states/moving.state";
 
 interface Props {
   children?: ReactElement
@@ -16,7 +15,8 @@ function Controls(props: Props) {
   const [mazeState, setMazeState] = useRecoilState(MazeState);
   const [pacmanState, setPacmanState] = useRecoilState(PacmanState);
   const [moving, setMoving] = useState(false);
-  const [nextDirection, setNextDirection] = useState<Directions>('left');
+
+  const [nextTile, setNextTile] = useState(true);
 
   const createNewMazeState = (directions: Directions, index: number): MazeStateType[] => {
     const newMazeState = [...mazeState];
@@ -59,9 +59,6 @@ function Controls(props: Props) {
       return true
     }
 
-    if(mazeState[pacmanState.index - 1]?.status === undefined){
-      return false
-    }
     if (directions === 'left' && mazeState[pacmanState.index - 1].status !== Tiles.wall) {
       return true
     }
@@ -81,13 +78,14 @@ function Controls(props: Props) {
 
   const autoMove = () => {
     const timeOutSpeed = config.pacmanSpeed * 1000;
-
     if(moving === false){
       return
     }
 
     const timer = setTimeout(() => {  
+      console.count('Pausa')
       // const moved = move(Direction[pacmanState.direction]);
+      const nextDirection = pacmanState.nextDirection ? pacmanState.nextDirection : pacmanState.direction
       const moved = move(Direction[nextDirection]) || move(Direction[pacmanState.direction]);
 
       setMoving(moved);
@@ -99,10 +97,22 @@ function Controls(props: Props) {
     }
   }
 
+  const setNextDirection = (direction: Directions) => {
+    setPacmanState((cur) => {
+      return {
+        ...cur, 
+        nextDirection: direction
+      }
+    })
+  }
+
   const handleMove = (keyPressed: string) => {
     if(moving === false){
-      setMoving(true)
+      console.count('Moving False')
       const moved = move(keyPressed);
+      if(moved){
+        setMoving(true)
+      }
     }
 
     if(keyPressed === 'ArrowUp') setNextDirection('up');
@@ -164,7 +174,7 @@ function Controls(props: Props) {
   }
 
   const _handleKeyDown = (event: KeyboardEvent) => {
-    const keyPressed = event.key as any;
+    const keyPressed = event.key;
     handleMove(keyPressed);
   }
 
@@ -179,7 +189,7 @@ function Controls(props: Props) {
 
   useEffect(() => {
     return autoMove()
-  }, [mazeState, moving])
+  }, [mazeState, moving, pacmanState])
 
 
   //Controla o sumiço dos pontos
@@ -191,6 +201,10 @@ function Controls(props: Props) {
     })
   }, [mazeState])
 
+  //Seta o valor inicial do MazeState
+  useEffect(() => {
+    setMazeState(createNewMazeState('left', pacmanState.index))
+  }, [])
   return (
     <>
     </>

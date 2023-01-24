@@ -13,13 +13,12 @@ import GhostControls from "../ghost-controls/ghost-controls";
 function Maze(): ReactElement {
   const [mazeState, setMazeState] = useRecoilState(MazeState);
   const [tileMap, setTileMap] = useState<JSX.Element[]>([]);
+  const filteredMap = MazeMap.filteredMap()
 
-  const map = MazeMap.original;
-  const mapFiltered = map.replace(/(\r\n|\n|\r)/gm, "").replaceAll(' ', '');
-  const mapChars = mapFiltered.split('') as PossibleTiles[];
+  const mapChars = filteredMap.split('') as PossibleTiles[];
 
   useEffect(() => {
-    const tileMapState = mapChars.map((char: any, index) => <Tile key={index} index={index} tileChar={char} map={mapFiltered}></Tile>);
+    const tileMapState = mapChars.map((char: any, index) => <Tile key={index} index={index} tileChar={char} map={filteredMap}></Tile>);
     setTileMap(tileMapState);
 
     const newMazeState: MazeStateType[] = mapChars.map(char => {

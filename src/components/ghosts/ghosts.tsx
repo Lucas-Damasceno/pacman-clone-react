@@ -88,7 +88,7 @@ type Props = {
 function Ghost(props: Props): ReactElement {
 
   const ghostState = useRecoilValue(GhostSelector('ghost1'));
-  console.count('Ghost Rodou');
+  // console.count('Ghost Rodou');
 
   const ghostStyle: React.CSSProperties = {
     transform: `translateX(${ghostState.positionX}px) translateY(${ghostState.positionY}px)
