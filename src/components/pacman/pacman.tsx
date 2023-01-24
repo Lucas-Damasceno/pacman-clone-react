@@ -9,6 +9,9 @@ const PacManCharacter = styled.div`
   height: 28px;
   place-self: center;
   transition: all ${config.pacmanSpeed}s;
+  overflow: hidden;
+  /* background-color: red; */
+  border-radius: 50%;
 `;
 
 const PacManTopAnimation = keyframes`
@@ -18,12 +21,14 @@ const PacManTopAnimation = keyframes`
 
 const PacManBottomAnimation = keyframes`
   0%{transform: rotate(0deg);}
-  50%{transform: rotate(-35deg);}	
+	50%{transform: rotate(-35deg);}
 `
 
 const PacManTop = styled.div`
-  height: 15px;
-  width: 28px;
+  height: 18px;
+  width: 40px;
+  margin-left: -2px;
+  margin-top: -4px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   background-color: yellow;
@@ -31,8 +36,9 @@ const PacManTop = styled.div`
 `;
 
 const PacManBottom = styled.div`
-  height: 15px;
-  width: 28px;
+  height: 18px;
+  width: 40px;
+  margin-left: -2px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   background-color: yellow;

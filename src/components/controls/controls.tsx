@@ -6,6 +6,7 @@ import Directions from "../../types/directions";
 import { Tiles } from "../../enums/tiles.enum";
 import config from "../../config/config";
 import { Direction } from "../../enums/direction.enum";
+import MovingState from "../../states/moving.state";
 
 interface Props {
   children?: ReactElement
@@ -14,7 +15,7 @@ interface Props {
 function Controls(props: Props) {
   const [mazeState, setMazeState] = useRecoilState(MazeState);
   const [pacmanState, setPacmanState] = useRecoilState(PacmanState);
-  const [moving, setMoving] = useState<boolean>(false);
+  const [moving, setMoving] = useState(false);
   const [nextDirection, setNextDirection] = useState<Directions>('left');
 
   const createNewMazeState = (directions: Directions, index: number): MazeStateType[] => {

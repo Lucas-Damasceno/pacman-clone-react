@@ -34,8 +34,8 @@ function Maze(): ReactElement {
 
   return (
     <>
-      <Controls />
-      <GhostControls />
+      <Controls/>
+      <GhostControls/>
       <S.maze>
         {tileMap}
       </S.maze>
