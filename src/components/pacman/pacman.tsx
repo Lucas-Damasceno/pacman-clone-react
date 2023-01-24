@@ -8,7 +8,7 @@ const PacManCharacter = styled.div`
   width: 28px;
   height: 28px;
   place-self: center;
-  transition: all ${config.pacmanSpeed}s;
+  transition: all linear ${config.pacmanSpeed}s;
   overflow: hidden;
   /* background-color: red; */
   border-radius: 50%;
@@ -27,7 +27,7 @@ const PacManBottomAnimation = keyframes`
 const PacManTop = styled.div`
   height: 18px;
   width: 40px;
-  margin-left: -2px;
+  margin-left: -3px;
   margin-top: -4px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -38,7 +38,7 @@ const PacManTop = styled.div`
 const PacManBottom = styled.div`
   height: 18px;
   width: 40px;
-  margin-left: -2px;
+  margin-left: -3px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   background-color: yellow;
