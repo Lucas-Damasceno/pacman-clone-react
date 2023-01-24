@@ -8,7 +8,7 @@ const PacManCharacter = styled.div`
   width: 28px;
   height: 28px;
   place-self: center;
-  transition: all linear ${config.pacmanSpeed}s;
+  transition: translate linear ${config.pacmanSpeed}s;
   overflow: hidden;
   /* background-color: red; */
   border-radius: 50%;
@@ -51,13 +51,15 @@ type Props = {
 
 function PacMan(props: Props): ReactElement {
   const [pacmanState, setPacmanState] = useRecoilState(PacmanState);
+  const pacManDirectionStyle = {
+    up: '90deg',
+    down: '-90deg',
+    left: '0deg',
+    right: '180deg',
+  }
   const pacmanStyle: React.CSSProperties = {
-    transform: `translateX(${pacmanState.positionX}px) translateY(${pacmanState.positionY}px)
-    ${pacmanState.direction === 'right' ? 'rotate(180deg)' : ''}
-    ${pacmanState.direction === 'left' ? 'rotate(0deg)' : ''}
-    ${pacmanState.direction === 'up' ? 'rotate(90deg)' : ''}
-    ${pacmanState.direction === 'down' ? 'rotate(-90deg)' : ''}
-    `
+    translate: `${pacmanState.positionX}px ${pacmanState.positionY}px`,
+    rotate: pacManDirectionStyle[pacmanState.direction]
   }
 
   useEffect(() => {
