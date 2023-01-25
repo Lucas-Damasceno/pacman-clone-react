@@ -1,23 +1,13 @@
 import { atom } from 'recoil'
 import MazeMap from '../components/maze/mazeMap';
-import config from '../config/config';
-import Directions from '../types/directions';
-
-type PacmanStateType = {
-  direction: Directions;
-  nextDirection: Directions | null;
-  positionX: number;
-  positionY: number;
-  index: number;
-  moving: boolean;
-}
+import { CharacterStateType } from '../types/characterStateType';
 
 const getInitialIndexOfPacman = (): number => {
   const map = MazeMap.filteredMap();
   return  map.indexOf('P')
 }
 
-const PacmanState = atom<PacmanStateType>({
+const PacmanState = atom<CharacterStateType>({
   key: 'pacmanState', // unique ID (with respect to other atoms/selectors)
   default: {
     direction: 'left',
@@ -26,6 +16,8 @@ const PacmanState = atom<PacmanStateType>({
     positionY: 0,
     moving: false,
     index: getInitialIndexOfPacman(),
+    type: 'pacman',
+    color: ''
   }, // default value (aka initial value)
   effects: [
     // ({onSet}) => {

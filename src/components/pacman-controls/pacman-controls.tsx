@@ -1,9 +1,10 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { Dispatch, ReactElement, SetStateAction, useEffect } from "react";
 import { useRecoilState } from 'recoil';
 import config from "../../config/config";
 import { Tiles } from "../../enums/tiles.enum";
 import MazeState from "../../states/maze.state";
 import PacmanState from "../../states/pacman.state";
+import { CharacterStateType } from "../../types/characterStateType";
 import { CharacterType } from "../../types/characterType";
 import Directions from "../../types/directions";
 import MazeMap from "../maze/mazeMap";
@@ -24,7 +25,7 @@ function PacmanControls (): ReactElement {
     
     const keyPressed = event.key as ValidButtons;
     
-    handleMovement(keyPressed, 'pacman');
+    handleMovement(keyPressed, 'pacman', setPacmanState);
   }
 
   const canMove = (direction: Directions, characterIndex: number) => {
@@ -45,8 +46,8 @@ function PacmanControls (): ReactElement {
     
   }
 
-  const handleMovement = (keyPressed: ValidButtons, characterType: CharacterType) => {
-
+  const handleMovement = (keyPressed: ValidButtons, characterType: CharacterType, characterState: Dispatch<SetStateAction<CharacterStateType>>) => {
+    
   }
 
   useEffect(() => {
