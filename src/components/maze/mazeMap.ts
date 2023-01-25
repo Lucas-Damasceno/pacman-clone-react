@@ -25,9 +25,9 @@ x.xxxxxxxx. x .xxxxxxxx.x
 x.......... . ..........x
 xxxxxxxxxxx x xxxxxxxxxxx
 `,
-filteredMap: function() {
-  return this.original.replace(/(\r\n|\n|\r)/gm, "").replaceAll(' ', '');
-}
-}
+  filteredMap: function() {
+    return this.original.replace(/(\r\n|\n|\r)/gm, "").replaceAll(' ', '');
+  }
+} as const;
 
 export default MazeMap

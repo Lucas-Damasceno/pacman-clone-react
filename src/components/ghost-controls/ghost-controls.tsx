@@ -34,9 +34,6 @@ function GhostControls(): ReactElement {
     }
 
     const selectedGhost = ghostSetState[ghost];
-
-    console.log(ghostState[ghost])
-
   }
 
   function randomDirection(): Directions {

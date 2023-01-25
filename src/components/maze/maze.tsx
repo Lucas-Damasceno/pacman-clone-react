@@ -8,6 +8,7 @@ import PossibleTiles from "../../types/possibleTiles";
 import Controls from "../controls/controls";
 import { Tiles } from "../../enums/tiles.enum";
 import GhostControls from "../ghost-controls/ghost-controls";
+import PacmanControls from "../pacman-controls/pacman-controls";
 
 
 function Maze(): ReactElement {
@@ -17,6 +18,7 @@ function Maze(): ReactElement {
 
   const mapChars = filteredMap.split('') as PossibleTiles[];
 
+  //Seta o valor inicial do labirinto
   useEffect(() => {
     const tileMapState = mapChars.map((char: any, index) => <Tile key={index} index={index} tileChar={char} map={filteredMap}></Tile>);
     setTileMap(tileMapState);
@@ -33,7 +35,8 @@ function Maze(): ReactElement {
 
   return (
     <>
-      <Controls/>
+      {/* <Controls/> */}
+      <PacmanControls />
       <GhostControls/>
       <S.maze>
         {tileMap}

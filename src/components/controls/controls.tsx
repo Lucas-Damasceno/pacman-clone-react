@@ -83,17 +83,20 @@ function Controls(props: Props) {
     }
 
     const timer = setTimeout(() => {  
-      console.count('Pausa')
-      // const moved = move(Direction[pacmanState.direction]);
       const nextDirection = pacmanState.nextDirection ? pacmanState.nextDirection : pacmanState.direction
       const moved = move(Direction[nextDirection]) || move(Direction[pacmanState.direction]);
 
-      setMoving(moved);
+      // setMoving(moved);
       
     }, timeOutSpeed)
 
-    return () =>{
-      clearTimeout(timer)
+    return () => {
+      const teste =() => {
+        console.log('Rodou ClearTime')
+        clearTimeout(timer)
+      }
+
+      teste()
     }
   }
 
@@ -108,11 +111,8 @@ function Controls(props: Props) {
 
   const handleMove = (keyPressed: string) => {
     if(moving === false){
-      console.count('Moving False')
       const moved = move(keyPressed);
-      if(moved){
-        setMoving(true)
-      }
+      setMoving(true);
     }
 
     if(keyPressed === 'ArrowUp') setNextDirection('up');
@@ -184,13 +184,11 @@ function Controls(props: Props) {
     return () => {
       window.removeEventListener('keydown', _handleKeyDown)
     }
-  }, [mazeState, moving])
-
+  }, [mazeState])
 
   useEffect(() => {
     return autoMove()
-  }, [mazeState, moving, pacmanState])
-
+  }, [pacmanState])
 
   //Controla o sumiço dos pontos
   useEffect(() => {
@@ -199,7 +197,7 @@ function Controls(props: Props) {
         document.documentElement.style.setProperty(`${config.pointCssVar}${index}`, '0');
       }
     })
-  }, [mazeState])
+  }, [pacmanState])
 
   //Seta o valor inicial do MazeState
   useEffect(() => {
