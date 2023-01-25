@@ -13,6 +13,9 @@ import MazeMap from "../maze/mazeMap";
 const validButtons = ['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'] as const;
 type ValidButtons = typeof validButtons[number];
 
+type CharacterStateSetter = Dispatch<SetStateAction<CharacterStateType>>;
+
+type IndexObject<T extends string | number | symbol, K> = {[Key in T]: K}
 
 function PacmanControls (): ReactElement {
   const [mazeState, setMazeState] = useRecoilState(MazeState);
@@ -24,6 +27,13 @@ function PacmanControls (): ReactElement {
     if(invalidKey) return;
     
     const keyPressed = event.key as ValidButtons;
+
+    const keyPressedToDirection: IndexObject<ValidButtons, Directions> = {
+      ArrowUp: 'up',
+      ArrowDown: 'down',
+      ArrowLeft: 'left',
+      ArrowRight: 'right'
+    }
     
     handleMovement(keyPressed, 'pacman', setPacmanState);
   }
@@ -42,12 +52,19 @@ function PacmanControls (): ReactElement {
     return validation[direction];
   }
 
-  const move = (characterState: any, direction: Directions) => {
+  const move = (characterState: CharacterStateSetter, direction: Directions) => {
     
   }
 
-  const handleMovement = (keyPressed: ValidButtons, characterType: CharacterType, characterState: Dispatch<SetStateAction<CharacterStateType>>) => {
+  const handleMovement = (keyPressed: ValidButtons, characterType: CharacterType, characterState: CharacterStateSetter) => {
     
+    
+    const directions: {[Key in Directions]: () => boolean} = {
+      up: () => canMove(),
+      right: () => canMove,
+      down:() => canMove,
+      left:() => canMove,
+    }
   }
 
   useEffect(() => {

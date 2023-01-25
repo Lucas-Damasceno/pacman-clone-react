@@ -1,7 +1,6 @@
 import { atom } from 'recoil'
 import MazeMap from '../components/maze/mazeMap';
 import { CharacterStateType } from '../types/characterStateType';
-import Directions from '../types/directions';
 
 
 const getInitialIndexOfGhost = (ghostIdentification: '1' | '2' | '3' | '4') => {
