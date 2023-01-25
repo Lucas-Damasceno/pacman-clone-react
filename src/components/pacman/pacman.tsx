@@ -4,6 +4,11 @@ import PacmanState from "../../states/pacman.state";
 import { useRecoilState } from 'recoil';
 import config from "../../config/config";
 
+interface PacManPartAnimation{
+  top?: Keyframes;
+  bottom?: Keyframes;
+}
+
 const PacManCharacter = styled.div`
   width: 28px;
   height: 28px;
@@ -14,10 +19,6 @@ const PacManCharacter = styled.div`
   border-radius: 50%;
 `;
 
-interface PacManPartAnimation{
-  top?: Keyframes;
-  bottom?: Keyframes;
-}
 
 const PacManTopAnimation = keyframes`
   0%{transform: rotate(35deg);}
@@ -84,15 +85,10 @@ function PacMan(props: Props): ReactElement {
   const selectedPacManAnimation = pacmanState.moving ? animatedPacMan : stopedPacMan;
 
   return(
-    <>
-      <PacManCharacter style={pacmanStyle}>
+    <PacManCharacter style={pacmanStyle}>
       <PacManTop top={selectedPacManAnimation.top}/>
       <PacManBottom bottom={selectedPacManAnimation.bottom}/>
-
-        {/* <PacManTop top={undefined}/>
-        <PacManBottom bottom={undefined}/> */}
-      </PacManCharacter>
-    </>
+    </PacManCharacter>
   )
 }
 

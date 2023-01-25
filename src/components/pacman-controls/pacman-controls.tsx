@@ -1,7 +1,10 @@
 import React, { ReactElement, useEffect } from "react";
 import { useRecoilState } from 'recoil';
+import config from "../../config/config";
+import { Tiles } from "../../enums/tiles.enum";
 import MazeState from "../../states/maze.state";
 import PacmanState from "../../states/pacman.state";
+import { CharacterType } from "../../types/characterType";
 import Directions from "../../types/directions";
 import MazeMap from "../maze/mazeMap";
 
@@ -20,26 +23,30 @@ function PacmanControls (): ReactElement {
     if(invalidKey) return;
     
     const keyPressed = event.key as ValidButtons;
-    handleMovement(keyPressed);
+    
+    handleMovement(keyPressed, 'pacman');
   }
 
   const canMove = (direction: Directions, characterIndex: number) => {
-    const map = MazeMap.filteredMap();
+    const topTile = mazeState[characterIndex - config.mazeColumns];
+    const bottomTile = mazeState[characterIndex + config.mazeColumns];
 
+    const validation: {[Key in Directions]: boolean} = {
+      right: mazeState[characterIndex].status !== Tiles.wall,
+      left: mazeState[characterIndex].status !== Tiles.wall,
+      up: topTile !== undefined && topTile.status !== Tiles.wall && topTile.status !== Tiles.ghostGate,
+      down: bottomTile !== undefined && bottomTile.status !== Tiles.wall && bottomTile.status !== Tiles.ghostGate,
+    }
 
+    return validation[direction];
   }
 
-  const move = () => {
+  const move = (characterState: any, direction: Directions) => {
     
   }
 
-  const handleMovement = (keyPressed: ValidButtons) => {
-    setPacmanState((cur) => {
-      return {
-        ...cur,
-        moving: true
-      }
-    })
+  const handleMovement = (keyPressed: ValidButtons, characterType: CharacterType) => {
+
   }
 
   useEffect(() => {
