@@ -1,6 +1,7 @@
 import React, { Dispatch, ReactElement, SetStateAction, useEffect } from "react";
 import { useRecoilState } from 'recoil';
 import config from "../../config/config";
+import { Direction } from "../../enums/direction.enum";
 import { Tiles } from "../../enums/tiles.enum";
 import Ghost1State, { Ghost2State, Ghost3State, Ghost4State } from "../../states/ghosts.state";
 import MazeState, { MazeStateType } from "../../states/maze.state";
@@ -16,6 +17,13 @@ import MazeMap from "../maze/mazeMap";
 const validButtons = ['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'] as const;
 type ValidButtons = typeof validButtons[number];
 type CharacterStateSetter = Dispatch<SetStateAction<CharacterStateType>>;
+
+type CharacterMazeIndex = {
+  char: CharacterChar;
+  direction: Directions;
+  state: CharacterStateSetter;
+  tileIndex: number
+}
 
 function PacmanControls(): ReactElement {
   const [mazeState, setMazeState] = useRecoilState(MazeState);
@@ -40,41 +48,55 @@ function PacmanControls(): ReactElement {
       ArrowRight: 'right'
     }
 
-    const direction: Directions = keyPressedToDirection[keyPressed];
+    const newDirection: Directions = keyPressedToDirection[keyPressed];
+
+    setPacmanState(currentState => {
+      return {
+        ...currentState,
+        direction: newDirection
+      }
+    })
 
     //For tests purposes
-    handleMovement(direction, 'P');
+    // handleMovement(direction, 'P');
   }
 
-  const getAdjacentTiles = (index: number) => {
+  const getAdjacentTiles = (index: number, newMazeState: MazeStateType[]) => {
     const adjacentTiles: IndexObject<Directions, MazeStateType> = {
-      up: mazeState[index - config.mazeColumns],
-      right: mazeState[index + 1],
-      down: mazeState[index + config.mazeColumns],
-      left: mazeState[index - 1]
+      up: newMazeState[index - config.mazeColumns],
+      right: newMazeState[index + 1],
+      down: newMazeState[index + config.mazeColumns],
+      left: newMazeState[index - 1]
     }
 
     return adjacentTiles
   }
 
-  const canMove = (direction: Directions, characterIndex: number) => {
-    const blockableTiles: PossibleTiles[] = [Tiles.wall, Tiles.ghostGate];
+  const canMove = (charType: CharacterType, direction: Directions, characterIndex: number, newMazeState: MazeStateType[]) => {
+    const blockableTilesFor: IndexObject<CharacterType, PossibleTiles[]> = {
+      ghost: [Tiles.wall, Tiles.ghost1, Tiles.ghost2, Tiles.ghost3, Tiles.ghost4],
+      pacman: [Tiles.wall, Tiles.ghostGate],
+    }
 
-    const tileToMove = getAdjacentTiles(characterIndex)[direction];
+    let blockableTiles: PossibleTiles[] = [];
+    if(charType === 'ghost'){
+      blockableTiles = blockableTilesFor.ghost
+    }
 
-    // const ghosts = ['1','2','3','4'];
-    // const nextTileIsGhost = ghosts.includes(tileToMove.status);
+    if(charType === 'pacman'){
+      blockableTiles = blockableTilesFor.pacman
+    }
 
-    // if(nextTileIsGhost && character === 'pacman'){
-    //   pacmanEncounterWithGhost();
-    // }
+    if(characterIndex === -1) return false
 
+    const tileToMove = getAdjacentTiles(characterIndex, newMazeState)[direction];
+    // if(tileToMove === false) return false
     const canMoveToTile = !blockableTiles.includes(tileToMove.status);
 
     return canMoveToTile
   }
 
-  const move = (direction: Directions, character: CharacterChar, setCharacterState: CharacterStateSetter) => {
+  const move = (direction: Directions, setCharacterState: CharacterStateSetter) => {
     let characterState: CharacterStateType;
     setCharacterState(currentState => {
       characterState = currentState;
@@ -89,17 +111,17 @@ function PacmanControls(): ReactElement {
       }
 
       const calculateY = {
-        up: positionY + tileSize,
-        down: positionY - tileSize,
+        up: positionY - tileSize,
+        down: positionY + tileSize,
       }
 
-      if(direction === 'right' || direction === 'left'){
+      if (direction === 'right' || direction === 'left') {
         positionX = calculateX[direction]
-      }else{
+      } else {
         positionY = calculateY[direction]
       }
-      
-  
+
+
       return {
         ...currentState,
         direction: direction,
@@ -108,59 +130,73 @@ function PacmanControls(): ReactElement {
         moving: true,
       }
     });
-
-    // setMazeState(currentMazeState => {
-    //   const charIndex = currentMazeState.findIndex(mazeTile => mazeTile.status === character);
-    //   console.log(charIndex)
-    //   return [
-    //     ...currentMazeState
-    //   ]
-    // })
   }
 
   const pacmanEncounterWithGhost = () => {
 
   }
 
-  const handleMovement = (direction: Directions, characterType: CharacterChar) => {
-    const characterMazeIndex: IndexObject<CharacterChar, number> = {
-      'P': mazeState.findIndex(item => item.status === 'P'),
-      '1': mazeState.findIndex(item => item.status === '1'),
-      '2': mazeState.findIndex(item => item.status === '2'),
-      '3': mazeState.findIndex(item => item.status === '3'),
-      '4': mazeState.findIndex(item => item.status === '4'),
+  const convertCharacterCharToType = (char: CharacterChar): CharacterType => {
+    const convert: IndexObject<CharacterChar, CharacterType> = {
+      P: 'pacman',
+      "1": 'ghost',
+      "2": 'ghost',
+      "3": 'ghost',
+      "4": 'ghost'
     }
 
-    const character: CharacterType = (characterType === 'P' ? 'pacman' : 'ghost');
-
-    const characterIndex = characterMazeIndex[characterType];
-    const characterCanMove = canMove(direction, characterIndex);
-
-    if (characterCanMove) {
-      const stateIndexObject = {
-        'P': setPacmanState,
-        '1': setGhost1State,
-        '2': setGhost2State,
-        '3': setGhost3State,
-        '4': setGhost4State,
-      }
-
-      move(direction, characterType, stateIndexObject[characterType])
-    }
-    // const directions: {[Key in Directions]: () => boolean} = {
-    //   up: () => canMove(direction, characterType, ),
-    //   right: () => canMove,
-    //   down:() => canMove,
-    //   left:() => canMove,
-    // }
+    return convert[char]
   }
 
-  // //Controla o mazeState
-  // useEffect(() => {
+  const createNextMazeState = (mazeState: MazeStateType[]) => {
+    const newMazeState = [...mazeState];
+    const charactersMazeIndex: CharacterMazeIndex[] = [
+      {char: 'P', direction: pacmanState.direction, tileIndex: mazeState.findIndex(tile => tile.status === 'P'), state: setPacmanState},
+      {char: '1', direction: ghost1State.direction, tileIndex: mazeState.findIndex(tile => tile.status === '1'), state: setGhost1State},
+      {char: '2', direction: ghost2State.direction, tileIndex: mazeState.findIndex(tile => tile.status === '2'), state: setGhost2State},
+      {char: '3', direction: ghost3State.direction, tileIndex: mazeState.findIndex(tile => tile.status === '3'), state: setGhost3State},
+      {char: '4', direction: ghost4State.direction, tileIndex: mazeState.findIndex(tile => tile.status === '4'), state: setGhost4State},
+    ];
 
-  // }, [pacmanState, ghost1State, ghost2State, ghost3State, ghost4State])
+    charactersMazeIndex.forEach(character => {
+      const characterType = convertCharacterCharToType(character.char)
+      const charCanMove = canMove(characterType, character.direction, character.tileIndex, newMazeState);
+      if(charCanMove === false) return
 
-  useEffect(() => {
+      if (charCanMove) {
+      //Novo estado do tile que ele estava
+      newMazeState[character.tileIndex] = {
+        point: false,
+        power: false,
+        status: '_'  
+      }
+
+      const moveToIndex: IndexObject<Directions, number> = {
+        up: character.tileIndex - config.mazeColumns,
+        down: character.tileIndex + config.mazeColumns,
+        left: character.tileIndex - 1,
+        right: character.tileIndex + 1
+      }
+
+      const movedToTileIndex = moveToIndex[character.direction];
+
+      newMazeState[movedToTileIndex] = {
+        point: false,
+        power: false,
+        status: character.char
+      }
+      
+    }})
+
+    return newMazeState
+  }
+
+  const handleGameTick = () => {
+    setMazeState(currentValue => createNextMazeState(currentValue));
+  }
+
+  //addEventListener KeyDown
+  useEffect(function addEventListenerKeyDown() {
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
@@ -168,12 +204,48 @@ function PacmanControls(): ReactElement {
     }
   }, [mazeState])
 
+  //gameTick
+  useEffect(function gameTick() {
+    const timeOutSpeed = config.pacmanSpeed * 1000;
+    const timer = setInterval(() => {
+      handleGameTick();
+
+    }, timeOutSpeed)
+
+    return () => {
+      clearInterval(timer)
+    }
+  }, [mazeState]);
+
+
   useEffect(() => {
-    setPacmanState({
-      ...pacmanState,
-      nextDirection: 'right'
+    const stateIndexObject = {
+      'P': setPacmanState,
+      '1': setGhost1State,
+      '2': setGhost2State,
+      '3': setGhost3State,
+      '4': setGhost4State,
+    }
+
+    const charactersMazeIndex: CharacterMazeIndex[] = [
+      {char: 'P', direction: pacmanState.direction, tileIndex: mazeState.findIndex(tile => tile.status === 'P'), state: setPacmanState},
+      {char: '1', direction: ghost1State.direction, tileIndex: mazeState.findIndex(tile => tile.status === '1'), state: setGhost1State},
+      {char: '2', direction: ghost2State.direction, tileIndex: mazeState.findIndex(tile => tile.status === '2'), state: setGhost2State},
+      {char: '3', direction: ghost3State.direction, tileIndex: mazeState.findIndex(tile => tile.status === '3'), state: setGhost3State},
+      {char: '4', direction: ghost4State.direction, tileIndex: mazeState.findIndex(tile => tile.status === '4'), state: setGhost4State},
+    ];
+
+    charactersMazeIndex.forEach(character => {
+      const charType = convertCharacterCharToType(character.char)
+      if(canMove(charType, character.direction, character.tileIndex, mazeState)){
+        move(character.direction, stateIndexObject[character.char]);
+      }
     })
-  }, [])
+
+  }, [mazeState]);
+
+  //characters Update
+
 
   return <></>
 }
