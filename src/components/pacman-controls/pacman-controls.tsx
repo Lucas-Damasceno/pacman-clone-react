@@ -49,9 +49,11 @@ function PacmanControls(): ReactElement {
       ArrowRight: 'right'
     }
 
-    const newDirection: Directions = keyPressedToDirection[keyPressed];
+    // const newDirection: Directions = keyPressedToDirection[keyPressed];
 
     setPacmanState(currentState => {
+      let newDirection: Directions = keyPressedToDirection[keyPressed];
+
       return {
         ...currentState,
         direction: newDirection
@@ -203,7 +205,7 @@ function PacmanControls(): ReactElement {
 
   const setTilePointToHidden = (newMazeState: MazeStateType[]) => {
     newMazeState.forEach((tile, index) => {
-      if(tile.point === false){
+      if(tile.point === false && (tile.status === Tiles.withoutPoint || tile.status === Tiles.pacman)){
         document.documentElement.style.setProperty(`${config.pointCssVar}${index}`, '0');
       }
     })
@@ -227,7 +229,6 @@ function PacmanControls(): ReactElement {
     const timeOutSpeed = config.pacmanSpeed * 1000;
     const timer = setInterval(() => {
       handleGameTick();
-
     }, timeOutSpeed)
 
     return () => {
