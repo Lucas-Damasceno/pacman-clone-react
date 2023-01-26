@@ -56,9 +56,6 @@ function PacmanControls(): ReactElement {
         direction: newDirection
       }
     })
-
-    //For tests purposes
-    // handleMovement(direction, 'P');
   }
 
   const getAdjacentTiles = (index: number, newMazeState: MazeStateType[]) => {
@@ -168,7 +165,7 @@ function PacmanControls(): ReactElement {
       newMazeState[character.tileIndex] = {
         point: false,
         power: false,
-        status: '_'  
+        status: '_'
       }
 
       const moveToIndex: IndexObject<Directions, number> = {
@@ -188,7 +185,17 @@ function PacmanControls(): ReactElement {
       
     }})
 
+    setTilePointToHidden(newMazeState)
+
     return newMazeState
+  }
+
+  const setTilePointToHidden = (newMazeState: MazeStateType[]) => {
+    newMazeState.forEach((tile, index) => {
+      if(tile.point === false){
+        document.documentElement.style.setProperty(`${config.pointCssVar}${index}`, '0');
+      }
+    })
   }
 
   const handleGameTick = () => {
@@ -217,8 +224,8 @@ function PacmanControls(): ReactElement {
     }
   }, [mazeState]);
 
-
-  useEffect(() => {
+  //characters Update
+  useEffect(function characterMove() {
     const stateIndexObject = {
       'P': setPacmanState,
       '1': setGhost1State,
@@ -243,9 +250,6 @@ function PacmanControls(): ReactElement {
     })
 
   }, [mazeState]);
-
-  //characters Update
-
 
   return <></>
 }
