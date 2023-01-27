@@ -1,6 +1,5 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
-import { GhostKey } from "../../types/ghostKey";
 import { useRecoilValue } from 'recoil';
 import GhostSelector from "../../states/ghost.selector";
 import { PossibleGhostState } from "../../types/possibleGhostState";

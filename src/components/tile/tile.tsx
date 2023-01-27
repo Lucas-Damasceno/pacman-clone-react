@@ -19,10 +19,7 @@ function Tile(props: Props): ReactElement{
 
   function generateTileStyle(mazeMap: string, mapColumns: number,index: number){
     const tile = mazeMap[index] as PossibleTiles;
-    const tileWall = (tile === Tiles.wall);
-    const tilePoint = (tile === Tiles.point);
-    const tilePower = (tile === Tiles.power);
-    const tileGate = (tile === Tiles.ghostGate);
+
     const rightTile = mazeMap[index + 1];
     const leftTile = mazeMap[index -1];
     const topTile = mazeMap[index - mapColumns];
@@ -30,7 +27,7 @@ function Tile(props: Props): ReactElement{
 
     let tileStyle: React.CSSProperties = {};
 
-    if(tileWall){
+    if(tile === Tiles.wall){
       const borderStyle = '2px solid blue';
 
       tileStyle = {
@@ -66,7 +63,7 @@ function Tile(props: Props): ReactElement{
       }
     }
 
-    if(tilePoint){
+    if(tile === Tiles.point){
       tileStyle = {
         width: '6px',
         height: '6px',
@@ -78,7 +75,7 @@ function Tile(props: Props): ReactElement{
       }
     }
 
-    if(tilePower){
+    if(tile === Tiles.power){
       tileStyle = {
         width: '16px',
         height: '16px',
@@ -90,13 +87,17 @@ function Tile(props: Props): ReactElement{
       }
     }
 
-    if(tileGate){
+    if(tile === Tiles.ghostGate){
       tileStyle = {
         width: '100%',
         height: '5px',
         backgroundColor: '#fff',
         placeSelf: 'center',  
       }
+    }
+
+    if(tile === Tiles.teleport){
+
     }
 
     return tileStyle
