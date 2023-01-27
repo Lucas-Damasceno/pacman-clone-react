@@ -4,6 +4,7 @@ import { GhostKey } from "../../types/ghostKey";
 import { useRecoilValue } from 'recoil';
 import GhostSelector from "../../states/ghost.selector";
 import { PossibleGhostState } from "../../types/possibleGhostState";
+import config from "../../config/config";
 
 type PropsStyled = {
   color: string,
@@ -14,6 +15,7 @@ const GhostBody = styled.div<PropsStyled>`
   height: 25px;
   width: 28px;
   place-self: center;
+  transition: transform linear ${config.pacmanSpeed}s;
   border-radius: 12px 12px 0 0px ;
   position: relative;
 

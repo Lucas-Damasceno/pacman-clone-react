@@ -1,6 +1,6 @@
 const config = {
   tileSizeInPx: 40,
-  mazeColumns: 23,
+  mazeColumns: 21,
   pacmanSpeed: .4,
   pointCssVar: '--without-point',
 

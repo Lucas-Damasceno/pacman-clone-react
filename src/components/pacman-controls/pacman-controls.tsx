@@ -167,22 +167,27 @@ function PacmanControls(): ReactElement {
     }
   }
 
-  const createNextMazeState = (mazeState: MazeStateType[]) => {
-    const newMazeState = [...mazeState];
+  const createCharactersMazeIndex = (mazeState: MazeStateType[]) => {
     const charactersMazeIndex: CharacterMazeIndex[] = [
       { char: 'P', direction: pacmanState.direction, newDirection: pacmanState.nextDirection, tileIndex: mazeState.findIndex(tile => tile.status === 'P'), state: setPacmanState },
       { char: '1', direction: ghost1State.direction, newDirection: ghost1State.nextDirection, tileIndex: mazeState.findIndex(tile => tile.status === '1'), state: setGhost1State },
       { char: '2', direction: ghost2State.direction, newDirection: ghost2State.nextDirection, tileIndex: mazeState.findIndex(tile => tile.status === '2'), state: setGhost2State },
       { char: '3', direction: ghost3State.direction, newDirection: ghost3State.nextDirection, tileIndex: mazeState.findIndex(tile => tile.status === '3'), state: setGhost3State },
       { char: '4', direction: ghost4State.direction, newDirection: ghost4State.nextDirection, tileIndex: mazeState.findIndex(tile => tile.status === '4'), state: setGhost4State },
-    ];
+    ]
+
+    return charactersMazeIndex
+  }
+
+  const createNextMazeState = (mazeState: MazeStateType[]) => {
+    const newMazeState = [...mazeState];
+    const charactersMazeIndex: CharacterMazeIndex[] = createCharactersMazeIndex(mazeState);
 
     charactersMazeIndex.forEach(character => {
       const characterType = convertCharacterCharToType(character.char);
+      const choosedDirection = directionOrNewDirection(characterType, character.direction, character.newDirection, character.tileIndex, newMazeState);
 
-      const useWithDirection = directionOrNewDirection(characterType, character.direction, character.newDirection, character.tileIndex, newMazeState)
-
-      if (useWithDirection.canMove === false) return
+      if (choosedDirection.canMove === false) return
 
       //Novo estado do tile que ele estava
       if(characterType === 'pacman'){
@@ -211,7 +216,7 @@ function PacmanControls(): ReactElement {
         right: character.tileIndex + 1
       }
 
-      const movedToTileIndex = moveToIndex[useWithDirection.direction];
+      const movedToTileIndex = moveToIndex[choosedDirection.direction];
 
       if(characterType === 'pacman') {
         newMazeState[movedToTileIndex] = {
@@ -245,13 +250,7 @@ function PacmanControls(): ReactElement {
       '4': setGhost4State,
     }
 
-    const charactersMazeIndex: CharacterMazeIndex[] = [
-      { char: 'P', direction: pacmanState.direction, newDirection: pacmanState.nextDirection, tileIndex: mazeState.findIndex(tile => tile.status === 'P'), state: setPacmanState },
-      { char: '1', direction: ghost1State.direction, newDirection: ghost1State.nextDirection, tileIndex: mazeState.findIndex(tile => tile.status === '1'), state: setGhost1State },
-      { char: '2', direction: ghost2State.direction, newDirection: ghost2State.nextDirection, tileIndex: mazeState.findIndex(tile => tile.status === '2'), state: setGhost2State },
-      { char: '3', direction: ghost3State.direction, newDirection: ghost3State.nextDirection, tileIndex: mazeState.findIndex(tile => tile.status === '3'), state: setGhost3State },
-      { char: '4', direction: ghost4State.direction, newDirection: ghost4State.nextDirection, tileIndex: mazeState.findIndex(tile => tile.status === '4'), state: setGhost4State },
-    ];
+    const charactersMazeIndex: CharacterMazeIndex[] = createCharactersMazeIndex(mazeState);
 
     charactersMazeIndex.forEach(character => {
       const charType = convertCharacterCharToType(character.char);
@@ -304,7 +303,7 @@ function PacmanControls(): ReactElement {
     setGhost2State(currentState => {
       return {
         ...currentState,
-        direction: randomDirection()
+        newDirection: randomDirection()
       }
     })
   }, [mazeState]);
