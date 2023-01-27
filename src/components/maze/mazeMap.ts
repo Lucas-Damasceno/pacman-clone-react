@@ -11,9 +11,9 @@ x.xxx.x.xx x xx.x.xxx.x
 x.....x... x ...x.....x
 xxxxx.xxx. x .xxx.xxxxx
 ____x.x___ _ ___x.x____
-xxxxx.x_xx - xx_x.xxxxx
-T____.__xO _ Ox__.____T
-xxxxx.x_xx x xx_x.xxxxx
+=xxxx.x_xx - xx_x.xxxx=
+<____.__xO _ Ox__.____>
+=xxxx.x_xx x xx_x.xxxx=
 ____x.x___ _ _2_x.x____
 xxxxx.x_xx x xx_x.xxxxx
 x......... x .........x

@@ -5,7 +5,8 @@ const S = {
   maze: styled.div`
     width: auto;
     height: auto;
-    border: 10px double blue;
+    outline: 10px double blue;
+    outline-offset: -2px;
     border-radius: 20px;
     margin: 0 auto;
     display: grid;

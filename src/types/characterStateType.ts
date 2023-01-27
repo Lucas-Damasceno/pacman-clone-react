@@ -7,6 +7,7 @@ export type CharacterStateType = {
   positionX: number;
   positionY: number;
   index: number;
+  teleporting: boolean;
   moving: boolean;
   type: CharacterType;
   color?: string;

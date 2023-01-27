@@ -53,11 +53,8 @@ const PacManBottom = styled.div<PacManPartAnimation>`
   animation: ${prop => prop.bottom} .5s linear infinite;
 `;
 
-type Props = {
-  index: number;
-}
 
-function PacMan(props: Props): ReactElement {
+function PacMan(): ReactElement {
   const [pacmanState, setPacmanState] = useRecoilState(PacmanState);
   
   const pacManDirectionStyle = {

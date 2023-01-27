@@ -2,6 +2,7 @@ import React, { Dispatch, ReactElement, SetStateAction, useEffect, useState } fr
 import { useRecoilState } from 'recoil';
 import config from "../../config/config";
 import { Tiles } from "../../enums/tiles.enum";
+import GameStart from "../../states/gameStart.state";
 import Ghost1State, { Ghost2State, Ghost3State, Ghost4State } from "../../states/ghosts.state";
 import MazeState, { MazeStateType } from "../../states/maze.state";
 import PacmanState from "../../states/pacman.state";
@@ -31,6 +32,8 @@ function PacmanControls(): ReactElement {
   const [ghost2State, setGhost2State] = useRecoilState(Ghost2State);
   const [ghost3State, setGhost3State] = useRecoilState(Ghost3State);
   const [ghost4State, setGhost4State] = useRecoilState(Ghost4State);
+  const [runFirstTick, setRunFirstTick] = useState(false);
+  const [gameStart, setGameStart] = useRecoilState(GameStart)
 
   const handleKeyDown = (event: KeyboardEvent) => {
     /*Checagem se a tecla apertada é valida */
@@ -87,10 +90,19 @@ function PacmanControls(): ReactElement {
     if (characterIndex === -1) return false
 
     const tileToMove = getAdjacentTiles(characterIndex, newMazeState)[direction];
-    // if(tileToMove === false) return false
     const canMoveToTile = !blockableTiles.includes(tileToMove.status);
 
     return canMoveToTile
+  }
+
+  const isTeleporting = (index: number) => {
+    const teleports = ['<', '>'];
+    const actualTile = mazeState[index];
+    if(teleports.includes(actualTile.originalTile)){
+      return true
+    }
+
+    return false
   }
 
   const move = (direction: Directions, setCharacterState: CharacterStateSetter) => {
@@ -118,12 +130,24 @@ function PacmanControls(): ReactElement {
         positionY = calculateY[direction]
       }
 
+      // const teleporting = mazeState[]
+      if(currentState.type === 'pacman'){
+        isTeleporting(currentState.index)
+      }      
+      
+      const newIndex: IndexObject<Directions, number> = {
+        up: currentState.index - config.mazeColumns,
+        down: currentState.index + config.mazeColumns,
+        left: currentState.index - 1,
+        right: currentState.index + 1,
+      }
+
       return {
         ...currentState,
         direction: direction,
         positionX: positionX,
         positionY: positionY,
-        // moving: true,
+        index: newIndex[direction]
       }
     });
   }
@@ -157,9 +181,7 @@ function PacmanControls(): ReactElement {
       }
     }
 
-    // console.log(direction)
     const canMoveDirection: boolean = canMove(characterType, direction, tileIndex, mazeState);
-    console.log(characterType, canMoveDirection)
     return {
       use: 'direction',
       direction: direction,
@@ -192,6 +214,7 @@ function PacmanControls(): ReactElement {
       //Novo estado do tile que ele estava
       if(characterType === 'pacman'){
         newMazeState[character.tileIndex] = {
+          ...newMazeState[character.tileIndex],
           point: false,
           power: false,
           status: '_'
@@ -220,6 +243,7 @@ function PacmanControls(): ReactElement {
 
       if(characterType === 'pacman') {
         newMazeState[movedToTileIndex] = {
+          ...newMazeState[character.tileIndex],
           point: false,
           power: false,
           status: character.char
@@ -257,13 +281,18 @@ function PacmanControls(): ReactElement {
       const choosedDirection = directionOrNewDirection(charType, character.direction, character.newDirection, character.tileIndex, mazeState)
 
       if(choosedDirection.canMove){
-        move(choosedDirection.direction, stateIndexObject[character.char])
+        move(choosedDirection.direction, stateIndexObject[character.char]);
       }
+
+      const mazeStateCharIndex = mazeState.findIndex(item => item.status === character.char);
+
+      if(mazeStateCharIndex === -1) return
 
       stateIndexObject[character.char](currentState => {
         return {
           ...currentState,
-          moving: choosedDirection.canMove
+          moving: choosedDirection.canMove,
+          index: mazeStateCharIndex
         }
       })
     })
@@ -288,7 +317,10 @@ function PacmanControls(): ReactElement {
     const timeOutSpeed = config.pacmanSpeed * 1000;
     const timer = setInterval(() => {
 
-      handleGameTick();
+      if(gameStart){
+        handleGameTick();
+        setRunFirstTick(true);
+      }
 
     }, timeOutSpeed)
 
@@ -299,19 +331,13 @@ function PacmanControls(): ReactElement {
 
   //characters Update
   useEffect(function characterMove() {
-    handleCharacterMove();
-    setGhost2State(currentState => {
-      return {
-        ...currentState,
-        newDirection: randomDirection()
-      }
-    })
+      handleCharacterMove();
   }, [mazeState]);
 
   //control point visibility
   useEffect(function setTilePointToHidden() {
     mazeState.forEach((tile, index) => {
-      if (tile.point === false && (tile.status === Tiles.withoutPoint || tile.status === Tiles.pacman)) {
+      if (tile.point === false && (tile.status === Tiles.withoutPoint)) {
         document.documentElement.style.setProperty(`${config.pointCssVar}${index}`, '0');
       }
     })

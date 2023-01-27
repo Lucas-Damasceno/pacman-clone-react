@@ -5,7 +5,7 @@ import PossibleTiles from "../../types/possibleTiles";
 import { Tiles } from "../../enums/tiles.enum";
 import Ghost from "../ghosts/ghosts";
 import { useRecoilState } from 'recoil';
-import Ghost1State from "../../states/ghosts.state";
+import Ghost1State, { Ghost2State, Ghost3State, Ghost4State } from "../../states/ghosts.state";
 
 type Props = {
   tileChar: PossibleTiles;
@@ -14,8 +14,11 @@ type Props = {
 }
 
 function Tile(props: Props): ReactElement{
-  // console.count('Rodou Tile')
   const [ghost1, setGhost1] = useRecoilState(Ghost1State)
+  const [ghost2, setGhost2] = useRecoilState(Ghost2State)
+  const [ghost3, setGhost3] = useRecoilState(Ghost3State)
+  const [ghost4, setGhost4] = useRecoilState(Ghost4State)
+
 
   function generateTileStyle(mazeMap: string, mapColumns: number,index: number){
     const tile = mazeMap[index] as PossibleTiles;
@@ -27,7 +30,7 @@ function Tile(props: Props): ReactElement{
 
     let tileStyle: React.CSSProperties = {};
 
-    if(tile === Tiles.wall){
+    if(tile === Tiles.wall || tile === Tiles.wallHorizontal){
       const borderStyle = '2px solid blue';
 
       tileStyle = {
@@ -38,13 +41,13 @@ function Tile(props: Props): ReactElement{
         borderLeft: borderStyle,
       };
 
-      if(rightTile === Tiles.wall){
+      if(rightTile === Tiles.wall || rightTile === Tiles.wallHorizontal){
         tileStyle.borderRight = 'none'
         tileStyle.borderTopRightRadius = '0';
         tileStyle.borderBottomRightRadius = '0';
       }
 
-      if(leftTile === Tiles.wall){
+      if(leftTile === Tiles.wall || leftTile === Tiles.wallHorizontal){
         tileStyle.borderLeft = 'none'
         tileStyle.borderTopLeftRadius = '0';
         tileStyle.borderBottomLeftRadius = '0';
@@ -60,6 +63,16 @@ function Tile(props: Props): ReactElement{
         tileStyle.borderBottom = 'none'
         tileStyle.borderBottomRightRadius = '0';
         tileStyle.borderBottomLeftRadius = '0';
+      }
+
+      if(tile === Tiles.wallHorizontal){
+        tileStyle = {
+          borderRadius: '0',
+          borderTop: borderStyle,
+          borderBottom: borderStyle,
+          borderRight: 'none',
+          borderLeft: 'none',  
+        }
       }
     }
 
@@ -96,17 +109,13 @@ function Tile(props: Props): ReactElement{
       }
     }
 
-    if(tile === Tiles.teleport){
-
-    }
-
     return tileStyle
   }
   
   const tileStyle = generateTileStyle(props.map, config.mazeColumns, props.index);
 
   if(props.tileChar === Tiles.pacman){
-    return <PacMan index={props.index}/>
+    return <PacMan/>
   }
 
   if(props.tileChar === Tiles.ghost1){
@@ -126,7 +135,11 @@ function Tile(props: Props): ReactElement{
   }
 
   return(
-    <div style={tileStyle}/>
+      <div style={tileStyle}>
+        <small style={{fontSize: '12px', position: 'absolute', marginTop: '5px', marginLeft: '-5px', opacity: '0.5'}}>
+          {props.index}
+        </small>
+      </div>
   )
 
 }

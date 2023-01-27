@@ -5,6 +5,7 @@ export type MazeStateType = {
   status: PossibleTiles,
   point: boolean,
   power: boolean,
+  originalTile: PossibleTiles,
 }
 
 const MazeState = atom<MazeStateType[]>({

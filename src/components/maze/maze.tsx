@@ -16,6 +16,7 @@ function Maze(): ReactElement {
   const [gameStart, setStartGame] = useRecoilState(GameStart);
   const [mazeState, setMazeState] = useRecoilState(MazeState);
   const [tileMap, setTileMap] = useState<JSX.Element[]>([]);
+  const [init, setInit] = useState(false);
 
   const filteredMap = MazeMap.filteredMap()
 
@@ -25,27 +26,31 @@ function Maze(): ReactElement {
     setStartGame(true)
   }
 
+  
   //Seta o valor inicial do labirinto
   useEffect(() => {
-    const tileMapState = mapChars.map((char: any, index) => <Tile key={index} index={index} tileChar={char} map={filteredMap}></Tile>);
-    setTileMap(tileMapState);
+    if(init === false){
+      const tileMapState = mapChars.map((char: PossibleTiles, index) => <Tile key={index} index={index} tileChar={char} map={filteredMap}></Tile>);
+      setTileMap(tileMapState);
+  
+      const newMazeState: MazeStateType[] = mapChars.map(char => {
+        return {
+          point: char === Tiles.point,
+          power: char === Tiles.power,
+          status: char,
+          originalTile: char
+        }
+      });
 
-    const newMazeState: MazeStateType[] = mapChars.map(char => {
-      return {
-        point: char === Tiles.point,
-        power: char === Tiles.power,
-        status: char
-      }
-    });
-    setMazeState(newMazeState);
+      setMazeState(newMazeState);
+      setInit(true)
+    }
   }, [])
 
   return (
     <>
-      {/* <Controls/> */}
-      <PacmanControls />
-      <GhostControls/>
-      {/* <button onClick={startGame}>start</button> */}
+      { gameStart ? <PacmanControls/> : null}
+      <button onClick={startGame}>start</button>
       <S.maze>
         {tileMap}
       </S.maze>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import Maze from './components/maze/maze';
 import { RecoilRoot } from 'recoil';

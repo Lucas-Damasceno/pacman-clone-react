@@ -15,6 +15,7 @@ const PacmanState = atom<CharacterStateType>({
     positionX: 0,
     positionY: 0,
     moving: false,
+    teleporting: false,
     index: getInitialIndexOfPacman(),
     type: 'pacman',
     color: ''

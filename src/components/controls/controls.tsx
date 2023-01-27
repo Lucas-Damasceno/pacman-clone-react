@@ -12,197 +12,197 @@ interface Props {
 }
 
 function Controls(props: Props) {
-  const [mazeState, setMazeState] = useRecoilState(MazeState);
-  const [pacmanState, setPacmanState] = useRecoilState(PacmanState);
-  const [moving, setMoving] = useState(false);
+  // const [mazeState, setMazeState] = useRecoilState(MazeState);
+  // const [pacmanState, setPacmanState] = useRecoilState(PacmanState);
+  // const [moving, setMoving] = useState(false);
 
-  const [nextTile, setNextTile] = useState(true);
+  // const [nextTile, setNextTile] = useState(true);
 
-  const createNewMazeState = (directions: Directions, index: number): MazeStateType[] => {
-    const newMazeState = [...mazeState];
+  // const createNewMazeState = (directions: Directions, index: number): MazeStateType[] => {
+  //   const newMazeState = [...mazeState];
 
-    const actualTileValue: MazeStateType = {
-      point: false,
-      power: false,
-      status: '_'
-    }
+  //   const actualTileValue: MazeStateType = {
+  //     point: false,
+  //     power: false,
+  //     status: '_'
+  //   }
 
-    const nextTileValue: MazeStateType = {
-      point: false,
-      power: false,
-      status: 'P'
-    }
+  //   const nextTileValue: MazeStateType = {
+  //     point: false,
+  //     power: false,
+  //     status: 'P'
+  //   }
 
-    newMazeState[index] = actualTileValue;
+  //   newMazeState[index] = actualTileValue;
 
-    if (directions === 'down') {
-      newMazeState[index + config.mazeColumns] = nextTileValue;
-    }
+  //   if (directions === 'down') {
+  //     newMazeState[index + config.mazeColumns] = nextTileValue;
+  //   }
 
-    if (directions === 'left') {
-      newMazeState[index - 1] = nextTileValue;
-    }
+  //   if (directions === 'left') {
+  //     newMazeState[index - 1] = nextTileValue;
+  //   }
 
-    if (directions === 'right') {
-      newMazeState[index + 1] = nextTileValue;
-    }
+  //   if (directions === 'right') {
+  //     newMazeState[index + 1] = nextTileValue;
+  //   }
 
-    if (directions === 'up') {
-      newMazeState[index - config.mazeColumns] = nextTileValue;
-    }
+  //   if (directions === 'up') {
+  //     newMazeState[index - config.mazeColumns] = nextTileValue;
+  //   }
 
-    return newMazeState
-  }
+  //   return newMazeState
+  // }
 
-  const canMove = (directions: Directions): boolean => {
-    if (directions === 'right' && mazeState[pacmanState.index + 1].status !== Tiles.wall) {
-      return true
-    }
+  // const canMove = (directions: Directions): boolean => {
+  //   if (directions === 'right' && mazeState[pacmanState.index + 1].status !== Tiles.wall) {
+  //     return true
+  //   }
 
-    if (directions === 'left' && mazeState[pacmanState.index - 1].status !== Tiles.wall) {
-      return true
-    }
+  //   if (directions === 'left' && mazeState[pacmanState.index - 1].status !== Tiles.wall) {
+  //     return true
+  //   }
 
-    const topTile = mazeState[pacmanState.index - config.mazeColumns];
-    if (directions === 'up' && topTile !== undefined && topTile.status !== Tiles.wall && topTile.status !== Tiles.ghostGate) {
-      return true
-    }
+  //   const topTile = mazeState[pacmanState.index - config.mazeColumns];
+  //   if (directions === 'up' && topTile !== undefined && topTile.status !== Tiles.wall && topTile.status !== Tiles.ghostGate) {
+  //     return true
+  //   }
 
-    const downTile = mazeState[pacmanState.index + config.mazeColumns];
-    if (directions === 'down' && downTile !== undefined && downTile.status !== Tiles.wall && downTile.status !== Tiles.ghostGate) {
-      return true
-    }
+  //   const downTile = mazeState[pacmanState.index + config.mazeColumns];
+  //   if (directions === 'down' && downTile !== undefined && downTile.status !== Tiles.wall && downTile.status !== Tiles.ghostGate) {
+  //     return true
+  //   }
 
-    return false
-  }
+  //   return false
+  // }
 
-  const autoMove = () => {
-    const timeOutSpeed = config.pacmanSpeed * 1000;
-    if(moving === false){
-      return
-    }
+  // const autoMove = () => {
+  //   const timeOutSpeed = config.pacmanSpeed * 1000;
+  //   if(moving === false){
+  //     return
+  //   }
 
-    const timer = setTimeout(() => {  
-      const nextDirection = pacmanState.nextDirection ? pacmanState.nextDirection : pacmanState.direction
-      const moved = move(Direction[nextDirection]) || move(Direction[pacmanState.direction]);
+  //   const timer = setTimeout(() => {  
+  //     const nextDirection = pacmanState.nextDirection ? pacmanState.nextDirection : pacmanState.direction
+  //     const moved = move(Direction[nextDirection]) || move(Direction[pacmanState.direction]);
 
-      // setMoving(moved);
+  //     // setMoving(moved);
       
-    }, timeOutSpeed)
+  //   }, timeOutSpeed)
 
-    return () => {
-      const teste =() => {
-        console.log('Rodou ClearTime')
-        clearTimeout(timer)
-      }
+  //   return () => {
+  //     const teste =() => {
+  //       console.log('Rodou ClearTime')
+  //       clearTimeout(timer)
+  //     }
 
-      teste()
-    }
-  }
+  //     teste()
+  //   }
+  // }
 
-  const setNextDirection = (direction: Directions) => {
-    setPacmanState((cur) => {
-      return {
-        ...cur, 
-        nextDirection: direction
-      }
-    })
-  }
+  // const setNextDirection = (direction: Directions) => {
+  //   setPacmanState((cur) => {
+  //     return {
+  //       ...cur, 
+  //       nextDirection: direction
+  //     }
+  //   })
+  // }
 
-  const handleMove = (keyPressed: string) => {
-    if(moving === false){
-      const moved = move(keyPressed);
-      setMoving(true);
-    }
+  // const handleMove = (keyPressed: string) => {
+  //   if(moving === false){
+  //     const moved = move(keyPressed);
+  //     setMoving(true);
+  //   }
 
-    if(keyPressed === 'ArrowUp') setNextDirection('up');
-    if(keyPressed === 'ArrowDown') setNextDirection('down');
-    if(keyPressed === 'ArrowRight') setNextDirection('right');
-    if(keyPressed === 'ArrowLeft') setNextDirection('left');
-  }
+  //   if(keyPressed === 'ArrowUp') setNextDirection('up');
+  //   if(keyPressed === 'ArrowDown') setNextDirection('down');
+  //   if(keyPressed === 'ArrowRight') setNextDirection('right');
+  //   if(keyPressed === 'ArrowLeft') setNextDirection('left');
+  // }
 
-  const move = (keyPressed: string): boolean => {
-    if (keyPressed === 'ArrowRight' && canMove('right')) {
-      setPacmanState({
-        ...pacmanState,
-        index: pacmanState.index + 1,
-        direction: 'right',
-        positionX: pacmanState.positionX + config.tileSizeInPx,
-      });
+  // const move = (keyPressed: string): boolean => {
+  //   if (keyPressed === 'ArrowRight' && canMove('right')) {
+  //     setPacmanState({
+  //       ...pacmanState,
+  //       index: pacmanState.index + 1,
+  //       direction: 'right',
+  //       positionX: pacmanState.positionX + config.tileSizeInPx,
+  //     });
 
-      setMazeState(createNewMazeState('right', pacmanState.index));
-      return true
-    }
+  //     setMazeState(createNewMazeState('right', pacmanState.index));
+  //     return true
+  //   }
 
-    if (keyPressed === 'ArrowLeft' && canMove('left')) {
-      setPacmanState({
-        ...pacmanState,
-        index: pacmanState.index - 1,
-        direction: 'left',
-        positionX: pacmanState.positionX - config.tileSizeInPx,
-      });
+  //   if (keyPressed === 'ArrowLeft' && canMove('left')) {
+  //     setPacmanState({
+  //       ...pacmanState,
+  //       index: pacmanState.index - 1,
+  //       direction: 'left',
+  //       positionX: pacmanState.positionX - config.tileSizeInPx,
+  //     });
 
-      setMazeState(createNewMazeState('left', pacmanState.index));
-      return true
-    }
+  //     setMazeState(createNewMazeState('left', pacmanState.index));
+  //     return true
+  //   }
 
-    if (keyPressed === 'ArrowDown' && canMove('down')) {
-      setPacmanState({
-        ...pacmanState,
-        index: pacmanState.index + config.mazeColumns,
-        direction: 'down',
-        positionY: pacmanState.positionY + config.tileSizeInPx,
-      });
+  //   if (keyPressed === 'ArrowDown' && canMove('down')) {
+  //     setPacmanState({
+  //       ...pacmanState,
+  //       index: pacmanState.index + config.mazeColumns,
+  //       direction: 'down',
+  //       positionY: pacmanState.positionY + config.tileSizeInPx,
+  //     });
 
-      setMazeState(createNewMazeState('down', pacmanState.index));
-      return true
-    }
+  //     setMazeState(createNewMazeState('down', pacmanState.index));
+  //     return true
+  //   }
 
-    if (keyPressed === 'ArrowUp' && canMove('up')) {
-      setPacmanState({
-        ...pacmanState,
-        index: pacmanState.index - config.mazeColumns,
-        direction: 'up',
-        positionY: pacmanState.positionY - config.tileSizeInPx,
-      });
+  //   if (keyPressed === 'ArrowUp' && canMove('up')) {
+  //     setPacmanState({
+  //       ...pacmanState,
+  //       index: pacmanState.index - config.mazeColumns,
+  //       direction: 'up',
+  //       positionY: pacmanState.positionY - config.tileSizeInPx,
+  //     });
 
-      setMazeState(createNewMazeState('up', pacmanState.index));
-      return true
-    }
+  //     setMazeState(createNewMazeState('up', pacmanState.index));
+  //     return true
+  //   }
 
-    return false
-  }
+  //   return false
+  // }
 
-  const _handleKeyDown = (event: KeyboardEvent) => {
-    const keyPressed = event.key;
-    handleMove(keyPressed);
-  }
+  // const _handleKeyDown = (event: KeyboardEvent) => {
+  //   const keyPressed = event.key;
+  //   handleMove(keyPressed);
+  // }
 
-  useEffect(() => {
-    window.addEventListener('keydown', _handleKeyDown);
+  // useEffect(() => {
+  //   window.addEventListener('keydown', _handleKeyDown);
 
-    return () => {
-      window.removeEventListener('keydown', _handleKeyDown)
-    }
-  }, [mazeState])
+  //   return () => {
+  //     window.removeEventListener('keydown', _handleKeyDown)
+  //   }
+  // }, [mazeState])
 
-  useEffect(() => {
-    return autoMove()
-  }, [pacmanState])
+  // useEffect(() => {
+  //   return autoMove()
+  // }, [pacmanState])
 
-  //Controla o sumiço dos pontos
-  useEffect(() => {
-    mazeState.forEach((tile, index) => {
-      if(tile.status === Tiles.withoutPoint){
-        document.documentElement.style.setProperty(`${config.pointCssVar}${index}`, '0');
-      }
-    })
-  }, [pacmanState])
+  // //Controla o sumiço dos pontos
+  // useEffect(() => {
+  //   mazeState.forEach((tile, index) => {
+  //     if(tile.status === Tiles.withoutPoint){
+  //       document.documentElement.style.setProperty(`${config.pointCssVar}${index}`, '0');
+  //     }
+  //   })
+  // }, [pacmanState])
 
-  //Seta o valor inicial do MazeState
-  useEffect(() => {
-    setMazeState(createNewMazeState('left', pacmanState.index))
-  }, [])
+  // //Seta o valor inicial do MazeState
+  // useEffect(() => {
+  //   setMazeState(createNewMazeState('left', pacmanState.index))
+  // }, [])
   return (
     <>
     </>

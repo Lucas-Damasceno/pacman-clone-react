@@ -16,6 +16,7 @@ export const Ghost1State = atom<CharacterStateType>({
     positionX: 0,
     positionY: 0,
     moving: false,
+    teleporting: false,
     index: getInitialIndexOfGhost('1'),
     type: 'ghost',
     color: ''
@@ -30,6 +31,7 @@ export const Ghost2State = atom<CharacterStateType>({
     positionX: 0,
     positionY: 0,
     moving: false,
+    teleporting: false,
     index: getInitialIndexOfGhost('2'),
     type: 'ghost',
     color: ''
@@ -44,6 +46,7 @@ export const Ghost3State = atom<CharacterStateType>({
     positionX: 0,
     positionY: 0,
     moving: false,
+    teleporting: false,
     index: getInitialIndexOfGhost('3'),
     type: 'ghost',
     color: ''
@@ -58,6 +61,7 @@ export const Ghost4State = atom<CharacterStateType>({
     positionX: 0,
     positionY: 0,
     moving: false,
+    teleporting: false,
     index: getInitialIndexOfGhost('4'),
     type: 'ghost',
     color: ''
