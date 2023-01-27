@@ -4,8 +4,8 @@ const MazeMap =
 `
 xxxxxxxxxx x xxxxxxxxxx
 x......... x .........x
-xOxxx.xxxx x xxxx.xxxOx
-x.xxx.xxxx x xxxx.xxx.x
+xOxxx.xxx. x .xxx.xxxOx
+x.xxx.xxx. x .xxx.xxx.x
 x......... . .........x
 x.xxx.x.xx x xx.x.xxx.x
 x.....x... x ...x.....x
