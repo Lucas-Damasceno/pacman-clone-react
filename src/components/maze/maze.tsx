@@ -45,7 +45,7 @@ function Maze(): ReactElement {
       {/* <Controls/> */}
       <PacmanControls />
       <GhostControls/>
-      <button onClick={startGame}>start</button>
+      {/* <button onClick={startGame}>start</button> */}
       <S.maze>
         {tileMap}
       </S.maze>

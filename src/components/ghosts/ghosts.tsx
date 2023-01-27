@@ -87,16 +87,11 @@ type Props = {
 
 function Ghost(props: Props): ReactElement {
 
-  const ghostState = useRecoilValue(GhostSelector('ghost1'));
+  const ghostState = useRecoilValue(GhostSelector('ghost2'));
   // console.count('Ghost Rodou');
 
   const ghostStyle: React.CSSProperties = {
-    transform: `translateX(${ghostState.positionX}px) translateY(${ghostState.positionY}px)
-    ${ghostState.direction === 'right' ? 'rotate(180deg)' : ''}
-    ${ghostState.direction === 'left' ? 'rotate(0deg)' : ''}
-    ${ghostState.direction === 'up' ? 'rotate(90deg)' : ''}
-    ${ghostState.direction === 'down' ? 'rotate(-90deg)' : ''}
-    `
+    transform: `translateX(${ghostState.positionX}px) translateY(${ghostState.positionY}px)`
   }
 
   const ghostColor = {

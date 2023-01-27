@@ -157,7 +157,9 @@ function PacmanControls(): ReactElement {
       }
     }
 
+    // console.log(direction)
     const canMoveDirection: boolean = canMove(characterType, direction, tileIndex, mazeState);
+    console.log(characterType, canMoveDirection)
     return {
       use: 'direction',
       direction: direction,
@@ -183,10 +185,23 @@ function PacmanControls(): ReactElement {
       if (useWithDirection.canMove === false) return
 
       //Novo estado do tile que ele estava
-      newMazeState[character.tileIndex] = {
-        point: false,
-        power: false,
-        status: '_'
+      if(characterType === 'pacman'){
+        newMazeState[character.tileIndex] = {
+          point: false,
+          power: false,
+          status: '_'
+        }
+      }
+
+      if(characterType === 'ghost'){
+        newMazeState[character.tileIndex] = {
+          ...newMazeState[character.tileIndex],
+          status: '_',
+        }
+
+        const state = newMazeState[character.tileIndex];
+        state.status = state.point ? state.status = '.' : '_';
+        state.status = state.power ? state.status = 'O' : '_';
       }
 
       const moveToIndex: IndexObject<Directions, number> = {
@@ -198,10 +213,19 @@ function PacmanControls(): ReactElement {
 
       const movedToTileIndex = moveToIndex[useWithDirection.direction];
 
-      newMazeState[movedToTileIndex] = {
-        point: false,
-        power: false,
-        status: character.char
+      if(characterType === 'pacman') {
+        newMazeState[movedToTileIndex] = {
+          point: false,
+          power: false,
+          status: character.char
+        }
+      }
+      
+      if(characterType === 'ghost') {
+        newMazeState[movedToTileIndex] = {
+          ...newMazeState[movedToTileIndex],
+          status: character.char
+        }
       }
 
     })
@@ -212,8 +236,8 @@ function PacmanControls(): ReactElement {
     setMazeState(currentValue => createNextMazeState(currentValue));
   }
 
-  const handlePacmanMove = () => {
-    const stateIndexObject = {
+  const handleCharacterMove = () => {
+    const stateIndexObject: IndexObject<CharacterChar, CharacterStateSetter> = {
       'P': setPacmanState,
       '1': setGhost1State,
       '2': setGhost2State,
@@ -237,16 +261,12 @@ function PacmanControls(): ReactElement {
         move(choosedDirection.direction, stateIndexObject[character.char])
       }
 
-      // add stop animation
-      if (character.char === 'P') {
-        setPacmanState(currentState => {
-          return {
-            ...currentState,
-            moving: choosedDirection.canMove
-          }
-        })
-      }
-
+      stateIndexObject[character.char](currentState => {
+        return {
+          ...currentState,
+          moving: choosedDirection.canMove
+        }
+      })
     })
   }
 
@@ -280,7 +300,13 @@ function PacmanControls(): ReactElement {
 
   //characters Update
   useEffect(function characterMove() {
-    handlePacmanMove();
+    handleCharacterMove();
+    setGhost2State(currentState => {
+      return {
+        ...currentState,
+        direction: randomDirection()
+      }
+    })
   }, [mazeState]);
 
   //control point visibility
