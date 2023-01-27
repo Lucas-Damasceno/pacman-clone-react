@@ -11,8 +11,12 @@ const S = {
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(${config.mazeColumns}, 40px);
-    grid-template-rows: repeat(22, 40px);
+    grid-template-rows: repeat(${config.mazeRows}, 40px);
   `,
+
+  mazeWrapper: styled.div`
+    position: relative;
+  `
 }
 
 export default S

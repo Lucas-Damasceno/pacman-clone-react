@@ -10,6 +10,7 @@ import { Tiles } from "../../enums/tiles.enum";
 import GhostControls from "../ghost-controls/ghost-controls";
 import PacmanControls from "../pacman-controls/pacman-controls";
 import GameStart from "../../states/gameStart.state";
+import Pacman from "../pacman/pacman";
 
 
 function Maze(): ReactElement {
@@ -51,9 +52,12 @@ function Maze(): ReactElement {
     <>
       { gameStart ? <PacmanControls/> : null}
       <button onClick={startGame}>start</button>
-      <S.maze>
-        {tileMap}
-      </S.maze>
+      <S.mazeWrapper>
+        <Pacman/>
+        <S.maze>
+          {tileMap}
+        </S.maze>
+      </S.mazeWrapper>
     </>
   )
 }

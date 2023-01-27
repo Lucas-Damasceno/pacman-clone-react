@@ -303,35 +303,28 @@ function PacmanControls(): ReactElement {
     return possibleDirections[Math.floor(Math.random() * possibleDirections.length)]
   }
 
-  //addEventListener KeyDown
-  useEffect(function addEventListenerKeyDown() {
-    window.addEventListener('keydown', handleKeyDown);
+  // //addEventListener KeyDown
+  // useEffect(function addEventListenerKeyDown() {
+  //   window.addEventListener('keydown', handleKeyDown);
 
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [mazeState])
+  //   return () => {
+  //     window.removeEventListener('keydown', handleKeyDown)
+  //   }
+  // }, [mazeState])
 
   //gameTick
   useEffect(function gameTick() {
     const timeOutSpeed = config.pacmanSpeed * 1000;
     const timer = setInterval(() => {
-
+      console.log('Rodou')
       if(gameStart){
         handleGameTick();
-        setRunFirstTick(true);
       }
-
     }, timeOutSpeed)
 
     return () => {
       clearInterval(timer)
     }
-  }, [mazeState]);
-
-  //characters Update
-  useEffect(function characterMove() {
-      handleCharacterMove();
   }, [mazeState]);
 
   //control point visibility
