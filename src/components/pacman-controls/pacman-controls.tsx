@@ -232,15 +232,15 @@ function PacmanControls(): ReactElement {
         if(canBeMoved) move(character.direction, stateIndexObject[character.char]);
       }
 
-      //add stop animation
-      // if (character.char === 'P') {
-      //   setPacmanState(currentState => {
-      //     return {
-      //       ...currentState,
-      //       moving: canBeMoved
-      //     }
-      //   })
-      // }
+      // add stop animation
+      if (character.char === 'P') {
+        setPacmanState(currentState => {
+          return {
+            ...currentState,
+            moving: canBeMoved
+          }
+        })
+      }
 
     })
   }

@@ -9,14 +9,21 @@ import Controls from "../controls/controls";
 import { Tiles } from "../../enums/tiles.enum";
 import GhostControls from "../ghost-controls/ghost-controls";
 import PacmanControls from "../pacman-controls/pacman-controls";
+import GameStart from "../../states/gameStart.state";
 
 
 function Maze(): ReactElement {
+  const [gameStart, setStartGame] = useRecoilState(GameStart);
   const [mazeState, setMazeState] = useRecoilState(MazeState);
   const [tileMap, setTileMap] = useState<JSX.Element[]>([]);
+
   const filteredMap = MazeMap.filteredMap()
 
   const mapChars = filteredMap.split('') as PossibleTiles[];
+
+  const startGame = () => {
+    setStartGame(true)
+  }
 
   //Seta o valor inicial do labirinto
   useEffect(() => {
@@ -38,6 +45,7 @@ function Maze(): ReactElement {
       {/* <Controls/> */}
       <PacmanControls />
       <GhostControls/>
+      <button onClick={startGame}>start</button>
       <S.maze>
         {tileMap}
       </S.maze>
