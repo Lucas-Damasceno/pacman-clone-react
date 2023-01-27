@@ -144,6 +144,27 @@ function PacmanControls(): ReactElement {
     return convert[char]
   }
 
+  //Refatorar essa função
+  const directionOrNewDirection = (characterType: CharacterType, direction: Directions, newDirection: Directions | null, tileIndex: number, mazeState: MazeStateType[]) => {
+    if(newDirection !== null){
+      const canMovenewDirection: boolean = canMove(characterType, newDirection, tileIndex, mazeState);
+      if(canMovenewDirection){
+        return {
+          use: 'newDirection',
+          direction: newDirection,
+          canMove: canMovenewDirection
+        }
+      }
+    }
+
+    const canMoveDirection: boolean = canMove(characterType, direction, tileIndex, mazeState);
+    return {
+      use: 'direction',
+      direction: direction,
+      canMove: canMoveDirection
+    }
+  }
+
   const createNextMazeState = (mazeState: MazeStateType[]) => {
     const newMazeState = [...mazeState];
     const charactersMazeIndex: CharacterMazeIndex[] = [
@@ -157,17 +178,9 @@ function PacmanControls(): ReactElement {
     charactersMazeIndex.forEach(character => {
       const characterType = convertCharacterCharToType(character.char);
 
-      let charCanMoveNewDirection: boolean = false;
-      if(character.newDirection){
-        charCanMoveNewDirection = canMove(characterType, character.newDirection, character.tileIndex, newMazeState);
-      }
+      const useWithDirection = directionOrNewDirection(characterType, character.direction, character.newDirection, character.tileIndex, newMazeState)
 
-      const charCanMove = canMove(characterType, character.direction, character.tileIndex, newMazeState);
-
-      const canMoveToDirection = (charCanMoveNewDirection || charCanMove);
-
-      if (canMoveToDirection === false) return
-
+      if (useWithDirection.canMove === false) return
 
       //Novo estado do tile que ele estava
       newMazeState[character.tileIndex] = {
@@ -183,7 +196,7 @@ function PacmanControls(): ReactElement {
         right: character.tileIndex + 1
       }
 
-      const movedToTileIndex = charCanMoveNewDirection ? moveToIndex[character.newDirection as Directions] : moveToIndex[character.direction];
+      const movedToTileIndex = moveToIndex[useWithDirection.direction];
 
       newMazeState[movedToTileIndex] = {
         point: false,
@@ -217,19 +230,11 @@ function PacmanControls(): ReactElement {
     ];
 
     charactersMazeIndex.forEach(character => {
-      const charType = convertCharacterCharToType(character.char)
-      const canBeMoved = canMove(charType, character.direction, character.tileIndex, mazeState);
+      const charType = convertCharacterCharToType(character.char);
+      const choosedDirection = directionOrNewDirection(charType, character.direction, character.newDirection, character.tileIndex, mazeState)
 
-      let canBeNew = !!character.newDirection
-      let canBeMovedNew = false;
-      if(canBeNew){
-        canBeMovedNew = canMove(charType, character.newDirection as Directions, character.tileIndex, mazeState);
-      }
-
-      if (canBeMovedNew) {
-        move(character.newDirection as Directions, stateIndexObject[character.char])
-      }else if(canBeMoved){
-        if(canBeMoved) move(character.direction, stateIndexObject[character.char]);
+      if(choosedDirection.canMove){
+        move(choosedDirection.direction, stateIndexObject[character.char])
       }
 
       // add stop animation
@@ -237,7 +242,7 @@ function PacmanControls(): ReactElement {
         setPacmanState(currentState => {
           return {
             ...currentState,
-            moving: canBeMoved
+            moving: choosedDirection.canMove
           }
         })
       }
