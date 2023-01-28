@@ -26,7 +26,7 @@ const PacmanWrapper = styled.div`
 const PacManCharacter = styled.div`
   width: 28px;
   height: 28px;
-  /* transition: translate linear 1s; */
+  transition: translate linear ${config.pacmanSpeed}s;
   overflow: hidden;
   /* background-color: yellow; */
   border-radius: 50%;

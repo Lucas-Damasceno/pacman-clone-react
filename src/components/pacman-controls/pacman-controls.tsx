@@ -213,7 +213,6 @@ function PacmanControls(): ReactElement {
   }
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    console.log('rodou keydown')
     /*Checagem se a tecla apertada é valida */
     const invalidKey = !validButtons.includes(event.key as any);
     if (invalidKey) return;
@@ -253,20 +252,15 @@ function PacmanControls(): ReactElement {
       const timeNow = new Date().getTime();
 
       if((lastTime + (config.pacmanSpeed * 1000)) < timeNow){
-        console.log('rodando duas vezes')
         setLastTime(timeNow);
         handleGameTick();
       }
-      
-      // else if(fullMazeState.charactersState.find(character => character.type === 'pacman')?.moving === false){
-      //   handleGameTick();
-      // }
 
 
     }, timeOutSpeed)
 
     return () => clearInterval(timer)
-  }, [fullMazeState]);
+  }, [fullMazeState, lastTime]);
 
 
   //control point visibility
