@@ -20,6 +20,7 @@ interface PacmanCharacterProps{
 }
 
 const PacmanWrapper = styled.div`
+  z-index: 4;
   position: absolute;
   width: ${config.tileSizeInPx}px;
   height: ${config.tileSizeInPx}px;
