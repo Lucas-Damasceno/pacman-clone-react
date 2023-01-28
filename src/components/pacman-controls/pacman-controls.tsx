@@ -145,7 +145,7 @@ function PacmanControls(): ReactElement {
       }
 
       //Novo estado do tile que ele estava
-      const tileIndex = newMazeState[character.index]
+      const tileIndex = newMazeState[character.index];
 
       if (character.type === 'pacman') {
         newMazeState[character.index] = {
@@ -235,6 +235,7 @@ function PacmanControls(): ReactElement {
     });
   }
 
+  //TODO adicionar um sistema de Debounce para não travar o Pacman
   const handleKeyDown = (event: KeyboardEvent) => {
     /*Checagem se a tecla apertada é valida */
     const invalidKey = !validButtons.includes(event.key as any);
@@ -266,6 +267,11 @@ function PacmanControls(): ReactElement {
       }
     })
   }
+
+
+
+
+  //GHOST IA
 
   //gameTick
   useEffect(function gameTick() {

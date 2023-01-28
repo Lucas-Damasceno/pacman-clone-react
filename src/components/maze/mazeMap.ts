@@ -10,7 +10,7 @@ x......... . .........x
 x.xxx.x.xx x xx.x.xxx.x
 x.....x... x ...x.....x
 xxxxx.xxx. x .xxx.xxxxx
-____x.x___ 1 ___x.x____
+____x.x___ _ ___x.x____
 =xxxx.x_xx - xx_x.xxxx=
 <____.__x2 3 4x__.____>
 =xxxx.x_xx x xx_x.xxxx=
@@ -22,7 +22,7 @@ xO..x..... P .....x..Ox
 xxx.x.x.xx x xx.x.x.xxx
 x.....x... x ...x.....x
 x.xxxxxxx. x .xxxxxxx.x
-x......... . .........x
+x1........ . .........x
 xxxxxxxxxx x xxxxxxxxxx
 `,
   filteredMap: function() {

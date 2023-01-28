@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useRecoilState, useRecoilValue } from 'recoil';
 import config from "../../config/config";
 import FullMazeState from "../../states/fullMaze.state";
@@ -9,6 +9,7 @@ import Directions from "../../types/directions";
 
 type PropsStyled = {
   color: string,
+  runningSpeed: number,
 }
 
 const GhostWrapper = styled.div`
@@ -20,100 +21,108 @@ const GhostWrapper = styled.div`
   justify-content: center;
 `
 
+const GhostMovingKeyframe = (p: PropsStyled) => keyframes`
+  0%{background-position: center;}
+	100%{background-position: left;}
+`
 
 const GhostBody = styled.div<PropsStyled>`
   background-color: ${p => p.color};
-  height: 25px;
+  height: 32px;
   width: 28px;
   place-self: center;
   transition: transform linear ${config.pacmanSpeed}s;
   border-radius: 12px 12px 0 0px ;
   position: relative;
+  margin-top: 8px;
 
   &::after{
-    background: linear-gradient(-45deg,${p => p.color} 5px,transparent 0),linear-gradient(45deg,${p => p.color} 5px,transparent 0);
-    background-position: left-bottom;
+    content: " ";
+    background: linear-gradient(-45deg, #282C34 5px,transparent 0),linear-gradient(45deg, #282C34 5px,transparent 0);
+    background-position: center;
     background-repeat: repeat-x;
     background-size: 9px;
-    content: " ";
+    animation: ${GhostMovingKeyframe} ${p => p.runningSpeed}s linear infinite;
     display: block;
     width: 100%;
-    height: 8px;
+    height: 9px;
     rotate: 180deg;
-    margin-top: 16px;
     position: absolute;
     bottom: -5px;
     left: 0;
+    top: 24px;
+    transform: rotate(180deg);
   }
 `
 
 const GhostEyes = styled.div`
-    //Left Eye
+  //Left Eye
+  width: 8px;
+  height: 8px;
+  background-color: #fff;
+  border-radius: 5px;
+  position: absolute;
+  top: 9px;
+  left: 4px;
+
+  //Right Eye
+  &::before{
+    display: block;
+    content: '';
     width: 8px;
     height: 8px;
     background-color: #fff;
     border-radius: 5px;
     position: absolute;
-    top: 9px;
-    left: 4px;
-
-    //Right Eye
-    &::before{
-      display: block;
-      content: '';
-      width: 8px;
-      height: 8px;
-      background-color: #fff;
-      border-radius: 5px;
-      position: absolute;
-      top: 0px;
-      left: 12px;
-
-    }
+    top: 0px;
+    left: 12px;
+  }
 `
 
 const GhostPupils = styled.div`
+  //Left Pupil
+  width: 4px;
+  height: 4px;
+  border-radius: 4px;
+  background-color: black;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+
+  //Right Pupil
+  &::after{
+    content: '';
+    display: block;
     width: 4px;
     height: 4px;
     border-radius: 4px;
     background-color: black;
     position: absolute;
-    top: 3px;
-    left: 3px;
+    top: 0px;
+    left: 10px;
+  }
 
+  &.down{
+    top: 4px;
+  } 
+
+  &.left{
+    left: 0;
     &::after{
-      content: '';
-      display: block;
-      width: 4px;
-      height: 4px;
-      border-radius: 4px;
-      background-color: black;
-      position: absolute;
-      top: 0px;
-      left: 10px;
+      left: 12px;
     }
+  }
 
-    &.down{
-      top: 4px;
-    } 
-
-    &.left{
-      left: 0;
-      &::after{
-        left: 12px;
-      }
+  &.right{
+    left: 5px;
+    &::after{
+      left: 11px;
     }
+  };
 
-    &.right{
-      left: 5px;
-      &::after{
-        left: 11px;
-      }
-    };
-
-    &.up {
-      top: 0
-    }
+  &.up {
+    top: 0
+  }
 `
 
 type Props = {
@@ -144,9 +153,11 @@ function Ghost(props: Props): ReactElement {
     '4': '#009999',
   };
 
+  const runningSpeed = ghostState.moving ? 0.6 : 0;
+
   return (
     <GhostWrapper>
-      <GhostBody color={ghostColor[props.type]} style={ghostStyle}>
+      <GhostBody runningSpeed={runningSpeed} color={ghostColor[props.type]} style={ghostStyle}>
         <GhostEyes>
           <GhostPupils className={ghostState.direction}/>
         </GhostEyes>
