@@ -14,6 +14,11 @@ interface PacManPartAnimation{
   bottom?: Keyframes;
 }
 
+
+interface PacmanCharacterProps{
+  transitionTime: number;
+}
+
 const PacmanWrapper = styled.div`
   position: absolute;
   width: ${config.tileSizeInPx}px;
@@ -23,10 +28,10 @@ const PacmanWrapper = styled.div`
   justify-content: center;
 `
 
-const PacManCharacter = styled.div`
+const PacManCharacter = styled.div<PacmanCharacterProps>`
   width: 28px;
   height: 28px;
-  transition: translate linear ${config.pacmanSpeed}s;
+  transition: translate linear ${p => p.transitionTime}s;
   overflow: hidden;
   /* background-color: yellow; */
   border-radius: 50%;
@@ -93,9 +98,11 @@ function PacMan(): ReactElement {
 
   const selectedPacManAnimation = pacmanState.moving ? animatedPacMan : stopedPacMan;
 
+  const transitionTime = pacmanState.teleporting ? 0 : config.pacmanSpeed;
+
   return(
     <PacmanWrapper>
-      <PacManCharacter style={pacmanStyle}>
+      <PacManCharacter transitionTime={transitionTime} style={pacmanStyle}>
         <PacManTop top={selectedPacManAnimation.top}/>
         <PacManBottom bottom={selectedPacManAnimation.bottom}/>
       </PacManCharacter>

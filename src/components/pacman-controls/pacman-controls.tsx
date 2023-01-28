@@ -269,7 +269,7 @@ function PacmanControls(): ReactElement {
 
   //gameTick
   useEffect(function gameTick() {
-    const timeOutSpeed = 100;
+    const timeOutSpeed = 10;
     const timer = setInterval(() => {
       const timeNow = new Date().getTime();
       if ((lastTime + (config.pacmanSpeed * 1000)) < timeNow) {
