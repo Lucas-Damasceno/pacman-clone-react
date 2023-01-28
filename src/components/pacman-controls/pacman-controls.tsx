@@ -63,7 +63,7 @@ function PacmanControls(): ReactElement {
   const isTeleporting = (index: number) => {
     const teleports = ['<', '>'];
     const actualTile = fullMazeState.mazeState[index];
-    if(teleports.includes(actualTile.originalTile)){
+    if (teleports.includes(actualTile.originalTile)) {
       return true
     }
 
@@ -88,12 +88,9 @@ function PacmanControls(): ReactElement {
 
   //Refatorar essa função
   const directionOrNewDirection = (characterType: CharacterType, direction: Directions, newDirection: Directions | null, tileIndex: number, mazeState: MazeStateType[]) => {
-    // if(characterType === 'pacman'){
-    //   console.log(direction, newDirection)
-    // }
-    if(newDirection !== null){
+    if (newDirection !== null) {
       const canMovenewDirection: boolean = canMove(characterType, newDirection, tileIndex, mazeState);
-      if(canMovenewDirection){
+      if (canMovenewDirection) {
         return {
           use: 'newDirection',
           direction: newDirection,
@@ -110,16 +107,18 @@ function PacmanControls(): ReactElement {
     }
   }
 
-  const includesIfNotInArray = (tileStatus: PossibleTiles[], item: PossibleTiles) => {
-    if(tileStatus.includes(item)){
-      return tileStatus
-    }else{
-      return [...tileStatus, item]
+  const getTileStatus = (tileStatus: PossibleTiles[], itemToAdd: PossibleTiles) => {
+    const newStatus = [...tileStatus].filter(tile => tile !== Tiles.point);
+
+    if (tileStatus.includes(itemToAdd)) {
+      return newStatus
+    } else {
+      return [...newStatus, itemToAdd]
     }
   }
 
   const createNextMazeState = (fullMazeState: FullMazeStateType) => {
-    const newMazeState = {...fullMazeState.mazeState};
+    const newMazeState = [...fullMazeState.mazeState];
     const newCharacterState: CharacterStateType[] = [];
 
     fullMazeState.charactersState.forEach(character => {
@@ -131,12 +130,12 @@ function PacmanControls(): ReactElement {
           moving: false,
         })
         return
-      }         
+      }
 
       //Novo estado do tile que ele estava
       const mazeStateIndex = newMazeState[character.index]
 
-      if(character.type === 'pacman'){
+      if (character.type === 'pacman') {
         newMazeState[character.index] = {
           ...mazeStateIndex,
           point: false,
@@ -145,7 +144,7 @@ function PacmanControls(): ReactElement {
         }
       }
 
-      if(character.type === 'ghost'){
+      if (character.type === 'ghost') {
         newMazeState[character.index] = {
           ...newMazeState[character.index],
           status: mazeStateIndex.status.filter(char => {
@@ -167,23 +166,23 @@ function PacmanControls(): ReactElement {
 
       const nexTileIndex = fullMazeState.mazeState[movedToTileIndex];
 
-      if(character.type === 'pacman') {
+      if (character.type === 'pacman') {
         newMazeState[movedToTileIndex] = {
           ...nexTileIndex,
           point: false,
           power: false,
-          status: includesIfNotInArray(nexTileIndex.status, character.identification)
-        }
-      }
-      
-      if(character.type === 'ghost') {
-        newMazeState[movedToTileIndex] = {
-          ...nexTileIndex,
-          status: includesIfNotInArray(nexTileIndex.status, character.identification)
+          status: getTileStatus(nexTileIndex.status, character.identification)
         }
       }
 
-      const newPositionY = Math.floor(movedToTileIndex  / config.mazeColumns) * config.tileSizeInPx;
+      if (character.type === 'ghost') {
+        newMazeState[movedToTileIndex] = {
+          ...nexTileIndex,
+          status: getTileStatus(nexTileIndex.status, character.identification)
+        }
+      }
+
+      const newPositionY = Math.floor(movedToTileIndex / config.mazeColumns) * config.tileSizeInPx;
       const newPositionX = Math.floor(movedToTileIndex % config.mazeColumns) * config.tileSizeInPx;
 
       newCharacterState.push({
@@ -197,12 +196,11 @@ function PacmanControls(): ReactElement {
       })
     })
 
-    return {mazeState: newMazeState, charactersState: newCharacterState}
+    return { mazeState: newMazeState, charactersState: newCharacterState }
   }
 
   const handleGameTick = () => {
     setFullMazeState(currentValue => {
-
       const newState = createNextMazeState(currentValue)
       return {
         ...currentValue,
@@ -226,10 +224,10 @@ function PacmanControls(): ReactElement {
       ArrowRight: 'right'
     }
     const newDirection: Directions = keyPressedToDirection[keyPressed];
-    
+
     setFullMazeState(fullMazeState => {
       const newcharactersState = [...fullMazeState.charactersState.filter(character => character.type !== 'pacman')]
-      
+
       const pacManState = {
         ...fullMazeState.charactersState.find(character => character.identification === Tiles.pacman),
         nextDirection: newDirection
@@ -250,29 +248,27 @@ function PacmanControls(): ReactElement {
     const timeOutSpeed = 100;
     const timer = setInterval(() => {
       const timeNow = new Date().getTime();
-
-      if((lastTime + (config.pacmanSpeed * 1000)) < timeNow){
+      if ((lastTime + (config.pacmanSpeed * 1000)) < timeNow) {
         setLastTime(timeNow);
         handleGameTick();
       }
-
-
     }, timeOutSpeed)
-
     return () => clearInterval(timer)
   }, [fullMazeState, lastTime]);
 
 
   //control point visibility
   useEffect(function setTilePointToHidden() {
-    const maze = fullMazeState.mazeState;
-    if(maze.length){
-      fullMazeState.mazeState.forEach((tile, index) => {
-        if (tile.point === false || tile.power === false && tile.originalTile === '_') {
-          document.documentElement.style.setProperty(`${config.pointCssVar}${index}`, '0');
-        }
-      })
-    }
+    fullMazeState.mazeState.forEach((tile, index) => {
+      if ( 
+        tile.originalTile === Tiles.point && tile.point === false ||
+        tile.originalTile === Tiles.power && tile.power === false 
+      ) {
+        document.documentElement.style.setProperty(`${config.pointCssVar}${index}`, '0');
+      }
+    })
+
+
   }, [fullMazeState])
 
 

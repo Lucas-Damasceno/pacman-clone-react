@@ -78,6 +78,8 @@ function Tile(props: Props): ReactElement{
         justifySelf: 'center',
         alignSelf: 'center',
         borderRadius: '50%',
+        transition: 'all',
+        transitionDelay: config.pacmanSpeed+'s',
         opacity: `var(${config.pointCssVar}${index})`
       }
     }
@@ -90,6 +92,8 @@ function Tile(props: Props): ReactElement{
         justifySelf: 'center',
         alignSelf: 'center',  
         borderRadius: '50%',
+        transition: 'all',
+        transitionDelay: config.pacmanSpeed+'s',
         opacity: `var(${config.pointCssVar}${index})`
       }
     }
@@ -107,26 +111,6 @@ function Tile(props: Props): ReactElement{
   }
   
   const tileStyle = generateTileStyle(props.map, config.mazeColumns, props.index);
-
-  // if(props.tileChar === Tiles.pacman){
-  //   return <PacMan/>
-  // }
-
-  // if(props.tileChar === Tiles.ghost1){
-  //   return <Ghost type="ghost1"/>
-  // }
-
-  // if(props.tileChar === Tiles.ghost2){
-  //   return <Ghost type="ghost2"/>
-  // }
-
-  // if(props.tileChar === Tiles.ghost3){
-  //   return <Ghost type="ghost3"/>
-  // }
-
-  // if(props.tileChar === Tiles.ghost4){
-  //   return <Ghost type="ghost4"/>
-  // }
 
   return(
       <div style={tileStyle}>
