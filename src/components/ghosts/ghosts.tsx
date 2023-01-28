@@ -4,6 +4,8 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import config from "../../config/config";
 import FullMazeState from "../../states/fullMaze.state";
 import { CharacterStateType } from "../../types/characterStateType";
+import { IndexObject } from "../../types/indexObject";
+import Directions from "../../types/directions";
 
 type PropsStyled = {
   color: string,
@@ -90,6 +92,28 @@ const GhostPupils = styled.div`
       top: 0px;
       left: 10px;
     }
+
+    &.down{
+      top: 4px;
+    } 
+
+    &.left{
+      left: 0;
+      &::after{
+        left: 12px;
+      }
+    }
+
+    &.right{
+      left: 5px;
+      &::after{
+        left: 11px;
+      }
+    };
+
+    &.up {
+      top: 0
+    }
 `
 
 type Props = {
@@ -98,8 +122,16 @@ type Props = {
 
 function Ghost(props: Props): ReactElement {
   const [fullMazeState, setFullMazeState] = useRecoilState(FullMazeState);
-
   const ghostState = fullMazeState.charactersState.find(character => character.identification === props.type) as CharacterStateType;
+  
+  const pupilsIndexObject: IndexObject<Directions, any> = {
+    down: {top: '4px'},
+    left: {left: '0', '&::after': {left: '12px'}},
+    right: {left: '5px', '&::after': {left: '11px'}},
+    up: {top: '0'}
+  }  
+
+  const pupilsStyle = pupilsIndexObject[ghostState.direction];
 
   const ghostStyle: React.CSSProperties = {
     transform: `translateX(${ghostState.positionX}px) translateY(${ghostState.positionY}px)`
@@ -116,7 +148,7 @@ function Ghost(props: Props): ReactElement {
     <GhostWrapper>
       <GhostBody color={ghostColor[props.type]} style={ghostStyle}>
         <GhostEyes>
-          <GhostPupils />
+          <GhostPupils className={ghostState.direction}/>
         </GhostEyes>
       </GhostBody>
     </GhostWrapper>
