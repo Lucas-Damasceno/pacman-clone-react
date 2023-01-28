@@ -106,6 +106,7 @@ function PacMan(): ReactElement {
       <PacManCharacter transitionTime={transitionTime} style={pacmanStyle}>
         <PacManTop top={selectedPacManAnimation.top}/>
         <PacManBottom bottom={selectedPacManAnimation.bottom}/>
+        {pacmanState.powered}
       </PacManCharacter>
     </PacmanWrapper>
   )

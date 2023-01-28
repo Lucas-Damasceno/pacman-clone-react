@@ -120,7 +120,7 @@ function PacmanControls(): ReactElement {
   }
 
   const getTileStatus = (tileStatus: PossibleTiles[], itemToAdd: PossibleTiles) => {
-    const newStatus = [...tileStatus].filter(tile => tile !== Tiles.point);
+    const newStatus = [...tileStatus].filter(tile => tile !== Tiles.point && tile !== Tiles.power);
 
     if (tileStatus.includes(itemToAdd)) {
       return newStatus
@@ -136,10 +136,24 @@ function PacmanControls(): ReactElement {
 
     fullMazeState.charactersState.forEach(character => {
       const choosedDirection = directionOrNewDirection(character.type, character.direction, character.nextDirection, character.index, fullMazeState.mazeState);
+      let characterPowered = character.powered;
+      let countingPoweredForManyTicks = character.poweredForManyTicks;
+      
+      if(characterPowered){
+        countingPoweredForManyTicks = countingPoweredForManyTicks + 1;
 
+        if(countingPoweredForManyTicks >= config.maximumTimePoweredInTicks){
+          characterPowered = false;
+          countingPoweredForManyTicks = 0;
+        }
+      }
+
+      //Se o personagem nao andou
       if (choosedDirection.canMove === false) {
         newCharacterState.push({
           ...character,
+          powered: characterPowered,
+          poweredForManyTicks: countingPoweredForManyTicks,
           moving: false,
         })
         return
@@ -196,6 +210,9 @@ function PacmanControls(): ReactElement {
         if(newMazeState[movedToTileIndex]){
           const point = newMazeState[movedToTileIndex].status.includes(Tiles.point);
           const power = newMazeState[movedToTileIndex].status.includes(Tiles.power);
+          
+          characterPowered = characterPowered || power;
+          countingPoweredForManyTicks = power ? 0 : countingPoweredForManyTicks;
 
           if(point){
             newScore = newScore + config.pointValue;
@@ -228,6 +245,8 @@ function PacmanControls(): ReactElement {
         direction: choosedDirection.direction,
         teleporting: isTeleportingChar,
         moving: true,
+        powered: characterPowered,
+        poweredForManyTicks: countingPoweredForManyTicks,
         nextDirection: choosedDirection.use === 'newDirection' ? null : character.nextDirection,
       })
     })

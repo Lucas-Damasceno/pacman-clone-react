@@ -75,10 +75,11 @@ const initCharactersState = (): CharacterStateType[] => {
     teleporting: false,
     index: pacmanSpawnIndex,
     type: 'pacman',
+    powered: false,
+    poweredForManyTicks: 0,
     color: undefined
   };
 
-  console.log(generateGhostsState())
   return [pacmanInitialState, ...generateGhostsState()]
 }
 

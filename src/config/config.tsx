@@ -6,6 +6,7 @@ const config = {
   pacmanSpeed: .3,
   pointValue: 50,
   pointCssVar: '--without-point',
+  maximumTimePoweredInTicks: 30,
 
   pacmanXCssVar: '--pacManX',
   pacmanYCssVar: '--pacmanY',

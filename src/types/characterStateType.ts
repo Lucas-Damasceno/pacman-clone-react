@@ -13,4 +13,6 @@ export type CharacterStateType = {
   type: CharacterType;
   identification: CharacterChar;
   color?: 'blue' | undefined;
+  powered: boolean;
+  poweredForManyTicks: number; 
 }
