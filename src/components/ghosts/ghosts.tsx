@@ -21,9 +21,9 @@ const GhostWrapper = styled.div`
   justify-content: center;
 `
 
-const GhostMovingKeyframe = (p: PropsStyled) => keyframes`
-  0%{background-position: center;}
-	100%{background-position: left;}
+const GhostMovingKeyframe = (p: {runningSpeed: number}) => keyframes`
+  0%{left: -2px}
+	100%{left: -9px}
 `
 
 const GhostBody = styled.div<PropsStyled>`
@@ -34,25 +34,6 @@ const GhostBody = styled.div<PropsStyled>`
   transition: transform linear ${config.pacmanSpeed}s;
   border-radius: 12px 12px 0 0px ;
   position: relative;
-  margin-top: 8px;
-
-  &::after{
-    content: " ";
-    background: linear-gradient(-45deg, #282C34 5px,transparent 0),linear-gradient(45deg, #282C34 5px,transparent 0);
-    background-position: center;
-    background-repeat: repeat-x;
-    background-size: 9px;
-    animation: ${GhostMovingKeyframe} ${p => p.runningSpeed}s linear infinite;
-    display: block;
-    width: 100%;
-    height: 9px;
-    rotate: 180deg;
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    top: 24px;
-    transform: rotate(180deg);
-  }
 `
 
 const GhostEyes = styled.div`
@@ -125,6 +106,29 @@ const GhostPupils = styled.div`
   }
 `
 
+const GhostBottom = styled.div`
+  position: absolute;
+  bottom: -4px;
+  height: 8px;
+  width: 100%;
+  overflow: hidden;
+  
+  .running-container{
+    animation: ${GhostMovingKeyframe} ${p => p.runningSpeed}s linear infinite;
+    display: flex;
+    position: absolute;
+    left: -2px;
+
+    div{
+      width: 0; 
+      height: 0; 
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-bottom: 4px solid #282C34;
+    }
+  }
+`
+
 type Props = {
   type: '1' | '2' | '3' | '4';
 }
@@ -161,6 +165,16 @@ function Ghost(props: Props): ReactElement {
         <GhostEyes>
           <GhostPupils className={ghostState.direction}/>
         </GhostEyes>
+        <GhostBottom runningSpeed={runningSpeed}>
+          <div className="running-container">
+            <div/>
+            <div/>
+            <div/>
+            <div/>
+            <div/>
+            <div/>
+          </div>
+        </GhostBottom>
       </GhostBody>
     </GhostWrapper>
   )
