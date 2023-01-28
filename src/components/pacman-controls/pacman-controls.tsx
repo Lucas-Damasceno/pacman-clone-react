@@ -22,6 +22,9 @@ type CharacterMazeIndex = {
   tileIndex: number
 }
 
+type HorizontalDirections = 'right' | 'left';
+
+
 function PacmanControls(): ReactElement {
   const [fullMazeState, setFullMazeState] = useRecoilState(FullMazeState);
   const [lastTime, setLastTime] = useState(0);
@@ -142,21 +145,21 @@ function PacmanControls(): ReactElement {
       }
 
       //Novo estado do tile que ele estava
-      const mazeStateIndex = newMazeState[character.index]
+      const tileIndex = newMazeState[character.index]
 
       if (character.type === 'pacman') {
         newMazeState[character.index] = {
-          ...mazeStateIndex,
+          ...tileIndex,
           point: false,
           power: false,
-          status: mazeStateIndex.status.filter(char => char !== Tiles.pacman)
+          status: tileIndex.status.filter(char => char !== Tiles.pacman)
         }
       }
 
       if (character.type === 'ghost') {
         newMazeState[character.index] = {
           ...newMazeState[character.index],
-          status: mazeStateIndex.status.filter(char => {
+          status: tileIndex.status.filter(char => {
             const ghosts = ['1', '2', '3', '4'];
             return !ghosts.includes(char)
           })
@@ -177,10 +180,14 @@ function PacmanControls(): ReactElement {
       const isTeleportingChar = isTeleporting(character);
 
       if(isTeleportingChar){
-        const teleportDirection = nexTileIndex.originalTile === Tiles.teleportLeft ? 'left' : 'right';
-        console.log(teleportDirection)
+        const teleportIndexObject: IndexObject<'<' | '>' , HorizontalDirections> = {
+          '<': 'left',
+          '>': 'right'
+        }
+
+        const teleportDirection: HorizontalDirections = teleportIndexObject[tileIndex.originalTile as '<' | '>'];
         movedToTileIndex = teleportToIndex(teleportDirection);
-        nexTileIndex = fullMazeState.mazeState[movedToTileIndex]
+        nexTileIndex = fullMazeState.mazeState[movedToTileIndex];
       }
 
       if (character.type === 'pacman') {
