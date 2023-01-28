@@ -2,17 +2,19 @@ import React, { ReactElement, useEffect, useState } from "react";
 import MazeMap from "./mazeMap";
 import S from "./styles";
 import Tile from "../tile/tile";
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import PossibleTiles from "../../types/possibleTiles";
 import PacmanControls from "../pacman-controls/pacman-controls";
 import GameStart from "../../states/gameStart.state";
 import Pacman from "../pacman/pacman";
 import Ghosts from "../ghosts/ghosts";
+import FullMazeState from "../../states/fullMaze.state";
 
 
 function Maze(): ReactElement {
   const [gameStart, setStartGame] = useRecoilState(GameStart);
   const [tileMap, setTileMap] = useState<JSX.Element[]>([]);
+  const fullMazeState = useRecoilValue(FullMazeState);
 
   const filteredMap = MazeMap.filteredMap()
   const mapChars = filteredMap.split('') as PossibleTiles[];
@@ -29,18 +31,24 @@ function Maze(): ReactElement {
 
   return (
     <>
-      { gameStart ? <PacmanControls/> : null}
-      <button onClick={startGame}>start</button>
-      <S.mazeWrapper>
-        <Pacman/>
-        <Ghosts type="1"/>
-        <Ghosts type="2"/>
-        <Ghosts type="3"/>
-        <Ghosts type="4"/>
-        <S.maze>
-          {tileMap}
-        </S.maze>
-      </S.mazeWrapper>
+      <S.gameWrapper>
+        <div>
+          {fullMazeState.score}
+          <br/>
+          { gameStart ? <PacmanControls/> : null}
+          <button onClick={startGame}>start</button>
+        </div>
+        <S.mazeWrapper>
+          <Pacman/>
+          <Ghosts type="1"/>
+          <Ghosts type="2"/>
+          <Ghosts type="3"/>
+          <Ghosts type="4"/>
+          <S.maze>
+            {tileMap}
+          </S.maze>
+        </S.mazeWrapper>
+      </S.gameWrapper>
     </>
   )
 }

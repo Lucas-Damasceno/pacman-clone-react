@@ -15,6 +15,7 @@ export type MazeStateType = {
 export type FullMazeStateType = {
   charactersState: CharacterStateType[],
   mazeState: MazeStateType[],
+  score: number
 }
 
 const initMazeState = () => {
@@ -58,7 +59,7 @@ const initCharactersState = (): CharacterStateType[] => {
         teleporting: false,
         index: ghostSpawnIndex,
         type: 'ghost',
-        color: ''
+        color: undefined
       } as CharacterStateType
     })
   }
@@ -74,7 +75,7 @@ const initCharactersState = (): CharacterStateType[] => {
     teleporting: false,
     index: pacmanSpawnIndex,
     type: 'pacman',
-    color: ''
+    color: undefined
   };
 
   console.log(generateGhostsState())
@@ -86,6 +87,7 @@ const FullMazeState = atom<FullMazeStateType>({
   default: {
     charactersState: initCharactersState(),
     mazeState: initMazeState(),
+    score: 0,
   },
 });
 

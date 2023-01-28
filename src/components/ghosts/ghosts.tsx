@@ -66,7 +66,7 @@ const GhostPupils = styled.div`
   width: 4px;
   height: 4px;
   border-radius: 4px;
-  background-color: black;
+  background-color: blue;
   position: absolute;
   top: 3px;
   left: 3px;
@@ -78,7 +78,7 @@ const GhostPupils = styled.div`
     width: 4px;
     height: 4px;
     border-radius: 4px;
-    background-color: black;
+    background-color: blue;
     position: absolute;
     top: 0px;
     left: 10px;
@@ -144,8 +144,6 @@ function Ghost(props: Props): ReactElement {
     right: {left: '5px', '&::after': {left: '11px'}},
     up: {top: '0'}
   }  
-
-  const pupilsStyle = pupilsIndexObject[ghostState.direction];
 
   const ghostStyle: React.CSSProperties = {
     transform: `translateX(${ghostState.positionX}px) translateY(${ghostState.positionY}px)`

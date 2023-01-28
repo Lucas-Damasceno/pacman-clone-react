@@ -132,6 +132,7 @@ function PacmanControls(): ReactElement {
   const createNextMazeState = (fullMazeState: FullMazeStateType) => {
     const newMazeState = [...fullMazeState.mazeState];
     const newCharacterState: CharacterStateType[] = [];
+    let newScore = fullMazeState.score;
 
     fullMazeState.charactersState.forEach(character => {
       const choosedDirection = directionOrNewDirection(character.type, character.direction, character.nextDirection, character.index, fullMazeState.mazeState);
@@ -191,6 +192,16 @@ function PacmanControls(): ReactElement {
       }
 
       if (character.type === 'pacman') {
+        //Adiciona ponto ao Score se ponto ou poder
+        if(newMazeState[movedToTileIndex]){
+          const point = newMazeState[movedToTileIndex].status.includes(Tiles.point);
+          const power = newMazeState[movedToTileIndex].status.includes(Tiles.power);
+
+          if(point){
+            newScore = newScore + config.pointValue;
+          }
+        }
+
         newMazeState[movedToTileIndex] = {
           ...nexTileIndex,
           point: false,
@@ -221,7 +232,7 @@ function PacmanControls(): ReactElement {
       })
     })
 
-    return { mazeState: newMazeState, charactersState: newCharacterState }
+    return { mazeState: newMazeState, charactersState: newCharacterState, score: newScore }
   }
 
   const handleGameTick = () => {
@@ -229,6 +240,7 @@ function PacmanControls(): ReactElement {
       const newState = createNextMazeState(currentValue)
       return {
         ...currentValue,
+        score: newState.score,
         mazeState: newState.mazeState,
         charactersState: newState.charactersState,
       }
@@ -268,14 +280,15 @@ function PacmanControls(): ReactElement {
     })
   }
 
-
-
-
   //GHOST IA
+  const ghostIA = () => {
+
+  }
+
 
   //gameTick
   useEffect(function gameTick() {
-    const timeOutSpeed = 10;
+    const timeOutSpeed = 1;
     const timer = setInterval(() => {
       const timeNow = new Date().getTime();
       if ((lastTime + (config.pacmanSpeed * 1000)) < timeNow) {

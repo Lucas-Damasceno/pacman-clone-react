@@ -17,6 +17,12 @@ const S = {
 
   mazeWrapper: styled.div`
     position: relative;
+  `,
+
+  gameWrapper: styled.div`
+    display: grid;
+    grid-template-columns: 300px auto;
+    padding-right: 300px;
   `
 }
 

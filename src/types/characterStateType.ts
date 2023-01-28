@@ -12,5 +12,5 @@ export type CharacterStateType = {
   moving: boolean;
   type: CharacterType;
   identification: CharacterChar;
-  color?: string;
+  color?: 'blue' | undefined;
 }
