@@ -12,7 +12,6 @@ import Pacman from "../pacman/pacman";
 function Maze(): ReactElement {
   const [gameStart, setStartGame] = useRecoilState(GameStart);
   const [tileMap, setTileMap] = useState<JSX.Element[]>([]);
-  const [init, setInit] = useState(false);
 
   const filteredMap = MazeMap.filteredMap()
   const mapChars = filteredMap.split('') as PossibleTiles[];
@@ -24,10 +23,8 @@ function Maze(): ReactElement {
   
   //Seta o valor inicial do labirinto
   useEffect(() => {
-    if(init === false){
       const tileMapState = mapChars.map((char: PossibleTiles, index) => <Tile key={index} index={index} tileChar={char} map={filteredMap}></Tile>);
       setTileMap(tileMapState);
-    }
   }, [])
 
   return (

@@ -1,5 +1,5 @@
 import React, { Dispatch, ReactElement, SetStateAction, useEffect, useState } from "react";
-import { useRecoilState } from 'recoil';
+import { noWait, useRecoilState } from 'recoil';
 import config from "../../config/config";
 import { Tiles } from "../../enums/tiles.enum";
 import FullMazeState, { FullMazeStateType, MazeStateType } from "../../states/fullMaze.state";
@@ -24,6 +24,7 @@ type CharacterMazeIndex = {
 
 function PacmanControls(): ReactElement {
   const [fullMazeState, setFullMazeState] = useRecoilState(FullMazeState);
+  const [lastTime, setLastTime] = useState(0);
 
   const getAdjacentTiles = (index: number, newMazeState: MazeStateType[]) => {
     const adjacentTiles: IndexObject<Directions, MazeStateType> = {
@@ -126,7 +127,8 @@ function PacmanControls(): ReactElement {
 
       if (choosedDirection.canMove === false) {
         newCharacterState.push({
-          ...character
+          ...character,
+          moving: false,
         })
         return
       }         
@@ -190,6 +192,7 @@ function PacmanControls(): ReactElement {
         positionX: newPositionX,
         positionY: newPositionY,
         direction: choosedDirection.direction,
+        moving: true,
         nextDirection: choosedDirection.use === 'newDirection' ? null : character.nextDirection,
       })
     })
@@ -209,11 +212,57 @@ function PacmanControls(): ReactElement {
     });
   }
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    console.log('rodou keydown')
+    /*Checagem se a tecla apertada é valida */
+    const invalidKey = !validButtons.includes(event.key as any);
+    if (invalidKey) return;
+
+    const keyPressed = event.key as ValidButtons;
+
+    const keyPressedToDirection: IndexObject<ValidButtons, Directions> = {
+      ArrowUp: 'up',
+      ArrowDown: 'down',
+      ArrowLeft: 'left',
+      ArrowRight: 'right'
+    }
+    const newDirection: Directions = keyPressedToDirection[keyPressed];
+    
+    setFullMazeState(fullMazeState => {
+      const newcharactersState = [...fullMazeState.charactersState.filter(character => character.type !== 'pacman')]
+      
+      const pacManState = {
+        ...fullMazeState.charactersState.find(character => character.identification === Tiles.pacman),
+        nextDirection: newDirection
+      } as CharacterStateType;
+
+      newcharactersState.unshift(pacManState);
+
+      return {
+        ...fullMazeState,
+        charactersState: newcharactersState
+      }
+    })
+  }
+
+
   //gameTick
   useEffect(function gameTick() {
-    const timeOutSpeed = config.pacmanSpeed * 1000;
+    const timeOutSpeed = 100;
     const timer = setInterval(() => {
-      handleGameTick();
+      const timeNow = new Date().getTime();
+
+      if((lastTime + (config.pacmanSpeed * 1000)) < timeNow){
+        console.log('rodando duas vezes')
+        setLastTime(timeNow);
+        handleGameTick();
+      }
+      
+      // else if(fullMazeState.charactersState.find(character => character.type === 'pacman')?.moving === false){
+      //   handleGameTick();
+      // }
+
+
     }, timeOutSpeed)
 
     return () => clearInterval(timer)
@@ -225,7 +274,7 @@ function PacmanControls(): ReactElement {
     const maze = fullMazeState.mazeState;
     if(maze.length){
       fullMazeState.mazeState.forEach((tile, index) => {
-        if (tile.point === false && (tile.status.includes(Tiles.withoutPoint))) {
+        if (tile.point === false || tile.power === false && tile.originalTile === '_') {
           document.documentElement.style.setProperty(`${config.pointCssVar}${index}`, '0');
         }
       })

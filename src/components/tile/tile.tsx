@@ -130,9 +130,9 @@ function Tile(props: Props): ReactElement{
 
   return(
       <div style={tileStyle}>
-        <small style={{fontSize: '12px', position: 'absolute', marginTop: '5px', marginLeft: '-5px', opacity: '0.5'}}>
+        {/* <small style={{fontSize: '12px', position: 'absolute', marginTop: '5px', marginLeft: '-5px', opacity: '0.5'}}>
           {props.index}
-        </small>
+        </small> */}
       </div>
   )
 

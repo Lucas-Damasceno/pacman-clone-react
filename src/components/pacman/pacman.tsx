@@ -26,8 +26,7 @@ const PacmanWrapper = styled.div`
 const PacManCharacter = styled.div`
   width: 28px;
   height: 28px;
-  /* transition: translate linear ${config.pacmanSpeed}s; */
-  transition: translate linear .2s;
+  /* transition: translate linear 1s; */
   overflow: hidden;
   /* background-color: yellow; */
   border-radius: 50%;
@@ -69,8 +68,6 @@ const PacManBottom = styled.div<PacManPartAnimation>`
 function PacMan(): ReactElement {
   const [fullMazeState, setFullMazeState] = useRecoilState(FullMazeState);
   const pacmanState = fullMazeState.charactersState.find(character => character.identification === Tiles.pacman) as CharacterStateType;
-
-  console.log(pacmanState)
 
   const pacManDirectionStyle = {
     up: '90deg',
