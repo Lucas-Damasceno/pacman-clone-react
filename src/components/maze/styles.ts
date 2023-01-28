@@ -12,6 +12,7 @@ const S = {
     display: grid;
     grid-template-columns: repeat(${config.mazeColumns}, 40px);
     grid-template-rows: repeat(${config.mazeRows}, 40px);
+    overflow: hidden;
   `,
 
   mazeWrapper: styled.div`
