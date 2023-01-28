@@ -5,7 +5,6 @@ import PossibleTiles from "../../types/possibleTiles";
 import { Tiles } from "../../enums/tiles.enum";
 import Ghost from "../ghosts/ghosts";
 import { useRecoilState } from 'recoil';
-import Ghost1State, { Ghost2State, Ghost3State, Ghost4State } from "../../states/ghosts.state";
 
 type Props = {
   tileChar: PossibleTiles;
@@ -14,11 +13,6 @@ type Props = {
 }
 
 function Tile(props: Props): ReactElement{
-  const [ghost1, setGhost1] = useRecoilState(Ghost1State)
-  const [ghost2, setGhost2] = useRecoilState(Ghost2State)
-  const [ghost3, setGhost3] = useRecoilState(Ghost3State)
-  const [ghost4, setGhost4] = useRecoilState(Ghost4State)
-
 
   function generateTileStyle(mazeMap: string, mapColumns: number,index: number){
     const tile = mazeMap[index] as PossibleTiles;

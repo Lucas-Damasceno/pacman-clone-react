@@ -1,5 +1,6 @@
 import { CharacterType } from "./characterType";
 import Directions from "./directions";
+import { CharacterChar } from "./possibleTiles";
 
 export type CharacterStateType = {
   direction: Directions;
@@ -10,5 +11,6 @@ export type CharacterStateType = {
   teleporting: boolean;
   moving: boolean;
   type: CharacterType;
+  identification: CharacterChar;
   color?: string;
 }

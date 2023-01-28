@@ -1,9 +1,9 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
-import { useRecoilValue } from 'recoil';
-import GhostSelector from "../../states/ghost.selector";
-import { PossibleGhostState } from "../../types/possibleGhostState";
+import { useRecoilState, useRecoilValue } from 'recoil';
 import config from "../../config/config";
+import FullMazeState from "../../states/fullMaze.state";
+import { CharacterStateType } from "../../types/characterStateType";
 
 type PropsStyled = {
   color: string,
@@ -83,12 +83,13 @@ const GhostPupils = styled.div`
 `
 
 type Props = {
-  type: PossibleGhostState;
+  type: '1' | '2' | '3' | '4';
 }
 
 function Ghost(props: Props): ReactElement {
+  const [fullMazeState, setFullMazeState] = useRecoilState(FullMazeState);
 
-  const ghostState = useRecoilValue(GhostSelector('ghost2'));
+  const ghostState = fullMazeState.charactersState.find(character => character.identification === props.type) as CharacterStateType;
   // console.count('Ghost Rodou');
 
   const ghostStyle: React.CSSProperties = {
@@ -96,10 +97,10 @@ function Ghost(props: Props): ReactElement {
   }
 
   const ghostColor = {
-    'ghost1': '#F70000',
-    'ghost2': '#F7B2F7',
-    'ghost3': '#FFB851',
-    'ghost4': '#009999',
+    '1': '#F70000',
+    '2': '#F7B2F7',
+    '3': '#FFB851',
+    '4': '#009999',
   };
 
   return (

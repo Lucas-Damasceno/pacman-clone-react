@@ -3,11 +3,7 @@ import MazeMap from "./mazeMap";
 import S from "./styles";
 import Tile from "../tile/tile";
 import { useRecoilState } from 'recoil';
-import MazeState, { MazeStateType } from "../../states/maze.state";
 import PossibleTiles from "../../types/possibleTiles";
-import Controls from "../controls/controls";
-import { Tiles } from "../../enums/tiles.enum";
-import GhostControls from "../ghost-controls/ghost-controls";
 import PacmanControls from "../pacman-controls/pacman-controls";
 import GameStart from "../../states/gameStart.state";
 import Pacman from "../pacman/pacman";
@@ -15,12 +11,10 @@ import Pacman from "../pacman/pacman";
 
 function Maze(): ReactElement {
   const [gameStart, setStartGame] = useRecoilState(GameStart);
-  const [mazeState, setMazeState] = useRecoilState(MazeState);
   const [tileMap, setTileMap] = useState<JSX.Element[]>([]);
   const [init, setInit] = useState(false);
 
   const filteredMap = MazeMap.filteredMap()
-
   const mapChars = filteredMap.split('') as PossibleTiles[];
 
   const startGame = () => {
@@ -33,18 +27,6 @@ function Maze(): ReactElement {
     if(init === false){
       const tileMapState = mapChars.map((char: PossibleTiles, index) => <Tile key={index} index={index} tileChar={char} map={filteredMap}></Tile>);
       setTileMap(tileMapState);
-  
-      const newMazeState: MazeStateType[] = mapChars.map(char => {
-        return {
-          point: char === Tiles.point,
-          power: char === Tiles.power,
-          status: char,
-          originalTile: char
-        }
-      });
-
-      setMazeState(newMazeState);
-      setInit(true)
     }
   }, [])
 
