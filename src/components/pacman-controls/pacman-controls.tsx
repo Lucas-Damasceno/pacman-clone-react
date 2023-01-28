@@ -232,6 +232,17 @@ function PacmanControls(): ReactElement {
     }
   }, [fullMazeState])
 
+
+  //control keyPressed
+  useEffect(function addEventListenerKeyDown() {
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [fullMazeState])
+
+
   return <></>
 }
 
