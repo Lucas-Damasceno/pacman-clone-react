@@ -1,12 +1,10 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement } from "react";
 import styled, {Keyframes, keyframes} from "styled-components";
-import PacmanState from "../../states/pacman.state";
 import { useRecoilState } from 'recoil';
 import config from "../../config/config";
-import MazeState from "../../states/maze.state";
-import { IndexObject } from "../../types/indexObject";
-import Directions from "../../types/directions";
-import MazeMap from "../maze/mazeMap";
+import FullMazeState from "../../states/fullMaze.state";
+import { Tiles } from "../../enums/tiles.enum";
+import { CharacterStateType } from "../../types/characterStateType";
 
 const validButtons = ['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'] as const;
 type ValidButtons = typeof validButtons[number];
@@ -28,7 +26,8 @@ const PacmanWrapper = styled.div`
 const PacManCharacter = styled.div`
   width: 28px;
   height: 28px;
-  transition: translate linear ${config.pacmanSpeed}s;
+  /* transition: translate linear ${config.pacmanSpeed}s; */
+  transition: translate linear .2s;
   overflow: hidden;
   /* background-color: yellow; */
   border-radius: 50%;
@@ -68,8 +67,8 @@ const PacManBottom = styled.div<PacManPartAnimation>`
 `;
 
 function PacMan(): ReactElement {
-  const [pacmanState, setPacmanState] = useRecoilState(PacmanState);
-  const [mazeState, setMazeState] = useRecoilState(MazeState);
+  const [fullMazeState, setFullMazeState] = useRecoilState(FullMazeState);
+  const pacmanState = fullMazeState.charactersState.find(character => character.identification === Tiles.pacman) as CharacterStateType;
   
   const pacManDirectionStyle = {
     up: '90deg',
@@ -94,93 +93,6 @@ function PacMan(): ReactElement {
   }
 
   const selectedPacManAnimation = pacmanState.moving ? animatedPacMan : stopedPacMan;
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    const validButton = validButtons.includes(event.key as any)
-    if(validButton === false) return
-
-    const pressedButton = event.key as ValidButtons;
-
-    const keyPressedToDirection: IndexObject<ValidButtons, Directions> = {
-      ArrowUp: 'up',
-      ArrowDown: 'down',
-      ArrowLeft: 'left',
-      ArrowRight: 'right'
-    }
-
-    setPacmanState(currentValue => {
-      return {
-        ...currentValue,
-        nextDirection: keyPressedToDirection[pressedButton],
-      }
-    })
-
-  }
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-
-  }, [mazeState])
-
-
-  useEffect(function handlePacManMovement() {
-    setPacmanState(currentPacmanState => {
-
-      //REFATORAR DEPOIS
-      const pacManNewPositionIndex = mazeState.findIndex(item => item.status === 'P');
-
-      const currentPositionY = currentPacmanState.positionY;
-      const currentPositionX = currentPacmanState.positionX;
-
-      const newPositionY = Math.floor(pacManNewPositionIndex  / config.mazeColumns) * config.tileSizeInPx;
-      const newPositionX = Math.floor(pacManNewPositionIndex % config.mazeColumns) * config.tileSizeInPx;
-
-      let newDirection: Directions | undefined;
-
-      console.log(currentPositionY, currentPositionX);
-      console.log(newPositionY, newPositionX);
-
-      const yEqual = currentPositionY === newPositionY;
-      const xEqual = currentPositionX === newPositionX;
-
-      if(yEqual && newPositionX < currentPositionX){
-        newDirection = 'left'
-      }
-
-      if(yEqual && newPositionX > currentPositionX){
-        newDirection = "right"
-      }
-
-      if(xEqual && newPositionY < currentPositionY){
-        newDirection = 'up'
-      }
-
-      if(xEqual && newPositionY > currentPositionY){
-        newDirection = "down"
-      }
-
-      if(newDirection === undefined){
-        newDirection = currentPacmanState.direction;
-      }
-      
-      // debugger
-
-      return {
-        ...currentPacmanState,
-        positionY: newPositionY,
-        positionX: newPositionX,
-        index: pacManNewPositionIndex,
-        moving: currentPacmanState.index !== pacManNewPositionIndex,
-        direction: newDirection
-      }
-    })
-
-  }, [mazeState])
-
 
   return(
     <PacmanWrapper>
