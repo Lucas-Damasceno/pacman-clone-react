@@ -10,11 +10,11 @@ x......... . .........x
 x.xxx.x.xx x xx.x.xxx.x
 x.....x... x ...x.....x
 xxxxx.xxx. x .xxx.xxxxx
-____x.x___ _ ___x.x____
+____x.x___ 1 ___x.x____
 =xxxx.x_xx - xx_x.xxxx=
-<____.__xO _ Ox__.____>
+<____.__x2 3 4x__.____>
 =xxxx.x_xx x xx_x.xxxx=
-____x.x___ _ _2_x.x____
+____x.x___ _ ___x.x____
 xxxxx.x_xx x xx_x.xxxxx
 x......... x .........x
 x.xxx.xxx. x .xxx.xxx.x

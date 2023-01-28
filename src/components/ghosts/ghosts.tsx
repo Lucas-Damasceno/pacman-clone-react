@@ -9,6 +9,16 @@ type PropsStyled = {
   color: string,
 }
 
+const GhostWrapper = styled.div`
+  position: absolute;
+  width: ${config.tileSizeInPx}px;
+  height: ${config.tileSizeInPx}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+
 const GhostBody = styled.div<PropsStyled>`
   background-color: ${p => p.color};
   height: 25px;
@@ -90,7 +100,6 @@ function Ghost(props: Props): ReactElement {
   const [fullMazeState, setFullMazeState] = useRecoilState(FullMazeState);
 
   const ghostState = fullMazeState.charactersState.find(character => character.identification === props.type) as CharacterStateType;
-  // console.count('Ghost Rodou');
 
   const ghostStyle: React.CSSProperties = {
     transform: `translateX(${ghostState.positionX}px) translateY(${ghostState.positionY}px)`
@@ -104,11 +113,13 @@ function Ghost(props: Props): ReactElement {
   };
 
   return (
-    <GhostBody color={ghostColor[props.type]} style={ghostStyle}>
-      <GhostEyes>
-        <GhostPupils />
-      </GhostEyes>
-    </GhostBody>
+    <GhostWrapper>
+      <GhostBody color={ghostColor[props.type]} style={ghostStyle}>
+        <GhostEyes>
+          <GhostPupils />
+        </GhostEyes>
+      </GhostBody>
+    </GhostWrapper>
   )
 }
 

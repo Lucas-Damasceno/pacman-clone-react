@@ -39,7 +39,7 @@ const getInitialIndexOfPacman = (): number => {
 }
 
 const getInitialIndexOfGhost = (ghostIdentification: '1' | '2' | '3' | '4') => {
-  const map = MazeMap.filteredMap();
+  const map = MazeMap.filteredMap().split('');
   return map.indexOf(ghostIdentification)
 }
 
@@ -47,15 +47,16 @@ const initCharactersState = (): CharacterStateType[] => {
   const ghosts = ['1', '2', '3', '4'] as const;
   const generateGhostsState = () => {
     return ghosts.map(ghost => {
+      const ghostSpawnIndex = getInitialIndexOfGhost(ghost)
       return {
         identification: ghost,
         direction: 'up',
         nextDirection: null,
-        positionX: 0,
-        positionY: 0,
+        positionX: Math.floor(ghostSpawnIndex % config.mazeColumns) * config.tileSizeInPx,
+        positionY: Math.floor(ghostSpawnIndex / config.mazeColumns) * config.tileSizeInPx,
         moving: false,
         teleporting: false,
-        index: getInitialIndexOfGhost(ghost),
+        index: ghostSpawnIndex,
         type: 'ghost',
         color: ''
       } as CharacterStateType
@@ -68,7 +69,7 @@ const initCharactersState = (): CharacterStateType[] => {
     direction: 'left',
     nextDirection: null,
     positionX: Math.floor(pacmanSpawnIndex % config.mazeColumns) * config.tileSizeInPx,
-    positionY: Math.floor(pacmanSpawnIndex  / config.mazeColumns) * config.tileSizeInPx,
+    positionY: Math.floor(pacmanSpawnIndex / config.mazeColumns) * config.tileSizeInPx,
     moving: false,
     teleporting: false,
     index: pacmanSpawnIndex,
@@ -76,6 +77,7 @@ const initCharactersState = (): CharacterStateType[] => {
     color: ''
   };
 
+  console.log(generateGhostsState())
   return [pacmanInitialState, ...generateGhostsState()]
 }
 
