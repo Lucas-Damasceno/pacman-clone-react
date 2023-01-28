@@ -69,7 +69,9 @@ const PacManBottom = styled.div<PacManPartAnimation>`
 function PacMan(): ReactElement {
   const [fullMazeState, setFullMazeState] = useRecoilState(FullMazeState);
   const pacmanState = fullMazeState.charactersState.find(character => character.identification === Tiles.pacman) as CharacterStateType;
-  
+
+  console.log(pacmanState)
+
   const pacManDirectionStyle = {
     up: '90deg',
     down: '-90deg',

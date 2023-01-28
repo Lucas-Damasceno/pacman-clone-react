@@ -87,9 +87,9 @@ function PacmanControls(): ReactElement {
 
   //Refatorar essa função
   const directionOrNewDirection = (characterType: CharacterType, direction: Directions, newDirection: Directions | null, tileIndex: number, mazeState: MazeStateType[]) => {
-    if(characterType === 'pacman'){
-      console.log(direction, newDirection)
-    }
+    // if(characterType === 'pacman'){
+    //   console.log(direction, newDirection)
+    // }
     if(newDirection !== null){
       const canMovenewDirection: boolean = canMove(characterType, newDirection, tileIndex, mazeState);
       if(canMovenewDirection){
@@ -124,7 +124,12 @@ function PacmanControls(): ReactElement {
     fullMazeState.charactersState.forEach(character => {
       const choosedDirection = directionOrNewDirection(character.type, character.direction, character.nextDirection, character.index, fullMazeState.mazeState);
 
-      if (choosedDirection.canMove === false) return
+      if (choosedDirection.canMove === false) {
+        newCharacterState.push({
+          ...character
+        })
+        return
+      }         
 
       //Novo estado do tile que ele estava
       const mazeStateIndex = newMazeState[character.index]
@@ -176,11 +181,14 @@ function PacmanControls(): ReactElement {
         }
       }
 
-      const positionX 
+      const newPositionY = Math.floor(movedToTileIndex  / config.mazeColumns) * config.tileSizeInPx;
+      const newPositionX = Math.floor(movedToTileIndex % config.mazeColumns) * config.tileSizeInPx;
 
       newCharacterState.push({
         ...character,
         index: movedToTileIndex,
+        positionX: newPositionX,
+        positionY: newPositionY,
         direction: choosedDirection.direction,
         nextDirection: choosedDirection.use === 'newDirection' ? null : character.nextDirection,
       })

@@ -1,5 +1,6 @@
 import { atom } from 'recoil'
 import MazeMap from '../components/maze/mazeMap';
+import config from '../config/config';
 import { Tiles } from '../enums/tiles.enum';
 import { CharacterStateType } from '../types/characterStateType';
 import PossibleTiles, { CharacterChar } from '../types/possibleTiles';
@@ -60,16 +61,17 @@ const initCharactersState = (): CharacterStateType[] => {
       } as CharacterStateType
     })
   }
-  
+
+  const pacmanSpawnIndex = getInitialIndexOfPacman();
   const pacmanInitialState: CharacterStateType = {
     identification: 'P',
     direction: 'left',
     nextDirection: null,
-    positionX: 0,
-    positionY: 0,
+    positionX: Math.floor(pacmanSpawnIndex % config.mazeColumns) * config.tileSizeInPx,
+    positionY: Math.floor(pacmanSpawnIndex  / config.mazeColumns) * config.tileSizeInPx,
     moving: false,
     teleporting: false,
-    index: getInitialIndexOfPacman(),
+    index: pacmanSpawnIndex,
     type: 'pacman',
     color: ''
   };
