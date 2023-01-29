@@ -9,11 +9,9 @@ import { CharacterStateType } from "../../types/characterStateType";
 const validButtons = ['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'] as const;
 type ValidButtons = typeof validButtons[number];
 
-interface PacManPartAnimation{
-  top?: Keyframes;
-  bottom?: Keyframes;
+interface PacManMouthAnimation{
+  moving: boolean;
 }
-
 
 interface PacmanCharacterProps{
   transitionTime: number;
@@ -37,52 +35,33 @@ const PacManCharacter = styled.div<PacmanCharacterProps>`
   background-color: yellow;
   border-radius: 50%;
   scale: 1.5;
+  display: flex;
+  align-items: center;
 `;
 
-const PacManMouth = styled.div`
+const PacManMouth = styled.div<PacManMouthAnimation>`
   top: ${config.tileSizeInPx / 12}px;
   width: 0; 
   height: 0; 
-  position: absolute;
   left: 0;
   border-top: ${config.tileSizeInPx / 2.2}px solid transparent;
   border-left: ${config.tileSizeInPx / 1.5}px solid #282C34;
   border-bottom: ${config.tileSizeInPx / 2.2}px solid transparent;
-
+  animation: ${prop => prop.moving ? PacManMouthAnimation : null} .2s linear infinite;
 `
 
-const PacManTopAnimation = keyframes`
-  0%{transform: rotate(35deg);}
-	50%{transform: rotate(0deg);}
+const PacManMouthAnimation = keyframes`
+  0%{
+    border-top: ${config.tileSizeInPx / 2.2}px solid transparent;
+    border-left: ${config.tileSizeInPx / 1.5}px solid #282C34;
+    border-bottom: ${config.tileSizeInPx / 2.2}px solid transparent;
+  }
+  50%{
+    border-top: 0 solid transparent;
+    border-left: ${config.tileSizeInPx / 1.5}px solid #282C34;
+    border-bottom: 0 solid transparent;
+  }
 `
-
-const PacManBottomAnimation = keyframes`
-  0%{transform: rotate(-35deg);}
-	50%{transform: rotate(0deg);}
-`
-
-const PacManTop = styled.div<PacManPartAnimation>`
-  height: ${config.tileSizeInPx / 2}px;
-  width: ${config.tileSizeInPx}px;
-  margin-left: -3px;
-  margin-top: -4px;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-  background-color: yellow;
-	transform: rotate(35deg);
-  animation: ${prop => prop.top} .2s linear infinite;
-`;
-
-const PacManBottom = styled.div<PacManPartAnimation>`
-  height: ${config.tileSizeInPx / 2}px;
-  width: ${config.tileSizeInPx}px;
-  margin-left: -3px;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-  background-color: yellow;
-	transform: rotate(-35deg);
-  animation: ${prop => prop.bottom} .2s linear infinite;
-`;
 
 function PacMan(): ReactElement {
   const [fullMazeState, setFullMazeState] = useRecoilState(FullMazeState);
@@ -100,26 +79,12 @@ function PacMan(): ReactElement {
     rotate: pacManDirectionStyle[pacmanState.direction],
   }
 
-  const animatedPacMan = {
-    top: PacManTopAnimation,
-    bottom: PacManBottomAnimation,
-  }
-
-  const stopedPacMan = {
-    top: undefined,
-    bottom: undefined
-  }
-
-  const selectedPacManAnimation = pacmanState.moving ? animatedPacMan : stopedPacMan;
-
   const transitionTime = pacmanState.teleporting ? 0 : config.pacmanSpeed;
 
   return(
     <PacmanWrapper>
       <PacManCharacter transitionTime={transitionTime} style={pacmanStyle}>
-        {/* <PacManTop top={selectedPacManAnimation.top}/>
-        <PacManBottom bottom={selectedPacManAnimation.bottom}/> */}
-        <PacManMouth/>
+        <PacManMouth moving={pacmanState.moving}/>
       </PacManCharacter>
     </PacmanWrapper>
   )
