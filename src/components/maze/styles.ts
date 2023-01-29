@@ -6,7 +6,7 @@ const S = {
     width: auto;
     height: auto;
     outline: 10px double blue;
-    outline-offset: -2px;
+    outline-offset: -10px;
     border-radius: 20px;
     margin: 0 auto;
     display: grid;
