@@ -84,19 +84,19 @@ function Tile(props: Props): ReactElement{
       }
 
       if(tile === Tiles.wall && topTile === Tiles.wall){
-        tileStyle.marginTop = '-10px';
+        tileStyle.marginTop = '-6px';
       }
 
       if(tile === Tiles.wall && bottomTile === Tiles.wall){
-        tileStyle.marginBottom = '-10px';
+        tileStyle.marginBottom = '-6px';
       }
 
       if(tile === Tiles.wall && leftTile === Tiles.wall){
-        tileStyle.marginLeft = '-10px';
+        tileStyle.marginLeft = '-6px';
       }
 
       if(tile === Tiles.wall && rightTile === Tiles.wall){
-        tileStyle.marginRight = '-10px';
+        tileStyle.marginRight = '-6px';
       }
     }
 

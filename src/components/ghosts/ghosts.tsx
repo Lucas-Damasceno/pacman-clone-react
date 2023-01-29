@@ -35,7 +35,7 @@ const GhostBody = styled.div<PropsStyled>`
   transition: translate linear ${config.pacmanSpeed}s;
   border-radius: 12px 12px 0 0px ;
   position: relative;
-  scale: 1.5;
+  scale: 1;
 `
 
 const GhostEyes = styled.div`

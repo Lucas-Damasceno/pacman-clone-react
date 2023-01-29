@@ -36,7 +36,7 @@ const PacManCharacter = styled.div<PacmanCharacterProps>`
   overflow: hidden;
   /* background-color: yellow; */
   border-radius: 50%;
-  scale: 1.5;
+  scale: 1.3;
 `;
 
 const PacManTopAnimation = keyframes`
@@ -51,7 +51,7 @@ const PacManBottomAnimation = keyframes`
 
 const PacManTop = styled.div<PacManPartAnimation>`
   height: 18px;
-  width: ${config.tileSizeInPx}px;
+  width: 40px;
   margin-left: -3px;
   margin-top: -4px;
   border-top-left-radius: 15px;
@@ -63,7 +63,7 @@ const PacManTop = styled.div<PacManPartAnimation>`
 
 const PacManBottom = styled.div<PacManPartAnimation>`
   height: 18px;
-  width: ${config.tileSizeInPx}px;
+  width: 40px;
   margin-left: -3px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
