@@ -30,14 +30,27 @@ const PacmanWrapper = styled.div`
 `
 
 const PacManCharacter = styled.div<PacmanCharacterProps>`
-  width: 28px;
-  height: 28px;
+  width: ${config.tileSizeInPx}px;
+  height: ${config.tileSizeInPx}px;
   transition: translate linear ${p => p.transitionTime}s;
-  overflow: hidden;
-  /* background-color: yellow; */
+  /* overflow: hidden; */
+  background-color: yellow;
   border-radius: 50%;
   scale: 1.5;
 `;
+
+const PacManMouth = styled.div`
+  top: ${config.tileSizeInPx / 12}px;
+  width: 0; 
+  height: 0; 
+  position: absolute;
+  left: 0;
+  border-top: ${config.tileSizeInPx / 2.2}px solid transparent;
+  border-left: ${config.tileSizeInPx / 1.5}px solid #282C34;
+  border-bottom: ${config.tileSizeInPx / 2.2}px solid transparent;
+  /* animation: ${prop => prop.top} .2s linear infinite; */
+
+`
 
 const PacManTopAnimation = keyframes`
   0%{transform: rotate(35deg);}
@@ -50,8 +63,8 @@ const PacManBottomAnimation = keyframes`
 `
 
 const PacManTop = styled.div<PacManPartAnimation>`
-  height: 18px;
-  width: 40px;
+  height: ${config.tileSizeInPx / 2}px;
+  width: ${config.tileSizeInPx}px;
   margin-left: -3px;
   margin-top: -4px;
   border-top-left-radius: 15px;
@@ -62,8 +75,8 @@ const PacManTop = styled.div<PacManPartAnimation>`
 `;
 
 const PacManBottom = styled.div<PacManPartAnimation>`
-  height: 18px;
-  width: 40px;
+  height: ${config.tileSizeInPx / 2}px;
+  width: ${config.tileSizeInPx}px;
   margin-left: -3px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
@@ -105,9 +118,9 @@ function PacMan(): ReactElement {
   return(
     <PacmanWrapper>
       <PacManCharacter transitionTime={transitionTime} style={pacmanStyle}>
-        <PacManTop top={selectedPacManAnimation.top}/>
-        <PacManBottom bottom={selectedPacManAnimation.bottom}/>
-        {pacmanState.powered}
+        {/* <PacManTop top={selectedPacManAnimation.top}/>
+        <PacManBottom bottom={selectedPacManAnimation.bottom}/> */}
+        <PacManMouth/>
       </PacManCharacter>
     </PacmanWrapper>
   )
