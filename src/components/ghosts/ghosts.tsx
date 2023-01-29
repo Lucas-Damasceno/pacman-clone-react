@@ -23,8 +23,8 @@ const GhostWrapper = styled.div`
 `
 
 const GhostMovingKeyframe = (p: {runningSpeed: number}) => keyframes`
-  0%{left: -2px}
-	100%{left: -9px}
+  0%{ left: -${config.tileSizeInPx / 2}px; }
+	100%{ left: -${config.tileSizeInPx}px; }
 `
 
 const GhostBody = styled.div<PropsStyled>`
@@ -35,7 +35,6 @@ const GhostBody = styled.div<PropsStyled>`
   place-self: center;
   transition: translate linear ${config.pacmanSpeed}s;
   border-radius: ${config.tileSizeInPx * 1.2}px ${config.tileSizeInPx * 1.2}px 0 0px ;
-  /* scale: 1; */
   display: flex;
   
   align-items: center;
@@ -84,23 +83,23 @@ const GhostPupils = styled.div`
 
 const GhostBottom = styled.div`
   position: absolute;
-  bottom: -4px;
-  height: 8px;
+  bottom: 0;
   width: 100%;
+  height: ${config.tileSizeInPx / 4}px;
   overflow: hidden;
   
   .running-container{
     animation: ${GhostMovingKeyframe} ${p => p.runningSpeed}s linear infinite;
     display: flex;
     position: absolute;
-    left: -2px;
+    left: -${config.tileSizeInPx / 2}px;
 
     div{
       width: 0; 
       height: 0; 
-      border-left: 4px solid transparent;
-      border-right: 4px solid transparent;
-      border-bottom: 4px solid #282C34;
+      border-left: ${config.tileSizeInPx / 4}px solid transparent;
+      border-right: ${config.tileSizeInPx / 4}px solid transparent;
+      border-bottom: ${config.tileSizeInPx / 4}px solid #282C34;
     }
   }
 `
