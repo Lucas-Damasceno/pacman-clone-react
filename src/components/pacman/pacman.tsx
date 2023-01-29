@@ -15,6 +15,7 @@ interface PacManMouthAnimation{
 
 interface PacmanCharacterProps{
   transitionTime: number;
+  moving: boolean;
 }
 
 const PacmanWrapper = styled.div`
@@ -37,29 +38,17 @@ const PacManCharacter = styled.div<PacmanCharacterProps>`
   scale: 1.5;
   display: flex;
   align-items: center;
-`;
 
-const PacManMouth = styled.div<PacManMouthAnimation>`
-  top: ${config.tileSizeInPx / 12}px;
-  width: 0; 
-  height: 0; 
-  left: 0;
-  border-top: ${config.tileSizeInPx / 2.2}px solid transparent;
-  border-left: ${config.tileSizeInPx / 1.5}px solid #282C34;
-  border-bottom: ${config.tileSizeInPx / 2.2}px solid transparent;
   animation: ${prop => prop.moving ? PacManMouthAnimation : null} .2s linear infinite;
-`
+  clip-path: polygon(0 0, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 52% 50%);
+`;
 
 const PacManMouthAnimation = keyframes`
   0%{
-    border-top: ${config.tileSizeInPx / 2.2}px solid transparent;
-    border-left: ${config.tileSizeInPx / 1.5}px solid #282C34;
-    border-bottom: ${config.tileSizeInPx / 2.2}px solid transparent;
+    clip-path: polygon(0 0, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 52% 50%);
   }
   50%{
-    border-top: 0 solid transparent;
-    border-left: ${config.tileSizeInPx / 1.5}px solid #282C34;
-    border-bottom: 0 solid transparent;
+    clip-path: polygon(0 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 50%, 50% 50%);
   }
 `
 
@@ -83,8 +72,8 @@ function PacMan(): ReactElement {
 
   return(
     <PacmanWrapper>
-      <PacManCharacter transitionTime={transitionTime} style={pacmanStyle}>
-        <PacManMouth moving={pacmanState.moving}/>
+      <PacManCharacter moving={pacmanState.moving} transitionTime={transitionTime} style={pacmanStyle}>
+        {/* <PacManMouth moving={pacmanState.moving}/> */}
       </PacManCharacter>
     </PacmanWrapper>
   )
