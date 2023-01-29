@@ -29,83 +29,57 @@ const GhostMovingKeyframe = (p: {runningSpeed: number}) => keyframes`
 
 const GhostBody = styled.div<PropsStyled>`
   background-color: ${p => p.color};
-  height: 32px;
-  width: 28px;
+  height: ${config.tileSizeInPx * 1.6}px;
+  width: ${config.tileSizeInPx * 1.4}px;
+  position: absolute;
   place-self: center;
   transition: translate linear ${config.pacmanSpeed}s;
-  border-radius: 12px 12px 0 0px ;
-  position: relative;
-  scale: 1.5;
+  border-radius: ${config.tileSizeInPx * 1.2}px ${config.tileSizeInPx * 1.2}px 0 0px ;
+  /* scale: 1; */
+  display: flex;
+  
+  align-items: center;
+  justify-content: space-around;
+  padding-bottom:  ${config.tileSizeInPx / 4}px;
+  box-sizing: border-box;
 `
 
 const GhostEyes = styled.div`
-  //Left Eye
-  width: 8px;
-  height: 8px;
+  width: ${config.tileSizeInPx / 2}px;
+  height: ${config.tileSizeInPx / 2}px;
   background-color: #fff;
-  border-radius: 5px;
-  position: absolute;
-  top: 9px;
-  left: 4px;
+  border-radius: 50%;
+  display: flex;  
+  justify-content: center;
+  align-items: center;
+  
+  &.up{
+    justify-content: center;
+    align-items: flex-start;
+  }
 
-  //Right Eye
-  &::before{
-    display: block;
-    content: '';
-    width: 8px;
-    height: 8px;
-    background-color: #fff;
-    border-radius: 5px;
-    position: absolute;
-    top: 0px;
-    left: 12px;
+  &.down{
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  &.left{
+    justify-content: left;
+    align-items: center;
+  }
+
+  &.right{
+    justify-content: right;
+    align-items: center;
   }
 `
 
 const GhostPupils = styled.div`
-  //Left Pupil
-  width: 4px;
-  height: 4px;
-  border-radius: 4px;
+  width: ${config.tileSizeInPx / 4}px;
+  height: ${config.tileSizeInPx / 4}px;
+  border-radius: 50%;
   background-color: blue;
   position: absolute;
-  top: 3px;
-  left: 3px;
-
-  //Right Pupil
-  &::after{
-    content: '';
-    display: block;
-    width: 4px;
-    height: 4px;
-    border-radius: 4px;
-    background-color: blue;
-    position: absolute;
-    top: 0px;
-    left: 10px;
-  }
-
-  &.down{
-    top: 4px;
-  } 
-
-  &.left{
-    left: 0;
-    &::after{
-      left: 12px;
-    }
-  }
-
-  &.right{
-    left: 5px;
-    &::after{
-      left: 11px;
-    }
-  };
-
-  &.up {
-    top: 0
-  }
 `
 
 const GhostBottom = styled.div`
@@ -162,8 +136,11 @@ function Ghost(props: Props): ReactElement {
   return (
     <GhostWrapper>
       <GhostBody runningSpeed={runningSpeed} color={ghostColor[props.type]} style={ghostStyle}>
-        <GhostEyes>
-          <GhostPupils className={ghostState.direction}/>
+        <GhostEyes className={ghostState.direction}>
+          <GhostPupils/>
+        </GhostEyes>
+        <GhostEyes className={ghostState.direction}>
+          <GhostPupils/>
         </GhostEyes>
         <GhostBottom runningSpeed={runningSpeed}>
           <div className="running-container">
