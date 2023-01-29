@@ -36,6 +36,7 @@ const PacManCharacter = styled.div<PacmanCharacterProps>`
   overflow: hidden;
   /* background-color: yellow; */
   border-radius: 50%;
+  scale: 1.5;
 `;
 
 const PacManTopAnimation = keyframes`
@@ -57,7 +58,7 @@ const PacManTop = styled.div<PacManPartAnimation>`
   border-top-right-radius: 15px;
   background-color: yellow;
 	transform: rotate(35deg);
-  animation: ${prop => prop.top} .5s linear infinite;
+  animation: ${prop => prop.top} .2s linear infinite;
 `;
 
 const PacManBottom = styled.div<PacManPartAnimation>`
@@ -68,7 +69,7 @@ const PacManBottom = styled.div<PacManPartAnimation>`
   border-bottom-right-radius: 15px;
   background-color: yellow;
 	transform: rotate(-35deg);
-  animation: ${prop => prop.bottom} .5s linear infinite;
+  animation: ${prop => prop.bottom} .2s linear infinite;
 `;
 
 function PacMan(): ReactElement {

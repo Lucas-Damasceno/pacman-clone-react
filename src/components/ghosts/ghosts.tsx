@@ -32,9 +32,10 @@ const GhostBody = styled.div<PropsStyled>`
   height: 32px;
   width: 28px;
   place-self: center;
-  transition: transform linear ${config.pacmanSpeed}s;
+  transition: translate linear ${config.pacmanSpeed}s;
   border-radius: 12px 12px 0 0px ;
   position: relative;
+  scale: 1.5;
 `
 
 const GhostEyes = styled.div`
@@ -146,7 +147,7 @@ function Ghost(props: Props): ReactElement {
   }  
 
   const ghostStyle: React.CSSProperties = {
-    transform: `translateX(${ghostState.positionX}px) translateY(${ghostState.positionY}px)`
+    translate: `${ghostState.positionX}px ${ghostState.positionY}px`,
   }
 
   const ghostColor = {
