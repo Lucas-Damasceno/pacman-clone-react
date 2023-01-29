@@ -42,8 +42,8 @@ function Maze(): ReactElement {
           <Pacman/>
           <Ghosts type="1"/>
           <Ghosts type="2"/>
-          <Ghosts type="3"/>
           <Ghosts type="4"/>
+          <Ghosts type="3"/>
           <S.maze>
             {tileMap}
           </S.maze>

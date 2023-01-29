@@ -14,39 +14,7 @@ type Props = {
   map: string;
 }
 
-interface TileWrapperProps{
-  adjacentsBorders: Directions[];
-}
-
-const TileWrapper = styled.div<TileWrapperProps>`
-  position: relative;
-  z-index: 1;
-    ${p => p.adjacentsBorders.includes('down') && `
-      &:before{
-        width: 100%;
-        height: 10px;
-        display: block;
-        content: '';
-        margin-top: -10px;
-        border-left: 2px solid blue;
-        border-right: 2px solid blue;
-        margin-left: -2px;
-      }
-    `}
-
-    ${p => p.adjacentsBorders.includes('up') && `
-      &:before{
-        width: 100%;
-        height: 10px;
-        display: block;
-        content: '';
-        margin-top: 40px;
-        border-left: 2px solid blue;
-        border-right: 2px solid blue;
-        margin-left: -2px;
-      }
-    `}
-
+const TileWrapper = styled.div`
 `
 
 function Tile(props: Props): ReactElement{
@@ -58,12 +26,6 @@ function Tile(props: Props): ReactElement{
     const leftTile = mazeMap[index -1];
     const topTile = mazeMap[index - mapColumns];
     const bottomTile = mazeMap[index + mapColumns];
-    const rightTopTile = mazeMap[index - mapColumns + 1];
-    const leftTopTile = mazeMap[index - mapColumns - 1];
-    const rightBottomTile = mazeMap[index + mapColumns + 1];
-    const leftBottomTile = mazeMap[index + mapColumns - 1];
-
-
 
     let tileStyle: React.CSSProperties = {};
     let adjacentsBorders: Directions[] = [];
@@ -121,22 +83,21 @@ function Tile(props: Props): ReactElement{
         }
       }
 
-      if(tile === Tiles.wall && 
-          rightTopTile === Tiles.wall && leftTopTile === Tiles.wall &&
-          leftBottomTile !== Tiles.wall && rightBottomTile !== Tiles.wall &&
-          rightTile !== Tiles.wall && leftTile !== Tiles.wall
-      ){
-        adjacentsBorders.push('down');
+      if(tile === Tiles.wall && topTile === Tiles.wall){
+        tileStyle.marginTop = '-10px';
       }
 
-      if(tile === Tiles.wall && 
-        rightTopTile !== Tiles.wall && leftTopTile !== Tiles.wall &&
-        leftBottomTile === Tiles.wall && rightBottomTile === Tiles.wall &&
-        rightTile !== Tiles.wall && leftTile !== Tiles.wall
-      ){
-        adjacentsBorders.push('up');
+      if(tile === Tiles.wall && bottomTile === Tiles.wall){
+        tileStyle.marginBottom = '-10px';
       }
 
+      if(tile === Tiles.wall && leftTile === Tiles.wall){
+        tileStyle.marginLeft = '-10px';
+      }
+
+      if(tile === Tiles.wall && rightTile === Tiles.wall){
+        tileStyle.marginRight = '-10px';
+      }
     }
 
     if(tile === Tiles.point){
@@ -182,7 +143,7 @@ function Tile(props: Props): ReactElement{
   const style = generateTileStyle(props.map, config.mazeColumns, props.index);
 
   return(
-      <TileWrapper adjacentsBorders={style.adjacentsBorders} style={style.tileStyle}>
+      <TileWrapper style={style.tileStyle}>
         {/* <small style={{fontSize: '12px', position: 'absolute', marginTop: '5px', marginLeft: '-5px', opacity: '0.5'}}>
           {props.index}
         </small> */}
