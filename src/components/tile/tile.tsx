@@ -130,7 +130,7 @@ function Tile(props: Props): ReactElement{
 
     if(tile === Tiles.ghostGate){
       tileStyle = {
-        width: '100%',
+        width: '150%',
         height: '5px',
         backgroundColor: '#fff',
         placeSelf: 'center',  

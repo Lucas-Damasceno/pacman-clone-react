@@ -1,29 +1,29 @@
-
 const MazeMap =
 {original:
 `
-xxxxxxxxxx x xxxxxxxxxx
-x......... x .........x
-xOxxx.xxx. x .xxx.xxxOx
-x.xxx.xxx. x .xxx.xxx.x
-x......... . .........x
-x.xxx.x.xx x xx.x.xxx.x
-x.....x... x ...x.....x
-xxxxx.xxx. x .xxx.xxxxx
-____x.x___ 1 ___x.x____
-=xxxx.x_xx - xx_x.xxxx=
-<____.__x2 3 4x__.____>
-=xxxx.x_xx x xx_x.xxxx=
-____x.x___ _ ___x.x____
-xxxxx.x_xx x xx_x.xxxxx
-x......... x .........x
-x.xxx.xxx. x .xxx.xxx.x
-xO..x..... P .....x..Ox
-xxx.x.x.xx x xx.x.x.xxx
-x.....x... x ...x.....x
-x.xxxxxxx. x .xxxxxxx.x
-x......... . .........x
-xxxxxxxxxx x xxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxx x xxxxxxxxxxxxxxxxxxxx
+xx.................. x ..................xx
+xx..xxxxxx..xxxxxx.. x ..xxxxxx..xxxxxx..xx
+xxOOxxxxxx..xxxxxx.. x ..xxxxxx..xxxxxxOOxx
+xx..xxxxxx..xxxxxx.. x ..xxxxxx..xxxxxx..xx
+xx.................. . ..................xx
+xx..xxxxxx..xx..xxxx x xxxx..xx..xxxxxx..xx
+xx..........xx...... x ......xx..........xx
+xxxxxxxxxx..xxxxxx.. x ..xxxxxx..xxxxxxxxxx
+________xx..xx______ 1 ______xx..xx________
+==xxxxxxxx..xx__xxxx - xxxx__xx..xxxxxxxx==
+<<________..____xx2_ 3 _4xx____..________>>
+==xxxxxxxx..xx__xxxx x xxxx__xx..xxxxxxxx==
+________xx..xx______ _ ______xx..xx________
+xxxxxxxxxx..xx__xxxx x xxxx__xx..xxxxxxxxxx
+xx.................. x ..................xx
+xx..xxxxxx..xxxxxx.. x ..xxxxxx..xxxxxx..xx
+xxOO....xx.......... P ..........xx....OOxx
+xxxxxx..xx..xx..xxxx x xxxx..xx..xx..xxxxxx
+xx..........xx...... x ......xx..........xx
+xx..xxxxxxxxxxxxxx.. x ..xxxxxxxxxxxxxx..xx
+xx.................. . ..................xx
+xxxxxxxxxxxxxxxxxxxx x xxxxxxxxxxxxxxxxxxxx
 `,
   filteredMap: function() {
     return this.original.replace(/(\r\n|\n|\r)/gm, "").replaceAll(' ', '');

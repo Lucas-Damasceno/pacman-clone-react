@@ -151,10 +151,10 @@ function Ghost(props: Props): ReactElement {
   }
 
   const ghostColor = {
-    '1': '#F70000',
-    '2': '#F7B2F7',
-    '3': '#FFB851',
-    '4': '#009999',
+    '1': '#FF0000',
+    '2': '#00ffff',
+    '3': '#ffb8ff',
+    '4': '#ffb851',
   };
 
   const runningSpeed = ghostState.moving ? 0.6 : 0;

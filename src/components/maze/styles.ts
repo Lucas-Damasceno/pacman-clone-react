@@ -10,8 +10,8 @@ const S = {
     border-radius: 20px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(${config.mazeColumns}, 40px);
-    grid-template-rows: repeat(${config.mazeRows}, 40px);
+    grid-template-columns: repeat(${config.mazeColumns}, ${config.tileSizeInPx}px);
+    grid-template-rows: repeat(${config.mazeRows}, ${config.tileSizeInPx}px);
     overflow: hidden;
   `,
 

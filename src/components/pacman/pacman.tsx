@@ -51,7 +51,7 @@ const PacManBottomAnimation = keyframes`
 
 const PacManTop = styled.div<PacManPartAnimation>`
   height: 18px;
-  width: 40px;
+  width: ${config.tileSizeInPx}px;
   margin-left: -3px;
   margin-top: -4px;
   border-top-left-radius: 15px;
@@ -63,7 +63,7 @@ const PacManTop = styled.div<PacManPartAnimation>`
 
 const PacManBottom = styled.div<PacManPartAnimation>`
   height: 18px;
-  width: 40px;
+  width: ${config.tileSizeInPx}px;
   margin-left: -3px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
