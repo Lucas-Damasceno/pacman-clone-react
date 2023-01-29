@@ -40,15 +40,15 @@ const PacManCharacter = styled.div<PacmanCharacterProps>`
   align-items: center;
 
   animation: ${prop => prop.moving ? PacManMouthAnimation : null} .2s linear infinite;
-  clip-path: polygon(0 0, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 52% 50%);
+  clip-path: polygon(0 0, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 60% 50%);
 `;
 
 const PacManMouthAnimation = keyframes`
   0%{
-    clip-path: polygon(0 0, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 52% 50%);
+    clip-path: polygon(0 0, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 60% 50%);
   }
   50%{
-    clip-path: polygon(0 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 50%, 50% 50%);
+    clip-path: polygon(0 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 50%, 60% 50%);
   }
 `
 
