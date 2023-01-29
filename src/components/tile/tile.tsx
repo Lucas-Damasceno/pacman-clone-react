@@ -59,12 +59,12 @@ function Tile(props: Props): ReactElement{
       const borderStyle = '2px solid blue';
 
       tileStyle = {
-        borderRadius: '12px',
+        borderRadius: `${config.tileSizeInPx / 2}px`,
         borderTop: borderStyle,
         borderRight: borderStyle,
         borderBottom: borderStyle,
         borderLeft: borderStyle,
-        margin: '16px',
+        margin: `${config.tileSizeInPx / 2}px`,
         // scale: '.5',
       };
 
@@ -112,9 +112,10 @@ function Tile(props: Props): ReactElement{
       if(AdjacentTilesWall(index, mazeMap, mapColumns) && topRight !== Tiles.wall){
         tileStyle = {
           ...tileStyle,
-          height: '18px',
-          width: '18px',
-          marginLeft: '12px',
+          // o +2 e -2 é o border, se fosse border 3px seriam +3
+          height: `${config.tileSizeInPx / 2 + 2}px`,
+          width: `${config.tileSizeInPx / 2 + 2}px`,
+          marginLeft: `${config.tileSizeInPx / 2 - 2}px`,
           boxSizing: 'border-box',
           borderBottom: '2px solid blue',
           borderLeft: '2px solid blue',
@@ -125,8 +126,8 @@ function Tile(props: Props): ReactElement{
       if(AdjacentTilesWall(index, mazeMap, mapColumns) && topLeft !== Tiles.wall){
         tileStyle = {
           ...tileStyle,
-          height: '18px',
-          width: '18px',
+          height: `${config.tileSizeInPx / 2 + 2}px`,
+          width: `${config.tileSizeInPx / 2 + 2}px`,
           boxSizing: 'border-box',
           borderBottom: '2px solid blue',
           borderRight: '2px solid blue',
@@ -137,10 +138,10 @@ function Tile(props: Props): ReactElement{
       if(AdjacentTilesWall(index, mazeMap, mapColumns) && bottomRight !== Tiles.wall){
         tileStyle = {
           ...tileStyle,
-          height: '18px',
-          width: '18px',
-          marginLeft: '12px',
-          marginTop: '12px',
+          height: `${config.tileSizeInPx / 2 + 2}px`,
+          width: `${config.tileSizeInPx / 2 + 2}px`,
+          marginLeft: `${config.tileSizeInPx / 2 - 2}px`,
+          marginTop: `${config.tileSizeInPx / 2 - 2}px`,
           boxSizing: 'border-box',
           borderTop: '2px solid blue',
           borderLeft: '2px solid blue',
@@ -151,9 +152,9 @@ function Tile(props: Props): ReactElement{
       if(AdjacentTilesWall(index, mazeMap, mapColumns) && bottomLeft !== Tiles.wall){
         tileStyle = {
           ...tileStyle,
-          height: '18px',
-          width: '18px',
-          marginTop: '12px',
+          height: `${config.tileSizeInPx / 2 + 2}px`,
+          width: `${config.tileSizeInPx / 2 + 2}px`,
+          marginTop: `${config.tileSizeInPx / 2 - 2}px`,
           boxSizing: 'border-box',
           borderTop: '2px solid blue',
           borderRight: '2px solid blue',
