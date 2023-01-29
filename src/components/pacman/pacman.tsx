@@ -48,7 +48,6 @@ const PacManMouth = styled.div`
   border-top: ${config.tileSizeInPx / 2.2}px solid transparent;
   border-left: ${config.tileSizeInPx / 1.5}px solid #282C34;
   border-bottom: ${config.tileSizeInPx / 2.2}px solid transparent;
-  /* animation: ${prop => prop.top} .2s linear infinite; */
 
 `
 

@@ -42,15 +42,15 @@ function Tile(props: Props): ReactElement{
   function generateTileStyle(mazeMap: string, mapColumns: number,index: number){
     const tile = mazeMap[index] as PossibleTiles;
 
-    const rightTile = mazeMap[index + 1];
-    const leftTile = mazeMap[index -1];
-    const topTile = mazeMap[index - mapColumns];
-    const bottomTile = mazeMap[index + mapColumns];
+    const rightTile = mazeMap[index + 1] || 'x';
+    const leftTile = mazeMap[index -1] || 'x';
+    const topTile = mazeMap[index - mapColumns] || 'x';
+    const bottomTile = mazeMap[index + mapColumns] || 'x';
 
-    const topRight = mazeMap[index - mapColumns + 1];
-    const topLeft = mazeMap[index - mapColumns - 1];
-    const bottomRight = mazeMap[index + mapColumns + 1];
-    const bottomLeft = mazeMap[index + mapColumns - 1];
+    const topRight = mazeMap[index - mapColumns + 1] || 'x';
+    const topLeft = mazeMap[index - mapColumns - 1] || 'x';
+    const bottomRight = mazeMap[index + mapColumns + 1] || 'x';
+    const bottomLeft = mazeMap[index + mapColumns - 1] || 'x';
 
     let tileStyle: React.CSSProperties = {};
     let adjacentsBorders: Directions[] = [];
