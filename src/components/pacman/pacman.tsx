@@ -36,7 +36,7 @@ const PacManCharacter = styled.div<PacmanCharacterProps>`
   overflow: hidden;
   /* background-color: yellow; */
   border-radius: 50%;
-  scale: 1.3;
+  scale: 1.5;
 `;
 
 const PacManTopAnimation = keyframes`

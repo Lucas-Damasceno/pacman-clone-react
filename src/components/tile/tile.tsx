@@ -19,6 +19,26 @@ const TileWrapper = styled.div`
 
 function Tile(props: Props): ReactElement{
 
+  function AdjacentTilesWall(index: number, mazeMap: string, mapColumns: number){
+    const rightTile = mazeMap[index + 1];
+    const leftTile = mazeMap[index -1];
+    const topTile = mazeMap[index - mapColumns];
+    const bottomTile = mazeMap[index + mapColumns];
+
+    const topRight = mazeMap[index - mapColumns + 1];
+    const topLeft = mazeMap[index - mapColumns - 1];
+    const bottomLeft = mazeMap[index + mapColumns - 1];
+    const bottomRight = mazeMap[index - mapColumns + 1];
+
+    const adjacentTiles = [rightTile, leftTile, topTile, bottomTile]
+
+    if(adjacentTiles.every(item => item === 'x')){
+      return true
+    }
+
+    return false
+  }
+
   function generateTileStyle(mazeMap: string, mapColumns: number,index: number){
     const tile = mazeMap[index] as PossibleTiles;
 
@@ -27,6 +47,11 @@ function Tile(props: Props): ReactElement{
     const topTile = mazeMap[index - mapColumns];
     const bottomTile = mazeMap[index + mapColumns];
 
+    const topRight = mazeMap[index - mapColumns + 1];
+    const topLeft = mazeMap[index - mapColumns - 1];
+    const bottomRight = mazeMap[index + mapColumns + 1];
+    const bottomLeft = mazeMap[index + mapColumns - 1];
+
     let tileStyle: React.CSSProperties = {};
     let adjacentsBorders: Directions[] = [];
 
@@ -34,12 +59,12 @@ function Tile(props: Props): ReactElement{
       const borderStyle = '2px solid blue';
 
       tileStyle = {
-        borderRadius: '20px',
+        borderRadius: '12px',
         borderTop: borderStyle,
         borderRight: borderStyle,
         borderBottom: borderStyle,
         borderLeft: borderStyle,
-        margin: '8px',
+        margin: '16px',
         // scale: '.5',
       };
 
@@ -83,21 +108,59 @@ function Tile(props: Props): ReactElement{
         }
       }
 
-      if(tile === Tiles.wall && topTile === Tiles.wall){
-        tileStyle.marginTop = '-6px';
+      //Tiles de Junção
+      if(AdjacentTilesWall(index, mazeMap, mapColumns) && topRight !== Tiles.wall){
+        tileStyle = {
+          ...tileStyle,
+          height: '18px',
+          width: '18px',
+          marginLeft: '12px',
+          boxSizing: 'border-box',
+          borderBottom: '2px solid blue',
+          borderLeft: '2px solid blue',
+          borderBottomLeftRadius: '6px',
+        }
       }
 
-      if(tile === Tiles.wall && bottomTile === Tiles.wall){
-        tileStyle.marginBottom = '-6px';
+      if(AdjacentTilesWall(index, mazeMap, mapColumns) && topLeft !== Tiles.wall){
+        tileStyle = {
+          ...tileStyle,
+          height: '18px',
+          width: '18px',
+          boxSizing: 'border-box',
+          borderBottom: '2px solid blue',
+          borderRight: '2px solid blue',
+          borderBottomRightRadius: '6px',
+        }
       }
 
-      if(tile === Tiles.wall && leftTile === Tiles.wall){
-        tileStyle.marginLeft = '-6px';
+      if(AdjacentTilesWall(index, mazeMap, mapColumns) && bottomRight !== Tiles.wall){
+        tileStyle = {
+          ...tileStyle,
+          height: '18px',
+          width: '18px',
+          marginLeft: '12px',
+          marginTop: '12px',
+          boxSizing: 'border-box',
+          borderTop: '2px solid blue',
+          borderLeft: '2px solid blue',
+          borderTopLeftRadius: '6px',
+        }
       }
 
-      if(tile === Tiles.wall && rightTile === Tiles.wall){
-        tileStyle.marginRight = '-6px';
+      if(AdjacentTilesWall(index, mazeMap, mapColumns) && bottomLeft !== Tiles.wall){
+        tileStyle = {
+          ...tileStyle,
+          height: '18px',
+          width: '18px',
+          marginTop: '12px',
+          boxSizing: 'border-box',
+          borderTop: '2px solid blue',
+          borderRight: '2px solid blue',
+          borderTopRightRadius: '6px',
+        }
       }
+
     }
 
     if(tile === Tiles.point){
