@@ -4,9 +4,9 @@ const MazeMap =
 xxxxxxxxxxxxxx xx xxxxxxxxxxxxxx
 xxxxxxxxxxxxxx xx xxxxxxxxxxxxxx
 x............. xx .............x
-x.xxxx.xxxxxx. xx .xxxxxx.xxxx.x
-xOxxxx.xxxxxx. xx .xxxxxx.xxxxOx
-x.xxxx.xxxxxx. xx .xxxxxx.xxxx.x
+x.xxxxx.xxxxx. xx .xxxxx.xxxxx.x
+xOxxxxx.xxxxx. xx .xxxxx.xxxxxOx
+x.xxxxx.xxxxx. xx .xxxxx.xxxxx.x
 x............. .. .............x
 x.xxxxx.xx.xxx xx xxx.xx.xxxxx.x
 x.xxxxx.xx.xxx xx xxx.xx.xxxxx.x

@@ -6,7 +6,7 @@ const config = {
   mazeRows: (MazeMap.original.match(/\n/g) || []).length - 1,
   //Controla a velocidade do jogo, quanto menor, mais rápido
   pacmanSpeed: .15,
-  pointValue: 50,
+  pointValue: 10,
   pointCssVar: '--without-point',
   maximumTimePoweredInTicks: 50,
 } as const;
