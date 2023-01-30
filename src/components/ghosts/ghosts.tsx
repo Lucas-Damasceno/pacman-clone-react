@@ -6,6 +6,7 @@ import FullMazeState from "../../states/fullMaze.state";
 import { CharacterStateType } from "../../types/characterStateType";
 import { IndexObject } from "../../types/indexObject";
 import Directions from "../../types/directions";
+import GhostMouth from "./ghostMouth";
 
 type PropsStyled = {
   color: string,
@@ -36,11 +37,14 @@ const GhostBody = styled.div<PropsStyled>`
   transition: translate linear ${config.pacmanSpeed}s;
   border-radius: ${config.tileSizeInPx * 1.2}px ${config.tileSizeInPx * 1.2}px 0 0px ;
   display: flex;
-  
   align-items: center;
   justify-content: space-around;
   padding-bottom:  ${config.tileSizeInPx / 4}px;
   box-sizing: border-box;
+
+  &.feared{
+    background-color: blue;
+  }
 `
 
 const GhostEyes = styled.div`
@@ -70,6 +74,22 @@ const GhostEyes = styled.div`
   &.right{
     justify-content: right;
     align-items: center;
+  }
+`
+
+const FearedFace = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: ${config.tileSizeInPx / 4}px;
+  width: 100%;
+  height: 100%;
+
+  .eyes{
+    margin-top: ${config.tileSizeInPx / 3}px;
+    height: ${config.tileSizeInPx / 5}px;
+    width: ${config.tileSizeInPx / 5}px;
+    background-color: #ececec;
   }
 `
 
@@ -131,16 +151,27 @@ function Ghost(props: Props): ReactElement {
   };
 
   const runningSpeed = ghostState.moving ? 0.6 : 0;
+  const feared = !!fullMazeState.charactersState.find(item => item.type === 'pacman')?.powered;
 
   return (
     <GhostWrapper>
-      <GhostBody runningSpeed={runningSpeed} color={ghostColor[props.type]} style={ghostStyle}>
-        <GhostEyes className={ghostState.direction}>
-          <GhostPupils/>
-        </GhostEyes>
-        <GhostEyes className={ghostState.direction}>
-          <GhostPupils/>
-        </GhostEyes>
+      <GhostBody runningSpeed={runningSpeed} color={ghostColor[props.type]} style={ghostStyle} className={`${ghostState.direction} ${feared ? 'feared' : null}`}>
+        {!feared ?
+        <>  
+          <GhostEyes className={ghostState.direction}>
+            <GhostPupils/>
+          </GhostEyes>
+          <GhostEyes className={ghostState.direction}>
+            <GhostPupils/>
+          </GhostEyes>
+        </>
+        :
+        <FearedFace>
+          <div className="eyes"/>
+          <div className="eyes"/>
+          <GhostMouth/>
+        </FearedFace>
+        }
         <GhostBottom runningSpeed={runningSpeed}>
           <div className="running-container">
             <div/>
