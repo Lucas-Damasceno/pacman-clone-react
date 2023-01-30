@@ -8,11 +8,7 @@ const config = {
   pacmanSpeed: .25,
   pointValue: 50,
   pointCssVar: '--without-point',
-  maximumTimePoweredInTicks: 30,
-
-  pacmanXCssVar: '--pacManX',
-  pacmanYCssVar: '--pacmanY',
-  pacmanDirection: '--pacmanRotate'
+  maximumTimePoweredInTicks: 50,
 } as const;
 
 export default config

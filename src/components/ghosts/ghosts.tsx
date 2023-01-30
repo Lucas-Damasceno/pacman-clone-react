@@ -86,7 +86,7 @@ const FearedFace = styled.div`
   height: 100%;
 
   .eyes{
-    margin-top: ${config.tileSizeInPx / 3}px;
+    margin-top: ${config.tileSizeInPx / 2}px;
     height: ${config.tileSizeInPx / 5}px;
     width: ${config.tileSizeInPx / 5}px;
     background-color: #ececec;
@@ -152,6 +152,7 @@ function Ghost(props: Props): ReactElement {
 
   const runningSpeed = ghostState.moving ? 0.6 : 0;
   const feared = !!fullMazeState.charactersState.find(item => item.type === 'pacman')?.powered;
+  // const feared = true;
 
   return (
     <GhostWrapper>

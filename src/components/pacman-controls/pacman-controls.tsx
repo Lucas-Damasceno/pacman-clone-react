@@ -42,8 +42,8 @@ function PacmanControls(): ReactElement {
 
   const canMove = (charType: CharacterType, direction: Directions, characterIndex: number, newMazeState: MazeStateType[]) => {
     const blockableTilesFor: IndexObject<CharacterType, PossibleTiles[]> = {
-      ghost: [Tiles.wall, Tiles.ghost1, Tiles.ghost2, Tiles.ghost3, Tiles.ghost4],
-      pacman: [Tiles.wall, Tiles.wallHorizontal, Tiles.ghostGate],
+      ghost: [Tiles.wall, Tiles.wallHorizontal, Tiles.wallVertical ],
+      pacman: [Tiles.wall, Tiles.wallHorizontal, Tiles.ghostGate, Tiles.wallVertical],
     }
 
     let blockableTiles: PossibleTiles[] = [];

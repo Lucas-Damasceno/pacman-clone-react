@@ -1,6 +1,7 @@
 export const Tiles = {
   wall: 'x',
   wallHorizontal: '=',
+  wallVertical: '|',
   point: '.',
   withoutPoint: '_',
   power: 'O',

@@ -1,10 +1,7 @@
 import React, { ReactElement } from "react"
 import config from "../../config/config";
-import PacMan from "../pacman/pacman";
 import PossibleTiles from "../../types/possibleTiles";
 import { Tiles } from "../../enums/tiles.enum";
-import Ghost from "../ghosts/ghosts";
-import { useRecoilState } from 'recoil';
 import styled from "styled-components";
 import Directions from "../../types/directions";
 
@@ -55,7 +52,7 @@ function Tile(props: Props): ReactElement{
     let tileStyle: React.CSSProperties = {};
     let adjacentsBorders: Directions[] = [];
 
-    if(tile === Tiles.wall || tile === Tiles.wallHorizontal){
+    if(tile === Tiles.wall || tile === Tiles.wallHorizontal || tile === Tiles.wallVertical){
       const borderStyle = '2px solid blue';
 
       tileStyle = {
@@ -82,14 +79,14 @@ function Tile(props: Props): ReactElement{
         tileStyle.marginLeft = '0';
       }
 
-      if(topTile === Tiles.wall){
+      if(topTile === Tiles.wall || topTile === Tiles.wallHorizontal){
         tileStyle.borderTop = 'none'
         tileStyle.borderTopRightRadius = '0';
         tileStyle.borderTopLeftRadius = '0';
         tileStyle.marginTop= '0';
       }
     
-      if(bottomTile === Tiles.wall){
+      if(bottomTile === Tiles.wall || bottomTile === Tiles.wallHorizontal){
         tileStyle.borderBottom = 'none'
         tileStyle.borderBottomRightRadius = '0';
         tileStyle.borderBottomLeftRadius = '0';
@@ -103,8 +100,24 @@ function Tile(props: Props): ReactElement{
           borderBottom: borderStyle,
           borderRight: 'none',
           borderLeft: 'none',
-          marginTop: '8px',
-          marginBottom: '8px',
+          height: `${config.tileSizeInPx / 7}px`,
+          width: `${config.tileSizeInPx * 2}px`,
+          alignSelf: 'center',
+          justifySelf: 'center'
+        }
+      }
+
+      if(tile === Tiles.wallVertical){
+        tileStyle = {
+          borderRadius: '0',
+          borderLeft: borderStyle,
+          borderRight: borderStyle,
+          borderTop: 'none',
+          borderBottom: 'none',
+          height: `${config.tileSizeInPx * 2}px`,
+          width: `${config.tileSizeInPx / 7}px`,
+          justifySelf: 'center',
+          alignSelf: 'center',
         }
       }
 
