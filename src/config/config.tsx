@@ -5,7 +5,7 @@ const config = {
   mazeColumns: MazeMap.original.replaceAll(' ', '').split('').findIndex((item, index) => item === '\n' && index !== 0) - 1,
   mazeRows: (MazeMap.original.match(/\n/g) || []).length - 1,
   //Controla a velocidade do jogo, quanto menor, mais rápido
-  pacmanSpeed: .25,
+  pacmanSpeed: .15,
   pointValue: 50,
   pointCssVar: '--without-point',
   maximumTimePoweredInTicks: 50,
