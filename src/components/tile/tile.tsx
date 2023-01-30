@@ -101,7 +101,7 @@ function Tile(props: Props): ReactElement{
           borderRight: 'none',
           borderLeft: 'none',
           height: `${config.tileSizeInPx / 7}px`,
-          width: `${config.tileSizeInPx * 2}px`,
+          width: `${config.tileSizeInPx * 2 + 5}px`,
           alignSelf: 'center',
           justifySelf: 'center'
         }
@@ -114,7 +114,7 @@ function Tile(props: Props): ReactElement{
           borderRight: borderStyle,
           borderTop: 'none',
           borderBottom: 'none',
-          height: `${config.tileSizeInPx * 2}px`,
+          height: `${config.tileSizeInPx * 2 + 5}px`,
           width: `${config.tileSizeInPx / 7}px`,
           justifySelf: 'center',
           alignSelf: 'center',
@@ -133,6 +133,7 @@ function Tile(props: Props): ReactElement{
           borderBottom: '2px solid blue',
           borderLeft: '2px solid blue',
           borderBottomLeftRadius: '6px',
+          background: 'unset'
         }
       }
 
@@ -145,6 +146,7 @@ function Tile(props: Props): ReactElement{
           borderBottom: '2px solid blue',
           borderRight: '2px solid blue',
           borderBottomRightRadius: '6px',
+          background: 'unset'
         }
       }
 
@@ -159,6 +161,7 @@ function Tile(props: Props): ReactElement{
           borderTop: '2px solid blue',
           borderLeft: '2px solid blue',
           borderTopLeftRadius: '6px',
+          background: 'unset'
         }
       }
 
@@ -172,6 +175,7 @@ function Tile(props: Props): ReactElement{
           borderTop: '2px solid blue',
           borderRight: '2px solid blue',
           borderTopRightRadius: '6px',
+          background: 'unset'
         }
       }
 
@@ -210,7 +214,8 @@ function Tile(props: Props): ReactElement{
         width: '150%',
         height: '5px',
         backgroundColor: '#fff',
-        placeSelf: 'center',  
+        placeSelf: 'center',
+        position: 'relative'
       }
     }
 

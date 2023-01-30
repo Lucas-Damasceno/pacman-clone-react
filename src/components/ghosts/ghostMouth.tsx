@@ -10,7 +10,7 @@ const GhostMouthS = styled.div`
   div{
     height: ${config.tileSizeInPx / 10}px;
     width: ${config.tileSizeInPx / 10}px;
-    background-color: white;
+    background-color: #ececec;
 
     &.up{
       margin-top: -${config.tileSizeInPx / 10}px;
