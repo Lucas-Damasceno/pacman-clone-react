@@ -12,6 +12,7 @@ import GameStart from "../../states/gameStart.state";
 type PropsStyled = {
   color: string,
   runningSpeed: number,
+  transitionTime: number
 }
 
 const GhostWrapper = styled.div`
@@ -35,7 +36,7 @@ const GhostBody = styled.div<PropsStyled>`
   width: ${config.tileSizeInPx * 1.4}px;
   position: absolute;
   place-self: center;
-  transition: translate linear ${config.pacmanSpeed}s;
+  transition: translate linear ${p => p.transitionTime}s;
   border-radius: ${config.tileSizeInPx * 1.2}px ${config.tileSizeInPx * 1.2}px 0 0px ;
   display: flex;
   align-items: center;
@@ -156,13 +157,15 @@ function Ghost(props: Props): ReactElement {
     '4': '#ffb851',
   };
 
+
+  const transitionTime = ghostState.teleporting ? 0 : config.pacmanSpeed;
   const runningSpeed = ghostState.moving ? 0.6 : 0;
   const feared = !!fullMazeState.charactersState.find(item => item.type === 'pacman')?.powered;
   // const feared = true;
 
   return (
     <GhostWrapper>
-      <GhostBody runningSpeed={runningSpeed} color={ghostColor[props.type]} style={ghostStyle} className={`${ghostState.direction} ${feared ? 'feared' : null}`}>
+      <GhostBody transitionTime={transitionTime} runningSpeed={runningSpeed} color={ghostColor[props.type]} style={ghostStyle} className={`${ghostState.direction} ${feared ? 'feared' : null}`}>
         {!feared ?
         <>  
           <GhostEyes className={ghostState.direction}>

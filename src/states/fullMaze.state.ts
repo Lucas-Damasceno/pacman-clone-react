@@ -51,7 +51,7 @@ const initCharactersState = (): CharacterStateType[] => {
       const ghostSpawnIndex = getInitialIndexOfGhost(ghost)
       return {
         identification: ghost,
-        direction: 'left',
+        direction: 'up',
         nextDirection: null,
         positionX: Math.floor(ghostSpawnIndex % config.mazeColumns) * config.tileSizeInPx,
         positionY: Math.floor(ghostSpawnIndex / config.mazeColumns) * config.tileSizeInPx,

@@ -341,7 +341,7 @@ function PacmanControls(): ReactElement {
     return [positionX, positionY]
   }
 
-  const getDirectionsDistance = (tileIndex: number, targetIndex: number) => {
+  const getDirectionsDistance = (tileIndex: number, targetIndex: number, maxDistanceFirst = false) => {
     const adTiles = getAdjacentTilesIndex(tileIndex);
     const directionsDistance: number[] = [];
     Object.entries(adTiles).forEach(directionTile => {
@@ -380,6 +380,11 @@ function PacmanControls(): ReactElement {
 
       return 0
     })
+
+    //Reordena pela maior distancia primeiro
+    if(maxDistanceFirst){
+      return directionArr.reverse();
+    }
 
     // return directionsDistance
     return directionArr
@@ -462,7 +467,8 @@ function PacmanControls(): ReactElement {
         target = MazeMap.filteredMap().indexOf('1');
       }
       
-      const directionsDistance = getDirectionsDistance(ghost.index, target);
+      const maxDistanceFirst = pacManState.powered;
+      const directionsDistance = getDirectionsDistance(ghost.index, target, maxDistanceFirst);
 
       directionsDistance.forEach(possibleMovement => {
         const contraryDirection = getContraryDirection(possibleMovement.direction);
@@ -514,7 +520,6 @@ function PacmanControls(): ReactElement {
 
   }, [fullMazeState])
 
-
   //control keyPressed
   useEffect(function addEventListenerKeyDown() {
     window.addEventListener('keydown', handleKeyDown);
@@ -523,7 +528,6 @@ function PacmanControls(): ReactElement {
       window.removeEventListener('keydown', handleKeyDown)
     }
   }, [fullMazeState])
-
 
   return <></>
 }
