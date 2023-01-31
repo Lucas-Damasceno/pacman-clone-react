@@ -8,12 +8,12 @@ const GhostMouthS = styled.div`
   justify-content: center;
 
   div{
-    height: ${config.tileSizeInPx / 10}px;
-    width: ${config.tileSizeInPx / 10}px;
+    height: ${config.tileSizeInPx / 12}px;
+    width: ${config.tileSizeInPx / 12}px;
     background-color: #ececec;
 
     &.up{
-      margin-top: -${config.tileSizeInPx / 10}px;
+      margin-top: -${config.tileSizeInPx / 12}px;
     }
   }
 `

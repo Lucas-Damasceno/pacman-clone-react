@@ -7,6 +7,7 @@ import { CharacterStateType } from "../../types/characterStateType";
 import { CharacterType } from "../../types/characterType";
 import Directions from "../../types/directions";
 import { IndexObject } from "../../types/indexObject";
+import { GhostKey } from "../../types/ghostKey";
 import PossibleTiles, { CharacterChar } from "../../types/possibleTiles";
 
 /* Refatorar depois */
@@ -23,6 +24,12 @@ type CharacterMazeIndex = {
 }
 
 type HorizontalDirections = 'right' | 'left';
+
+type ChoosedDirection = {
+  use: 'newDirection' | 'direction',
+  direction: Directions,
+  canMove: boolean,
+}
 
 
 function PacmanControls(): ReactElement {
@@ -64,9 +71,15 @@ function PacmanControls(): ReactElement {
   }
 
   const isTeleporting = (character: CharacterStateType) => {
+    if(character.index === -1) {
+      return false
+    }
+
     const teleports: PossibleTiles[] = [Tiles.teleportLeft, Tiles.teleportRight];
     const actualTile = fullMazeState.mazeState[character.index];
+
     if (teleports.includes(actualTile.originalTile) && character.teleporting === false) {
+      console.log(true)
       return true
     }
 
@@ -99,22 +112,22 @@ function PacmanControls(): ReactElement {
   }
 
   //Refatorar essa função
-  const directionOrNewDirection = (characterType: CharacterType, direction: Directions, newDirection: Directions | null, tileIndex: number, mazeState: MazeStateType[]) => {
-    if (newDirection !== null) {
-      const canMovenewDirection: boolean = canMove(characterType, newDirection, tileIndex, mazeState);
+  const directionOrNewDirection = (character: CharacterStateType, mazeState: MazeStateType[]): ChoosedDirection => {
+    if (character.nextDirection !== null) {
+      const canMovenewDirection: boolean = canMove(character.type, character.nextDirection, character.index, mazeState);
       if (canMovenewDirection) {
         return {
           use: 'newDirection',
-          direction: newDirection,
+          direction: character.nextDirection,
           canMove: canMovenewDirection
         }
       }
     }
 
-    const canMoveDirection: boolean = canMove(characterType, direction, tileIndex, mazeState);
+    const canMoveDirection: boolean = canMove(character.type, character.direction, character.index, mazeState);
     return {
       use: 'direction',
-      direction: direction,
+      direction: character.direction,
       canMove: canMoveDirection
     }
   }
@@ -135,9 +148,11 @@ function PacmanControls(): ReactElement {
     let newScore = fullMazeState.score;
 
     fullMazeState.charactersState.forEach(character => {
-      const choosedDirection = directionOrNewDirection(character.type, character.direction, character.nextDirection, character.index, fullMazeState.mazeState);
+      const choosedDirection: ChoosedDirection = directionOrNewDirection(character, fullMazeState.mazeState);      
+            
       let characterPowered = character.powered;
       let countingPoweredForManyTicks = character.poweredForManyTicks;
+      const isTeleportingChar = isTeleporting(character);
       
       if(characterPowered){
         countingPoweredForManyTicks = countingPoweredForManyTicks + 1;
@@ -149,7 +164,7 @@ function PacmanControls(): ReactElement {
       }
 
       //Se o personagem nao andou
-      if (choosedDirection.canMove === false) {
+      if (choosedDirection.canMove === false && isTeleportingChar === false) {
         newCharacterState.push({
           ...character,
           powered: characterPowered,
@@ -176,7 +191,7 @@ function PacmanControls(): ReactElement {
           ...newMazeState[character.index],
           status: tileIndex.status.filter(char => {
             const ghosts = ['1', '2', '3', '4'];
-            return !ghosts.includes(char)
+            return !ghosts.includes(char);
           })
         }
       }
@@ -191,8 +206,6 @@ function PacmanControls(): ReactElement {
       let movedToTileIndex = moveToIndex[choosedDirection.direction];
 
       let nexTileIndex = fullMazeState.mazeState[movedToTileIndex];
-
-      const isTeleportingChar = isTeleporting(character);
 
       if(isTeleportingChar){
         const teleportIndexObject: IndexObject<'<' | '>' , HorizontalDirections> = {
@@ -237,7 +250,7 @@ function PacmanControls(): ReactElement {
       const newPositionY = Math.floor(movedToTileIndex / config.mazeColumns) * config.tileSizeInPx;
       const newPositionX = Math.floor(movedToTileIndex % config.mazeColumns) * config.tileSizeInPx;
 
-      newCharacterState.push({
+      const newState: CharacterStateType = {
         ...character,
         index: movedToTileIndex,
         positionX: newPositionX,
@@ -248,7 +261,9 @@ function PacmanControls(): ReactElement {
         powered: characterPowered,
         poweredForManyTicks: countingPoweredForManyTicks,
         nextDirection: choosedDirection.use === 'newDirection' ? null : character.nextDirection,
-      })
+      }
+
+      newCharacterState.push(newState)
     })
 
     return { mazeState: newMazeState, charactersState: newCharacterState, score: newScore }
@@ -256,7 +271,10 @@ function PacmanControls(): ReactElement {
 
   const handleGameTick = () => {
     setFullMazeState(currentValue => {
-      const newState = createNextMazeState(currentValue)
+      const fullMazeValue = ghostIA(currentValue);
+
+      const newState = createNextMazeState(fullMazeValue);
+
       return {
         ...currentValue,
         score: newState.score,
@@ -299,9 +317,125 @@ function PacmanControls(): ReactElement {
     })
   }
 
-  //GHOST IA
-  const ghostIA = () => {
+  const getAdjacentTilesIndex = (index: number) => {
+    const adJacentTilesIndex: IndexObject<Directions, number> = {
+      up: index - config.mazeColumns,
+      down: index + config.mazeColumns,
+      left: index - 1,
+      right: index + 1
+    }
 
+    return adJacentTilesIndex
+  }
+
+  const getXY = (index: number) => {
+    const positionX = Math.floor(index % config.mazeColumns);
+    const positionY = Math.floor(index / config.mazeColumns);
+
+    return [positionX, positionY]
+  }
+
+  const getDirectionsDistance = (tileIndex: number, targetIndex: number) => {
+    const adTiles = getAdjacentTilesIndex(tileIndex);
+    const directionsDistance: number[] = [];
+    Object.entries(adTiles).forEach(directionTile => {
+      const directionName: Directions = directionTile[0] as Directions;
+      const directionValue = directionTile[1];
+      const [positionX, positionY] = getXY(directionValue);
+      const [targetX, targetY] = getXY(targetIndex);
+      const distance = Math.sqrt((positionX - targetX) ** 2 + (positionY - targetY) ** 2);
+
+      //segue a ordem do box model
+      const directionIndex: IndexObject<Directions, number> = {
+        up: 0,
+        right: 1,
+        down: 2,
+        left: 3
+      }
+      directionsDistance[directionIndex[directionName]] = distance;
+    })
+
+    const directionArr:{direction: Directions, distance: number}[] = [
+      {direction: 'up', distance: directionsDistance[0]},
+      {direction: 'right', distance: directionsDistance[1]},
+      {direction: 'down', distance: directionsDistance[2]},
+      {direction: 'left', distance: directionsDistance[3]},
+    ]
+
+    //Reordena pela menor distancia primeiro
+    directionArr.sort((a,b) => {
+      if(a.distance < b.distance){
+        return -1
+      }
+
+      if(a.distance > b.distance){
+        return 1
+      }
+
+      return 0
+    })
+
+    // return directionsDistance
+    return directionArr
+  }
+
+  const getContraryDirection = (direction: Directions) => {
+    const directions: IndexObject<Directions, Directions> = {
+      up: "down",
+      right: "left",
+      down: "up",
+      left: "right",
+    }
+
+    return directions[direction]
+  }
+
+  //GHOST IA
+  const ghostIA = (currentFullMazeState: FullMazeStateType): FullMazeStateType => {
+    const mazeState = {...currentFullMazeState};
+
+    const ghostCaracters = currentFullMazeState.charactersState.filter(character => character.type === 'ghost');
+    const pacManState = currentFullMazeState.charactersState.find(character => character.type === 'pacman')!;
+    const pacManIndex = pacManState.index;
+    
+    
+    const newGhostsState = ghostCaracters.map(ghostCharacter => {
+      let movedGhost: boolean = false;
+      const ghost = {...ghostCharacter};
+      const targets: IndexObject<GhostKey, number> = {
+        //Blinky, red Ghost
+        "1": pacManIndex,
+        "2": pacManIndex,
+        "3": pacManIndex,
+        "4": pacManIndex,
+      }
+
+      let target: number = targets[ghost.identification as GhostKey];
+
+      const directionsDistance = getDirectionsDistance(ghost.index, target);
+      directionsDistance.forEach(possibleMovement => {
+        const contraryDirection = getContraryDirection(possibleMovement.direction);
+        
+        if(movedGhost === false && ghost.direction !== contraryDirection){
+
+          const ghostCanMove = canMove(ghost.type, possibleMovement.direction, ghost.index, currentFullMazeState.mazeState);
+          if(ghostCanMove) {
+            ghost.direction = possibleMovement.direction;
+            movedGhost = true;
+          }
+
+        }
+      })
+
+      return ghost
+    })
+
+    // debugger
+
+    return {
+      ...mazeState,
+      charactersState: [ pacManState, ...newGhostsState]
+    }
   }
 
 

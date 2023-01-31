@@ -7,6 +7,7 @@ import { CharacterStateType } from "../../types/characterStateType";
 import { IndexObject } from "../../types/indexObject";
 import Directions from "../../types/directions";
 import GhostMouth from "./ghostMouth";
+import GameStart from "../../states/gameStart.state";
 
 type PropsStyled = {
   color: string,
@@ -130,6 +131,8 @@ type Props = {
 
 function Ghost(props: Props): ReactElement {
   const [fullMazeState, setFullMazeState] = useRecoilState(FullMazeState);
+  const [gameStart, setStartGame] = useRecoilState(GameStart);
+
   const ghostState = fullMazeState.charactersState.find(character => character.identification === props.type) as CharacterStateType;
   
   const pupilsIndexObject: IndexObject<Directions, any> = {
@@ -139,8 +142,11 @@ function Ghost(props: Props): ReactElement {
     up: {top: '0'}
   }  
 
+  const ghostX =  gameStart ? ghostState.positionX : ghostState.positionX + config.tileSizeInPx/2;
+  const ghostY = ghostState.positionY;
+
   const ghostStyle: React.CSSProperties = {
-    translate: `${ghostState.positionX}px ${ghostState.positionY}px`,
+    translate: `${ghostX}px ${ghostY}px`,
   }
 
   const ghostColor = {

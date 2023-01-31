@@ -5,6 +5,7 @@ import config from "../../config/config";
 import FullMazeState from "../../states/fullMaze.state";
 import { Tiles } from "../../enums/tiles.enum";
 import { CharacterStateType } from "../../types/characterStateType";
+import GameStart from "../../states/gameStart.state";
 
 const validButtons = ['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'] as const;
 type ValidButtons = typeof validButtons[number];
@@ -54,6 +55,8 @@ const PacManMouthAnimation = keyframes`
 
 function PacMan(): ReactElement {
   const [fullMazeState, setFullMazeState] = useRecoilState(FullMazeState);
+  const [gameStart, setStartGame] = useRecoilState(GameStart);
+
   const pacmanState = fullMazeState.charactersState.find(character => character.identification === Tiles.pacman) as CharacterStateType;
 
   const pacManDirectionStyle = {
@@ -63,8 +66,11 @@ function PacMan(): ReactElement {
     right: '180deg',
   }
 
+  const pacmanX =  gameStart ? pacmanState.positionX : pacmanState.positionX + config.tileSizeInPx/2;
+  const pacmanY = pacmanState.positionY;
+
   const pacmanStyle: React.CSSProperties = {
-    translate: `${pacmanState.positionX}px ${pacmanState.positionY}px`,
+    translate: `${pacmanX}px ${pacmanY}px`,
     rotate: pacManDirectionStyle[pacmanState.direction],
   }
 
