@@ -9,6 +9,7 @@ import Directions from "../../types/directions";
 import { IndexObject } from "../../types/indexObject";
 import { GhostKey } from "../../types/ghostKey";
 import PossibleTiles, { CharacterChar } from "../../types/possibleTiles";
+import MazeMap from "../maze/mazeMap";
 
 /* Refatorar depois */
 const validButtons = ['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'] as const;
@@ -439,22 +440,34 @@ function PacmanControls(): ReactElement {
       const targets: IndexObject<GhostKey, number> = {
         //Blinky, red Ghost
         "1": pacManIndex,
-        //Byan, cyan Ghost
+        //Inky, cyan Ghost
         "2": targetsObj.blinky,
         //Pinky, pink Ghost
         "3": targetsObj.pinky,
-        //Orange, orange Ghost
+        //Clyde, orange Ghost
         "4": targetsObj.clyde,
       }
 
       let target: number = targets[ghost.identification as GhostKey];
+      
+      let [ghostCageBeginX, ghostCageBeginY] = getXY(config.ghostCage.begin);
+      let [ghostCageEndX, ghostCageEndY] = getXY(config.ghostCage.end);
+      const [ghostX, ghostY] = getXY(ghost.index);
+      
+      //Necessário por conta do ghostGate
+      ghostCageBeginY = ghostCageBeginY - 1;
 
+      if(ghostX >= ghostCageBeginX && ghostX < ghostCageEndX && ghostY >= ghostCageBeginY && ghostY <= ghostCageEndY ){
+        //Se estiver na gaiola, manda ele pra posição inicial do primeiro
+        target = MazeMap.filteredMap().indexOf('1');
+      }
+      
       const directionsDistance = getDirectionsDistance(ghost.index, target);
+
       directionsDistance.forEach(possibleMovement => {
         const contraryDirection = getContraryDirection(possibleMovement.direction);
         
         if(movedGhost === false && ghost.direction !== contraryDirection){
-
           const ghostCanMove = canMove(ghost.type, possibleMovement.direction, ghost.index, currentFullMazeState.mazeState);
           if(ghostCanMove) {
             ghost.direction = possibleMovement.direction;

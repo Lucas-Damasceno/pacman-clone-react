@@ -8,7 +8,6 @@ const config = {
     begin: MazeMap.filteredMap().indexOf('b'),
     end: MazeMap.filteredMap().indexOf('e'),
   },
-  ghostGatesIndex: [MazeMap.filteredMap().indexOf('-'), MazeMap.filteredMap().lastIndexOf('-')],
   //Controla a velocidade do jogo, quanto menor, mais rápido
   pacmanSpeed: .10,
   pointValue: 10,
