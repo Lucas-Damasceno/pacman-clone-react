@@ -47,13 +47,14 @@ function PacmanControls(): ReactElement {
     return adjacentTiles
   }
 
-  const canMove = (charType: CharacterType, direction: Directions, characterIndex: number, newMazeState: MazeStateType[]) => {
+  const canMove = (charType: CharacterType, direction: Directions, characterIndex: number, newMazeState: MazeStateType[], ghostEyes: boolean = false) => {
     const blockableTilesFor: IndexObject<CharacterType, PossibleTiles[]> = {
       ghost: [Tiles.wall, Tiles.wallHorizontal, Tiles.wallVertical ],
       pacman: [Tiles.wall, Tiles.wallHorizontal, Tiles.ghostGate, Tiles.wallVertical],
     }
 
     let blockableTiles: PossibleTiles[] = [];
+
     if (charType === 'ghost') {
       blockableTiles = blockableTilesFor.ghost
     }
@@ -66,6 +67,10 @@ function PacmanControls(): ReactElement {
 
     const tileToMove = getAdjacentTiles(characterIndex, newMazeState)[direction];
     const canMoveToTile = !tileToMove.status.find(char => blockableTiles.includes(char));
+
+    if(tileToMove.originalTile === Tiles.ghostGate && direction === 'down' && ghostEyes === false){
+      return false
+    }
 
     return canMoveToTile
   }
@@ -390,6 +395,32 @@ function PacmanControls(): ReactElement {
     return directions[direction]
   }
 
+  const getTargets = (pacManIndex: number, pacManDirection: Directions) => {
+    const pinkyPossibleTarget: IndexObject<Directions, number> = {
+      up: pacManIndex - (config.mazeColumns * 4) - 4,
+      down: pacManIndex + (config.mazeColumns * 4),
+      right: pacManIndex + 4,
+      left: pacManIndex - 4,
+    }
+
+    const blinkyPossibleTarget: IndexObject<Directions, number> = {
+      up: pacManIndex + (config.mazeColumns * 4) - 4,
+      down: pacManIndex - (config.mazeColumns * 4),
+      right: pacManIndex - 4,
+      left: pacManIndex + 4,
+    }
+
+    const max = config.mazeColumns * config.mazeRows;
+    const min = 1;
+    const clydeTarget = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    return {
+      pinky: pinkyPossibleTarget[pacManDirection],
+      blinky: blinkyPossibleTarget[pacManDirection],
+      clyde: clydeTarget
+    }
+  }
+
   //GHOST IA
   const ghostIA = (currentFullMazeState: FullMazeStateType): FullMazeStateType => {
     const mazeState = {...currentFullMazeState};
@@ -402,12 +433,18 @@ function PacmanControls(): ReactElement {
     const newGhostsState = ghostCaracters.map(ghostCharacter => {
       let movedGhost: boolean = false;
       const ghost = {...ghostCharacter};
+
+      const targetsObj = getTargets(pacManIndex, pacManState.direction);
+
       const targets: IndexObject<GhostKey, number> = {
         //Blinky, red Ghost
         "1": pacManIndex,
-        "2": pacManIndex,
-        "3": pacManIndex,
-        "4": pacManIndex,
+        //Byan, cyan Ghost
+        "2": targetsObj.blinky,
+        //Pinky, pink Ghost
+        "3": targetsObj.pinky,
+        //Orange, orange Ghost
+        "4": targetsObj.clyde,
       }
 
       let target: number = targets[ghost.identification as GhostKey];
@@ -437,7 +474,6 @@ function PacmanControls(): ReactElement {
       charactersState: [ pacManState, ...newGhostsState]
     }
   }
-
 
   //gameTick
   useEffect(function gameTick() {
