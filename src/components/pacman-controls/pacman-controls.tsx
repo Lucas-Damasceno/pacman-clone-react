@@ -142,9 +142,8 @@ function PacmanControls(): ReactElement {
     let newStatus = [...tileStatus];
 
     if(characterIdentification === Tiles.pacman){
-      newStatus = newStatus
+      newStatus = newStatus.filter(tile => tile !== Tiles.point && tile !== Tiles.power)
     }
-
 
     if (tileStatus.includes(characterIdentification)) {
       return newStatus
