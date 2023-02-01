@@ -138,13 +138,18 @@ function PacmanControls(): ReactElement {
     }
   }
 
-  const getTileStatus = (tileStatus: PossibleTiles[], itemToAdd: PossibleTiles) => {
-    const newStatus = [...tileStatus].filter(tile => tile !== Tiles.point && tile !== Tiles.power);
+  const getTileStatus = (tileStatus: PossibleTiles[], characterIdentification: CharacterChar) => {
+    let newStatus = [...tileStatus];
 
-    if (tileStatus.includes(itemToAdd)) {
+    if(characterIdentification === Tiles.pacman){
+      newStatus = newStatus
+    }
+
+
+    if (tileStatus.includes(characterIdentification)) {
       return newStatus
     } else {
-      return [...newStatus, itemToAdd]
+      return [...newStatus, characterIdentification]
     }
   }
 
@@ -194,7 +199,7 @@ function PacmanControls(): ReactElement {
 
       if (character.type === 'ghost') {
         newMazeState[character.index] = {
-          ...newMazeState[character.index],
+          ...tileIndex,
           status: tileIndex.status.filter(char => {
             const ghosts = ['1', '2', '3', '4'];
             return !ghosts.includes(char);
@@ -247,10 +252,16 @@ function PacmanControls(): ReactElement {
       }
 
       if (character.type === 'ghost') {
+        if(newMazeState[movedToTileIndex].originalTile === Tiles.power){
+          debugger
+        }
+
         newMazeState[movedToTileIndex] = {
           ...nexTileIndex,
           status: getTileStatus(nexTileIndex.status, character.identification)
         }
+
+
       }
 
       const newPositionY = Math.floor(movedToTileIndex / config.mazeColumns) * config.tileSizeInPx;
