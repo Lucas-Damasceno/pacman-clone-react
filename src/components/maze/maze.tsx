@@ -37,15 +37,15 @@ function Maze(): ReactElement {
         <div>
           {fullMazeState.score}
           <br/>
-          { gameStart ? <PacmanControls/> : null}
+          {/* { gameStart ? <PacmanControls/> : null} */}
           <button onClick={startGame}>start</button>
         </div>
         <S.mazeWrapper>
           <Pacman/>
-          <Ghosts type="1"/>
-          <Ghosts type="2"/>
-          <Ghosts type="4"/>
-          <Ghosts type="3"/>
+          <Ghosts ghostName="blinky"/>
+          <Ghosts ghostName="clyde"/>
+          <Ghosts ghostName="inky"/>
+          <Ghosts ghostName="pinky"/>
           <S.maze>
             {tileMap}
           </S.maze>

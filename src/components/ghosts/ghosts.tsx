@@ -9,6 +9,7 @@ import Directions from "../../types/directions";
 import GhostMouth from "./ghostMouth";
 import GameStart from "../../states/gameStart.state";
 import { GhostKey } from "../../types/ghostKey";
+import GhostStateFamily, { GhostNames } from "../../states/ghosts.state";
 
 type PropsStyled = {
   color: string,
@@ -128,45 +129,35 @@ const GhostBottom = styled.div`
 `
 
 type Props = {
-  type: GhostKey;
+  ghostName: GhostNames;
 }
 
 function Ghost(props: Props): ReactElement {
-  const [fullMazeState, setFullMazeState] = useRecoilState(FullMazeState);
-  const [gameStart, setStartGame] = useRecoilState(GameStart);
+  const [ghostState, setGhostState] = useRecoilState(GhostStateFamily(props.ghostName));
 
-  const ghostState = fullMazeState.charactersState.find(character => character.identification === props.type) as CharacterStateType;
+  // const ghostState = fullMazeState.charactersState.find(character => character.identification === props.type) as CharacterStateType;
   
-  const pupilsIndexObject: IndexObject<Directions, any> = {
-    down: {top: '4px'},
-    left: {left: '0', '&::after': {left: '12px'}},
-    right: {left: '5px', '&::after': {left: '11px'}},
-    up: {top: '0'}
-  }  
-
-  const ghostX =  gameStart ? ghostState.positionX : ghostState.positionX + config.tileSizeInPx/2;
-  const ghostY = ghostState.positionY;
+  const ghostX = ghostState.x * config.tileSizeInPx;
+  const ghostY = ghostState.y * config.tileSizeInPx;
 
   const ghostStyle: React.CSSProperties = {
     translate: `${ghostX}px ${ghostY}px`,
   }
 
-  const ghostColor = {
-    '1': '#FF0000',
-    '2': '#00ffff',
-    '3': '#ffb8ff',
-    '4': '#ffb851',
+  const ghostColor: IndexObject<GhostNames, string> = {
+    blinky: '#FF0000',
+    inky: '#00ffff',
+    pinky: '#ffb8ff',
+    clyde: '#ffb851',
   };
-
 
   const transitionTime = ghostState.teleporting ? 0 : config.pacmanSpeed;
   const runningSpeed = ghostState.moving ? 0.6 : 0;
-  const feared = !!fullMazeState.charactersState.find(item => item.type === 'pacman')?.powered;
-  // const feared = true;
+  const feared = ghostState.feared;
 
   return (
     <GhostWrapper>
-      <GhostBody transitionTime={transitionTime} runningSpeed={runningSpeed} color={ghostColor[props.type]} style={ghostStyle} className={`${ghostState.direction} ${feared ? 'feared' : null}`}>
+      <GhostBody transitionTime={transitionTime} runningSpeed={runningSpeed} color={ghostColor[props.ghostName]} style={ghostStyle} className={`${ghostState.direction} ${feared ? 'feared' : null}`}>
         {!feared ?
         <>  
           <GhostEyes className={ghostState.direction}>
