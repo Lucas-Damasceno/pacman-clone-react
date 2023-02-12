@@ -219,6 +219,15 @@ function Tile(props: Props): ReactElement{
       }
     }
 
+    if(tile === Tiles.wallVoid){
+      tileStyle = {
+        position: 'relative',
+        marginTop: '-130%',
+        background: '#282c34',
+        height: '363%',
+      }
+
+    }
     return {tileStyle, adjacentsBorders}
   }
   

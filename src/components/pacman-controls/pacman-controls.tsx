@@ -495,7 +495,7 @@ function PacmanControls(): ReactElement {
 
       if(ghostX >= ghostCageBeginX && ghostX < ghostCageEndX && ghostY >= ghostCageBeginY && ghostY <= ghostCageEndY ){
         //Se estiver na gaiola, manda ele pra posição inicial do primeiro
-        target = MazeMap.filteredMap().indexOf('1');
+        target = MazeMap.filteredMap.indexOf('1');
       }
       
       const maxDistanceFirst = pacManState.powered;

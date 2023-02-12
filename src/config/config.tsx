@@ -5,11 +5,11 @@ const config = {
   mazeColumns: MazeMap.original.replaceAll(' ', '').split('').findIndex((item, index) => item === '\n' && index !== 0) - 1,
   mazeRows: (MazeMap.original.match(/\n/g) || []).length - 1,
   ghostCage: {
-    begin: MazeMap.filteredMap().indexOf('b'),
-    end: MazeMap.filteredMap().indexOf('e'),
+    begin: MazeMap.filteredMap.indexOf('b'),
+    end: MazeMap.filteredMap.indexOf('e'),
   },
   //Controla a velocidade do jogo, quanto menor, mais rápido
-  pacmanSpeed: 2,
+  pacmanSpeed: .10,
   pointValue: 10,
   pointCssVar: '--without-point',
   maximumTimePoweredInTicks: 50,

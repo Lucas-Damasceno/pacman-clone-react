@@ -17,17 +17,17 @@ type GhostStateType = {
   readonly codename: GhostNames
 }
 
-const createGhostInitialValue = (ghostName: GhostNames, positionXY: number[], direction: Directions = 'up') => {
+const createGhostInitialValue = (ghostName: GhostNames, positionXY: [number, number], direction: Directions = 'up') => {
   return atom<GhostStateType>({
     key: `GhostState_${ghostName}`, // unique ID (with respect to other atoms/selectors)
     default: {
-      x: 13.5,
-      y: 15.5,
+      x: positionXY[0],
+      y: positionXY[1],
       moving: false,
       teleporting: false,
       direction: direction,
       nextDirection: undefined,
-      position: [0,0],
+      position: positionXY,
       feared: false,
       onlyEyes: false,
       codename: ghostName,
@@ -38,10 +38,10 @@ const createGhostInitialValue = (ghostName: GhostNames, positionXY: number[], di
 const usedGhosts: GhostNames[] = ['clyde', 'blinky', 'pinky', 'inky'];
 
 let ghostStates: IndexObject<GhostNames, RecoilState<GhostStateType>> = {
-  blinky: createGhostInitialValue('blinky', [0,0]),
-  clyde: createGhostInitialValue('clyde', [0,0]),
-  inky: createGhostInitialValue('inky', [0,0]),
-  pinky: createGhostInitialValue('pinky', [0,0]),
+  blinky: createGhostInitialValue('blinky', [13.5, 12]),
+  clyde: createGhostInitialValue('clyde', [15.5, 15]),
+  inky: createGhostInitialValue('inky', [11.5,15]),
+  pinky: createGhostInitialValue('pinky', [13.5, 15]),
 }
 
 const GhostStateFamily = selectorFamily({

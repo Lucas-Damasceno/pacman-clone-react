@@ -10,6 +10,8 @@ import Pacman from "../pacman/pacman";
 import Ghosts from "../ghosts/ghosts";
 import FullMazeState from "../../states/fullMaze.state";
 import GameOver from "../game-over/game-over";
+import GameTick from "../game-tick/game-tick";
+import config from "../../config/config";
 
 
 function Maze(): ReactElement {
@@ -17,7 +19,7 @@ function Maze(): ReactElement {
   const [tileMap, setTileMap] = useState<JSX.Element[]>([]);
   const fullMazeState = useRecoilValue(FullMazeState);
 
-  const filteredMap = MazeMap.filteredMap()
+  const filteredMap = MazeMap.filteredMap;
   const mapChars = filteredMap.split('') as PossibleTiles[];
 
   const startGame = () => {
@@ -38,6 +40,7 @@ function Maze(): ReactElement {
           {fullMazeState.score}
           <br/>
           {/* { gameStart ? <PacmanControls/> : null} */}
+          {gameStart ? <GameTick/> : null}
           <button onClick={startGame}>start</button>
         </div>
         <S.mazeWrapper>

@@ -13,4 +13,5 @@ export const Tiles = {
   ghost2: '2',
   ghost3: '3',
   ghost4: '4',
+  wallVoid: 'v',
 } as const;

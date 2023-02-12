@@ -20,7 +20,7 @@ export type FullMazeStateType = {
 }
 
 const initMazeState = () => {
-  const filteredMap = MazeMap.filteredMap();
+  const filteredMap = MazeMap.filteredMap;
   const mapChars = filteredMap.split('') as PossibleTiles[];
 
   const initialMazeMapState = mapChars.map(char => {
@@ -36,12 +36,12 @@ const initMazeState = () => {
 }
 
 const getInitialIndexOfPacman = (): number => {
-  const map = MazeMap.filteredMap();
+  const map = MazeMap.filteredMap;
   return  map.indexOf('P')
 }
 
 const getInitialIndexOfGhost = (ghostIdentification: '1' | '2' | '3' | '4') => {
-  const map = MazeMap.filteredMap().split('');
+  const map = MazeMap.filteredMap.split('');
   return map.indexOf(ghostIdentification)
 }
 
