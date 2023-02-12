@@ -9,6 +9,7 @@ import GameStart from "../../states/gameStart.state";
 import Pacman from "../pacman/pacman";
 import Ghosts from "../ghosts/ghosts";
 import FullMazeState from "../../states/fullMaze.state";
+import GameOver from "../game-over/game-over";
 
 
 function Maze(): ReactElement {
@@ -31,6 +32,7 @@ function Maze(): ReactElement {
 
   return (
     <>
+      {fullMazeState.gameOver ? <GameOver></GameOver> : null}
       <S.gameWrapper>
         <div>
           {fullMazeState.score}

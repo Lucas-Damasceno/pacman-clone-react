@@ -13,7 +13,7 @@ x.xxxx.xx.xxx xx xxx.xx.xxxx.x
 x......xx.... xx ....xx......x
 =====x.xxxxx_ xx _xxxxx.x=====
 _____|.xxxxx_ xx _xxxxx.|_____
-_____|.xx____ 1_ ____xx.|_____
+_____|.xx____ __ ____xx.|_____
 _____|.xx_x== -- ==x_xx.|_____
 =====x.xx_|b_ __ __|_xx.x=====
 <_____.___|3_ 2_ 4_|___._____>
@@ -25,7 +25,7 @@ _____|.xx_xxx xx xxx_xx.|_____
 x............ xx ............x
 x.xxxx.xxxxx. xx .xxxxx.xxxx.x
 x.xxxx.xxxxx. xx .xxxxx.xxxx.x
-xO..xx....... P_ .......xx..Ox
+xO..xx...1... P_ .......xx..Ox
 xxx.xx.xx.xxx xx xxx.xx.xx.xxx
 xxx.xx.xx.xxx xx xxx.xx.xx.xxx
 x......xx.... xx ....xx......x

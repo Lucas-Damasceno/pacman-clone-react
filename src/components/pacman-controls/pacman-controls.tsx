@@ -10,6 +10,7 @@ import { IndexObject } from "../../types/indexObject";
 import { GhostKey } from "../../types/ghostKey";
 import PossibleTiles, { CharacterChar } from "../../types/possibleTiles";
 import MazeMap from "../maze/mazeMap";
+import GameOver from "../../states/gameOver.state";
 
 /* Refatorar depois */
 const validButtons = ['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'] as const;
@@ -35,6 +36,7 @@ type ChoosedDirection = {
 
 function PacmanControls(): ReactElement {
   const [fullMazeState, setFullMazeState] = useRecoilState(FullMazeState);
+  const [gameOver, setGameOver] = useRecoilState(GameOver);
   const [lastTime, setLastTime] = useState(0);
 
   const getAdjacentTiles = (index: number, newMazeState: MazeStateType[]) => {
@@ -85,7 +87,6 @@ function PacmanControls(): ReactElement {
     const actualTile = fullMazeState.mazeState[character.index];
 
     if (teleports.includes(actualTile.originalTile) && character.teleporting === false) {
-      console.log(true)
       return true
     }
 
@@ -102,7 +103,9 @@ function PacmanControls(): ReactElement {
   }
 
   const pacmanEncounterWithGhost = () => {
-
+    // setGameOver(true);
+    alert('GAME OVER')
+    debugger
   }
 
   const convertCharacterCharToType = (char: CharacterChar): CharacterType => {
@@ -117,7 +120,7 @@ function PacmanControls(): ReactElement {
     return convert[char]
   }
 
-  //Refatorar essa função
+  //Refatorar essa função PRIORIDADE 3
   const directionOrNewDirection = (character: CharacterStateType, mazeState: MazeStateType[]): ChoosedDirection => {
     if (character.nextDirection !== null) {
       const canMovenewDirection: boolean = canMove(character.type, character.nextDirection, character.index, mazeState);
@@ -142,7 +145,7 @@ function PacmanControls(): ReactElement {
     let newStatus = [...tileStatus];
 
     if(characterIdentification === Tiles.pacman){
-      newStatus = newStatus.filter(tile => tile !== Tiles.point && tile !== Tiles.power)
+      newStatus = newStatus.filter(tile => tile !== Tiles.point && tile !== Tiles.power);
     }
 
     if (tileStatus.includes(characterIdentification)) {
@@ -152,9 +155,14 @@ function PacmanControls(): ReactElement {
     }
   }
 
+  //Refatorar essa função PRIORIDADE 1
   const createNextMazeState = (fullMazeState: FullMazeStateType) => {
+    
+    const teste = JSON.parse(JSON.stringify(fullMazeState));
+
     const newMazeState = [...fullMazeState.mazeState];
     const newCharacterState: CharacterStateType[] = [];
+    let gameOver: boolean = fullMazeState.gameOver;
     let newScore = fullMazeState.score;
 
     fullMazeState.charactersState.forEach(character => {
@@ -214,8 +222,19 @@ function PacmanControls(): ReactElement {
       }
 
       let movedToTileIndex = moveToIndex[choosedDirection.direction];
+      let movingToTile = fullMazeState.mazeState[movedToTileIndex];
 
-      let nexTileIndex = fullMazeState.mazeState[movedToTileIndex];
+      const characterAtSameTile = teste.charactersState.find((characterOld: any) => characterOld.index === movedToTileIndex);
+      //Se o os tipos não forem iguais, então o PacMan encontrou o Fantasma
+      if(
+        characterAtSameTile &&
+        characterAtSameTile?.type !== character.type &&
+        character.identification !== characterAtSameTile?.identification
+      ) {
+        // pacmanEncounterWithGhost();
+
+        gameOver = true;
+      }
 
       if(isTeleportingChar){
         const teleportIndexObject: IndexObject<'<' | '>' , HorizontalDirections> = {
@@ -225,7 +244,7 @@ function PacmanControls(): ReactElement {
 
         const teleportDirection: HorizontalDirections = teleportIndexObject[tileIndex.originalTile as '<' | '>'];
         movedToTileIndex = teleportToIndex(teleportDirection);
-        nexTileIndex = fullMazeState.mazeState[movedToTileIndex];
+        movingToTile = fullMazeState.mazeState[movedToTileIndex];
       }
 
       if (character.type === 'pacman') {
@@ -243,28 +262,29 @@ function PacmanControls(): ReactElement {
         }
 
         newMazeState[movedToTileIndex] = {
-          ...nexTileIndex,
+          ...movingToTile,
           point: false,
           power: false,
-          status: getTileStatus(nexTileIndex.status, character.identification)
+          status: getTileStatus(movingToTile.status, character.identification)
         }
       }
 
       if (character.type === 'ghost') {
-        if(newMazeState[movedToTileIndex].originalTile === Tiles.power){
-          debugger
-        }
-
         newMazeState[movedToTileIndex] = {
-          ...nexTileIndex,
-          status: getTileStatus(nexTileIndex.status, character.identification)
+          ...movingToTile,
+          status: getTileStatus(movingToTile.status, character.identification)
         }
-
-
       }
 
       const newPositionY = Math.floor(movedToTileIndex / config.mazeColumns) * config.tileSizeInPx;
       const newPositionX = Math.floor(movedToTileIndex % config.mazeColumns) * config.tileSizeInPx;
+
+      const oldPositionY = Math.floor(character.index / config.mazeColumns) * config.tileSizeInPx;
+      const oldPositionX = Math.floor(character.index % config.mazeColumns) * config.tileSizeInPx;
+
+      console.log(character.identification)
+      console.log([newPositionX, newPositionY])
+      console.log([oldPositionX, oldPositionY])
 
       const newState: CharacterStateType = {
         ...character,
@@ -282,13 +302,14 @@ function PacmanControls(): ReactElement {
       newCharacterState.push(newState)
     })
 
-    return { mazeState: newMazeState, charactersState: newCharacterState, score: newScore }
+    window.confirm('Next Tick');
+
+    return { mazeState: newMazeState, charactersState: newCharacterState, score: newScore, gameOver: gameOver }
   }
 
   const handleGameTick = () => {
     setFullMazeState(currentValue => {
       const fullMazeValue = ghostIA(currentValue);
-
       const newState = createNextMazeState(fullMazeValue);
 
       return {
@@ -296,11 +317,11 @@ function PacmanControls(): ReactElement {
         score: newState.score,
         mazeState: newState.mazeState,
         charactersState: newState.charactersState,
+        gameOver: newState.gameOver
       }
     });
   }
 
-  //TODO adicionar um sistema de Debounce para não travar o Pacman
   const handleKeyDown = (event: KeyboardEvent) => {
     /*Checagem se a tecla apertada é valida */
     const invalidKey = !validButtons.includes(event.key as any);
@@ -509,7 +530,7 @@ function PacmanControls(): ReactElement {
     const timeOutSpeed = 1;
     const timer = setInterval(() => {
       const timeNow = new Date().getTime();
-      if ((lastTime + (config.pacmanSpeed * 1000)) < timeNow) {
+      if ((lastTime + (config.pacmanSpeed * 1000)) < timeNow && fullMazeState.gameOver === false) {
         setLastTime(timeNow);
         handleGameTick();
       }
@@ -538,6 +559,7 @@ function PacmanControls(): ReactElement {
       window.removeEventListener('keydown', handleKeyDown)
     }
   }, [fullMazeState])
+
 
   return <></>
 }

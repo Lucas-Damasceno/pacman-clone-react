@@ -9,7 +9,7 @@ const config = {
     end: MazeMap.filteredMap().indexOf('e'),
   },
   //Controla a velocidade do jogo, quanto menor, mais rápido
-  pacmanSpeed: .10,
+  pacmanSpeed: 2,
   pointValue: 10,
   pointCssVar: '--without-point',
   maximumTimePoweredInTicks: 50,

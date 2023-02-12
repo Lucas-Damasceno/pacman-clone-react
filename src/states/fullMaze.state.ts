@@ -15,7 +15,8 @@ export type MazeStateType = {
 export type FullMazeStateType = {
   charactersState: CharacterStateType[],
   mazeState: MazeStateType[],
-  score: number
+  score: number,
+  gameOver: boolean,
 }
 
 const initMazeState = () => {
@@ -89,6 +90,7 @@ const FullMazeState = atom<FullMazeStateType>({
     charactersState: initCharactersState(),
     mazeState: initMazeState(),
     score: 0,
+    gameOver: false,
   },
 });
 

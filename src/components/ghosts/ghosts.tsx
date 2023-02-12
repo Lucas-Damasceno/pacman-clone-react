@@ -8,6 +8,7 @@ import { IndexObject } from "../../types/indexObject";
 import Directions from "../../types/directions";
 import GhostMouth from "./ghostMouth";
 import GameStart from "../../states/gameStart.state";
+import { GhostKey } from "../../types/ghostKey";
 
 type PropsStyled = {
   color: string,
@@ -127,7 +128,7 @@ const GhostBottom = styled.div`
 `
 
 type Props = {
-  type: '1' | '2' | '3' | '4';
+  type: GhostKey;
 }
 
 function Ghost(props: Props): ReactElement {
