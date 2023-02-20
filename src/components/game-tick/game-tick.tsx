@@ -1,8 +1,9 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import config from "../../config/config";
+import { Tiles } from "../../enums/tiles.enum";
 import GameTickState from "../../states/gameTick.state";
-import GhostStateFamily, { AllGhostStates, GhostStateType } from "../../states/ghosts.state";
+import { AllGhostStates, GhostStateType } from "../../states/ghosts.state";
 import MazeState, { MazeStateType } from "../../states/maze.state";
 import PacManState, { PacManStateType } from "../../states/pacMan.state";
 import Directions from "../../types/directions";
@@ -61,15 +62,30 @@ function GameTick(): ReactElement {
     const timer = setInterval(() => {
       const timeNow = new Date().getTime();
       if ((lastTime + (config.pacmanSpeed * 1000)) < timeNow) {
-        setMazeState(createMazeState(mazeState, pacManState, allGhostStates));
         setLastTime(timeNow);
         setGameTick(timeNow);
-
-        console.count('rodando')
       }
     }, timeOutSpeed)
     return () => clearInterval(timer)
   }, [gameTick, lastTime]);
+
+  useEffect(function setNewMazeState() {
+    setMazeState(createMazeState(mazeState, pacManState, allGhostStates));
+  }, [pacManState])
+
+  useEffect(function setTilePointToHidden() {
+    mazeState.forEach((row, y) => {
+      row.forEach((tile, x) => {
+        if(
+          tile.originalTile === Tiles.point && tile.isPoint === false ||
+          tile.originalTile === Tiles.power && tile.isPower === false
+        ){
+          document.documentElement.style.setProperty(`${config.pointCssVar}X${x}Y${y}`, '0');
+        }
+      })
+    })
+
+  }, [mazeState])
 
   return <></>
 }

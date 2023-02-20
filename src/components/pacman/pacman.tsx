@@ -66,8 +66,8 @@ const PacManDeathAnimation = keyframes`
 
 function PacMan(): ReactElement {
   const [pacManState, setPacManState] = useRecoilState(PacManState);
-  const [gameStart, setGameStart] = useRecoilState(GameStart);
-  const [mazeState, setMazeState] = useRecoilState(MazeState)
+  const gameStart = useRecoilValue(GameStart);
+  const mazeState = useRecoilValue(MazeState)
   const gameTickState = useRecoilValue(GameTickState);
 
   const pacManDirectionStyle = {
@@ -113,6 +113,8 @@ function PacMan(): ReactElement {
       position: newPosition,
       moving: moving
     }
+
+    // document.documentElement.style.setProperty(`${config.pointCssVar}X${newPosition[0]}Y${newPosition[1]}`, '0');
     
     return newPacManState
   }
@@ -123,7 +125,6 @@ function PacMan(): ReactElement {
       setPacManState(newPacmanState);
     }
   }, [gameTickState])
-
 
   return(
     <PacmanWrapper>

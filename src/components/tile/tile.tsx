@@ -4,6 +4,7 @@ import PossibleTiles from "../../types/possibleTiles";
 import { Tiles } from "../../enums/tiles.enum";
 import styled from "styled-components";
 import Directions from "../../types/directions";
+import { getXYFromIndex } from "../../utils/utils";
 
 type Props = {
   tileChar: PossibleTiles;
@@ -15,6 +16,7 @@ const TileWrapper = styled.div`
 `
 
 function Tile(props: Props): ReactElement{
+  const tilePosition = getXYFromIndex(props.index);
 
   function AdjacentTilesWall(index: number, mazeMap: string, mapColumns: number){
     const rightTile = mazeMap[index + 1];
@@ -191,7 +193,7 @@ function Tile(props: Props): ReactElement{
         borderRadius: '50%',
         transition: 'all',
         transitionDelay: config.pacmanSpeed+'s',
-        opacity: `var(${config.pointCssVar}${index})`
+        opacity: `var(${config.pointCssVar}X${tilePosition[0]}Y${tilePosition[1]})`
       }
     }
 
@@ -205,7 +207,7 @@ function Tile(props: Props): ReactElement{
         borderRadius: '50%',
         transition: 'all',
         transitionDelay: config.pacmanSpeed+'s',
-        opacity: `var(${config.pointCssVar}${index})`
+        opacity: `var(${config.pointCssVar}X${tilePosition[0]}Y${tilePosition[1]})`
       }
     }
 

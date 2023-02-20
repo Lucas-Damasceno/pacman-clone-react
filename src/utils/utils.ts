@@ -1,4 +1,5 @@
 import MazeMap from "../components/maze/mazeMap"
+import config from "../config/config"
 import { GhostStateType } from "../states/ghosts.state"
 import { PacManStateType } from "../states/pacMan.state"
 import { CharacterType } from "../types/characterType"
@@ -77,4 +78,11 @@ export const getContraryDirection = (direction: Directions) => {
   }
 
   return directions[direction]
+}
+
+export const getXYFromIndex = (index: number): [number, number] => {
+  const positionX = Math.floor(index % config.mazeColumns);
+  const positionY = Math.floor(index / config.mazeColumns);
+
+  return [positionX, positionY]
 }
