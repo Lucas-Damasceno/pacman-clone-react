@@ -2,8 +2,7 @@ import MazeMap from "../components/maze/mazeMap"
 import config from "../config/config"
 import { GhostStateType } from "../states/ghosts.state"
 import { PacManStateType } from "../states/pacMan.state"
-import { CharacterType } from "../types/characterType"
-import Directions from "../types/directions"
+import Directions, { HorizontalDirections } from "../types/directions"
 import { IndexObject } from "../types/indexObject"
 import PossibleTiles from "../types/possibleTiles"
 
@@ -86,3 +85,15 @@ export const getXYFromIndex = (index: number): [number, number] => {
 
   return [positionX, positionY]
 }
+
+const _teleportPositions = () => {
+  const leftTeleportIndex = MazeMap.filteredMap.split('').findIndex(tile => tile === '<');
+  const rightTeleportIndex = MazeMap.filteredMap.split('').findIndex(tile => tile === '>');
+
+  return {
+    right: getXYFromIndex(rightTeleportIndex),
+    left: getXYFromIndex(leftTeleportIndex)
+  }
+}
+
+export const TELEPORT_POSITIONS: IndexObject<HorizontalDirections, [number, number]> = _teleportPositions();

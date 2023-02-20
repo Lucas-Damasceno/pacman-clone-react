@@ -12,7 +12,6 @@ import Directions from "../../types/directions";
 const validButtons = ['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'] as const;
 type ValidButtons = typeof validButtons[number];
 
-type HorizontalDirections = 'right' | 'left';
 
 type ChoosedDirection = {
   use: 'newDirection' | 'direction',
@@ -54,6 +53,7 @@ function GameTick(): ReactElement {
     const pacManTile = newMazeState[pacmanY]?.[pacmanX];
     pacManTile.characters.push('pacman');
     pacManTile.isPoint = false;
+    pacManTile.isPower = false;
 
     return newMazeState
   }

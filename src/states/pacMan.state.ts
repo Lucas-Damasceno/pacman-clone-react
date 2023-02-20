@@ -11,6 +11,7 @@ export type PacManStateType = {
   nextDirection: Directions;
   position: [number, number];
   powered: boolean;
+  poweredCountdown: number;
 }
 
 const x = 13.5;
@@ -27,7 +28,8 @@ const PacManState = atom<PacManStateType>({
     direction: 'left',
     nextDirection: 'left',
     position: [x,y],
-    powered: false
+    powered: false,
+    poweredCountdown: 0,
   }, // default value (aka initial value)
 });
 

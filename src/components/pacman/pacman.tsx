@@ -1,14 +1,15 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect } from "react";
 import styled, {Keyframes, keyframes} from "styled-components";
 import { useRecoilState, useRecoilValue } from 'recoil';
 import config from "../../config/config";
 import PacManState, { PacManStateType } from "../../states/pacMan.state";
 import GameTickState from "../../states/gameTick.state";
-import { canMove, getNewPositionXY } from "../../utils/utils";
+import { canMove, getNewPositionXY, TELEPORT_POSITIONS } from "../../utils/utils";
 import GameStart from "../../states/gameStart.state";
 import MazeState from "../../states/maze.state";
 import Directions from "../../types/directions";
 import { IndexObject } from "../../types/indexObject";
+import { Tiles } from "../../enums/tiles.enum";
 
 const validButtons = ['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'] as const;
 type ValidButtons = typeof validButtons[number];
@@ -70,7 +71,7 @@ function PacMan(): ReactElement {
   const [pacManState, setPacManState] = useRecoilState(PacManState);
   const gameStart = useRecoilValue(GameStart);
   const mazeState = useRecoilValue(MazeState)
-  const gameTickState = useRecoilValue(GameTickState);
+  const gameTickState = useRecoilValue(GameTickState)
 
   const pacManDirectionStyle = {
     up: '90deg',
@@ -85,6 +86,7 @@ function PacMan(): ReactElement {
   const pacmanStyle: React.CSSProperties = {
     translate: `${pacmanX}px ${pacmanY}px`,
     rotate: pacManDirectionStyle[pacManState.direction],
+    color: 'blue'
   }
 
   const transitionTime = pacManState.teleporting ? 0 : config.pacmanSpeed;
@@ -94,7 +96,6 @@ function PacMan(): ReactElement {
     let newPosition: [number, number] = [pacManState.x, pacManState.y];
     const _canMove = canMove(pacManState);
     
-    //Como o valor pode ser undefined, precisamos declarar um valor para a variavel, refatorar depois
     const canMoveToNextDirection = _canMove[pacManState.nextDirection];
     const canMoveDirection = _canMove[pacManState.direction];
 
@@ -106,6 +107,8 @@ function PacMan(): ReactElement {
 
     const moving = canMoveToNextDirection || canMoveDirection;
 
+    //É usado Math.floor pois o estado inicial é um número quebrado ex: 13.5 
+    //Refatorar o sistema desse número quebrado
     newPosition = [Math.floor(newPosition[0]), Math.floor(newPosition[1])]
 
     const newPacManState: PacManStateType = {
@@ -119,7 +122,34 @@ function PacMan(): ReactElement {
     if(canMoveToNextDirection){
       newPacManState.direction = newPacManState.nextDirection;
     }
+
+    //mazeState pacmanpositionY, pacmanPositionX
+    const pacmanNextTile = mazeState[newPosition[1]]?.[newPosition[0]];
+    if(pacmanNextTile.isPower){
+      newPacManState.powered = true;
+      newPacManState.poweredCountdown = config.maximumTimePoweredInTicks;
+    }
     
+    if(newPacManState.powered){
+      newPacManState.poweredCountdown--;
+    }
+
+    const teleporting = pacmanNextTile.originalTile === Tiles.teleportLeft || pacmanNextTile.originalTile === Tiles.teleportRight;
+    newPacManState.teleporting = teleporting;
+
+    if(teleporting){
+      debugger
+      //Teleporta da esquerda pra direita e vice versa
+      const teleportDirection = pacmanNextTile.originalTile === Tiles.teleportRight ? 'left' : 'right';
+      const teleportXY = TELEPORT_POSITIONS[teleportDirection];
+
+      newPacManState.x = teleportXY[0];
+      newPacManState.y = teleportXY[1];
+      newPacManState.position = teleportXY;
+    }
+
+    newPacManState.powered = newPacManState.poweredCountdown > 0;
+
     return newPacManState
   }
 
@@ -158,7 +188,6 @@ function PacMan(): ReactElement {
       window.removeEventListener('keydown', handleKeyDown)
     }
   })
-
 
   return(
     <PacmanWrapper>
