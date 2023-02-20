@@ -8,7 +8,7 @@ export type PacManStateType = {
   moving: boolean;
   teleporting: boolean;
   direction: Directions;
-  nextDirection: Directions | undefined;
+  nextDirection: Directions;
   position: [number, number];
   powered: boolean;
 }
@@ -25,7 +25,7 @@ const PacManState = atom<PacManStateType>({
     moving: false,
     teleporting: false,
     direction: 'left',
-    nextDirection: undefined,
+    nextDirection: 'left',
     position: [x,y],
     powered: false
   }, // default value (aka initial value)

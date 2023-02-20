@@ -28,6 +28,7 @@ function GameTick(): ReactElement {
   const pacManState = useRecoilValue(PacManState);
   const allGhostStates = useRecoilValue(AllGhostStates);
 
+  //Talvez mandar ele pra outro arquivo ? tirar a lógica do labirinto daqui
   const createMazeState = (mazeState: MazeStateType[][], pacManState: PacManStateType, ghostStates: GhostStateType[]) => {
     const newMazeState = mazeState.map(row => {
       return row.map(item => {
@@ -71,7 +72,7 @@ function GameTick(): ReactElement {
 
   useEffect(function setNewMazeState() {
     setMazeState(createMazeState(mazeState, pacManState, allGhostStates));
-  }, [pacManState])
+  }, [pacManState, allGhostStates])
 
   useEffect(function setTilePointToHidden() {
     mazeState.forEach((row, y) => {

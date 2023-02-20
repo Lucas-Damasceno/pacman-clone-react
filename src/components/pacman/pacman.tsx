@@ -7,6 +7,8 @@ import GameTickState from "../../states/gameTick.state";
 import { canMove, getNewPositionXY } from "../../utils/utils";
 import GameStart from "../../states/gameStart.state";
 import MazeState from "../../states/maze.state";
+import Directions from "../../types/directions";
+import { IndexObject } from "../../types/indexObject";
 
 const validButtons = ['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'] as const;
 type ValidButtons = typeof validButtons[number];
@@ -93,13 +95,13 @@ function PacMan(): ReactElement {
     const _canMove = canMove(pacManState);
     
     //Como o valor pode ser undefined, precisamos declarar um valor para a variavel, refatorar depois
-    const canMoveToNextDirection = _canMove[pacManState.nextDirection || pacManState.direction];
+    const canMoveToNextDirection = _canMove[pacManState.nextDirection];
     const canMoveDirection = _canMove[pacManState.direction];
 
     if(canMoveToNextDirection){
-      newPosition = getNewPositionXY(pacManState.position, pacManState.nextDirection || pacManState.direction)
+      newPosition = getNewPositionXY(pacManState.position, pacManState.nextDirection);
     }else if(canMoveDirection){
-      newPosition = getNewPositionXY(pacManState.position, pacManState.direction)
+      newPosition = getNewPositionXY(pacManState.position, pacManState.direction);
     }
 
     const moving = canMoveToNextDirection || canMoveDirection;
@@ -113,10 +115,33 @@ function PacMan(): ReactElement {
       position: newPosition,
       moving: moving
     }
-
-    // document.documentElement.style.setProperty(`${config.pointCssVar}X${newPosition[0]}Y${newPosition[1]}`, '0');
+    
+    if(canMoveToNextDirection){
+      newPacManState.direction = newPacManState.nextDirection;
+    }
     
     return newPacManState
+  }
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    /*Checagem se a tecla apertada é valida */
+    const invalidKey = !validButtons.includes(event.key as any);
+    if (invalidKey) return;
+
+    const keyPressed = event.key as ValidButtons;
+
+    const keyPressedToDirection: IndexObject<ValidButtons, Directions> = {
+      ArrowUp: 'up',
+      ArrowDown: 'down',
+      ArrowLeft: 'left',
+      ArrowRight: 'right'
+    }
+    const nextDirection: Directions = keyPressedToDirection[keyPressed];
+
+    setPacManState({
+      ...pacManState,
+      nextDirection: nextDirection
+    })
   }
 
   useEffect(() => {
@@ -125,6 +150,15 @@ function PacMan(): ReactElement {
       setPacManState(newPacmanState);
     }
   }, [gameTickState])
+
+  useEffect(function addEventListenerKeyDown() {
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  })
+
 
   return(
     <PacmanWrapper>
