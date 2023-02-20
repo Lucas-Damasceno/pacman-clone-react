@@ -1,10 +1,11 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import styled, {Keyframes, keyframes} from "styled-components";
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import config from "../../config/config";
+import PacManState, { PacManStateType } from "../../states/pacMan.state";
+import GameTickState from "../../states/gameTick.state";
+import { canMove, getNewPositionXY } from "../../utils/utils";
 import GameStart from "../../states/gameStart.state";
-import Directions from "../../types/directions";
-import PacManState from "../../states/pacMan.state";
 
 const validButtons = ['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'] as const;
 type ValidButtons = typeof validButtons[number];
@@ -64,7 +65,8 @@ const PacManDeathAnimation = keyframes`
 
 function PacMan(): ReactElement {
   const [pacManState, setPacManState] = useRecoilState(PacManState);
-  const [gameStart, setStartGame] = useRecoilState(GameStart);
+  const [gameStart, setGameStart] = useRecoilState(GameStart);
+  const gameTickState = useRecoilValue(GameTickState);
 
   const pacManDirectionStyle = {
     up: '90deg',
@@ -83,6 +85,44 @@ function PacMan(): ReactElement {
 
   const transitionTime = pacManState.teleporting ? 0 : config.pacmanSpeed;
   let animation = pacManState.moving ? PacManMouthAnimation : undefined;
+
+  const createNewPacManState = (pacmanState: PacManStateType) => {
+    let newPosition: [number, number] = [pacManState.x, pacManState.y];
+    const _canMove = canMove(pacManState);
+    
+    //Como o valor pode ser undefined, precisamos declarar um valor para a variavel, refatorar depois
+    const canMoveToNextDirection = _canMove[pacManState.nextDirection || pacManState.direction];
+    const canMoveDirection = _canMove[pacManState.direction];
+
+    if(canMoveToNextDirection){
+      newPosition = getNewPositionXY(pacManState.position, pacManState.nextDirection || pacManState.direction)
+    }else if(canMoveDirection){
+      newPosition = getNewPositionXY(pacManState.position, pacManState.direction)
+    }
+
+    const moving = canMoveToNextDirection || canMoveDirection;
+
+    console.log(newPosition)
+    newPosition = [Math.floor(newPosition[0]), Math.floor(newPosition[1])]
+
+    const newPacManState: PacManStateType = {
+      ...pacmanState,
+      x: newPosition[0],
+      y: newPosition[1],
+      position: newPosition,
+      moving: moving
+    }
+    
+    return newPacManState
+  }
+
+  useEffect(() => {
+    if(gameStart){
+      const newPacmanState = createNewPacManState(pacManState);
+      setPacManState(newPacmanState);
+    }
+  }, [gameTickState])
+
 
   return(
     <PacmanWrapper>

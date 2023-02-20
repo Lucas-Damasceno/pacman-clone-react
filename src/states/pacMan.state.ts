@@ -1,7 +1,7 @@
 import { atom } from 'recoil'
 import Directions from '../types/directions';
 
-type PacManStateType = {
+export type PacManStateType = {
   x: number;
   y: number;
   lives: number;
@@ -13,17 +13,20 @@ type PacManStateType = {
   powered: boolean;
 }
 
+const x = 13.5;
+const y = 24;
+
 const PacManState = atom<PacManStateType>({
   key: 'PacManState', // unique ID (with respect to other atoms/selectors)
   default: {
-    x: 13.5,
-    y: 18,
+    x: x,
+    y: y,
     lives: 3,
     moving: false,
     teleporting: false,
     direction: 'left',
     nextDirection: undefined,
-    position: [0,0],
+    position: [x,y],
     powered: false
   }, // default value (aka initial value)
 });

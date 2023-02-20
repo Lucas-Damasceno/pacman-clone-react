@@ -12,7 +12,7 @@ x.xxxx.xx.xxx xx xxx.xx.xxxx.x
 x......xx.... xx ....xx......x
 =====x.xxxxx_ xx _xxxxx.x=====
 _____|.xxxxx_ xx _xxxxx.|_____
-v____|.xx____ __ ____xx.|____v
+v____|.xx____ 1_ ____xx.|____v
 _____|.xx_x== -- ==x_xx.|_____
 =====x.xx_|b_ __ __|_xx.x=====
 <_____.___|3_ 2_ 4_|___._____>
@@ -24,7 +24,7 @@ _____|.xx_xxx xx xxx_xx.|_____
 x............ xx ............x
 x.xxxx.xxxxx. xx .xxxxx.xxxx.x
 x.xxxx.xxxxx. xx .xxxxx.xxxx.x
-xO..xx...1... P_ .......xx..Ox
+xO..xx....... P_ .......xx..Ox
 xxx.xx.xx.xxx xx xxx.xx.xx.xxx
 xxx.xx.xx.xxx xx xxx.xx.xx.xxx
 x......xx.... xx ....xx......x
@@ -62,5 +62,4 @@ const MazeMap = {
   mazeMapXY: createMazeBidimensionArray(filteredMap.split(''), mazeColumns)
 } as const;
 
-console.log(MazeMap.mazeMapXY)
 export default MazeMap

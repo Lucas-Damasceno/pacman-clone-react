@@ -4,7 +4,7 @@ import { IndexObject } from '../types/indexObject';
 
 export type GhostNames = 'clyde' | 'blinky' | 'pinky' | 'inky';
 
-type GhostStateType = {
+export type GhostStateType = {
   x: number;
   y: number;
   moving: boolean;
