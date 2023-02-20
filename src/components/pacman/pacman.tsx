@@ -6,6 +6,7 @@ import PacManState, { PacManStateType } from "../../states/pacMan.state";
 import GameTickState from "../../states/gameTick.state";
 import { canMove, getNewPositionXY } from "../../utils/utils";
 import GameStart from "../../states/gameStart.state";
+import MazeState from "../../states/maze.state";
 
 const validButtons = ['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'] as const;
 type ValidButtons = typeof validButtons[number];
@@ -66,6 +67,7 @@ const PacManDeathAnimation = keyframes`
 function PacMan(): ReactElement {
   const [pacManState, setPacManState] = useRecoilState(PacManState);
   const [gameStart, setGameStart] = useRecoilState(GameStart);
+  const [mazeState, setMazeState] = useRecoilState(MazeState)
   const gameTickState = useRecoilValue(GameTickState);
 
   const pacManDirectionStyle = {
@@ -102,7 +104,6 @@ function PacMan(): ReactElement {
 
     const moving = canMoveToNextDirection || canMoveDirection;
 
-    console.log(newPosition)
     newPosition = [Math.floor(newPosition[0]), Math.floor(newPosition[1])]
 
     const newPacManState: PacManStateType = {

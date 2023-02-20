@@ -21,8 +21,7 @@ const S = {
 
   gameWrapper: styled.div`
     display: grid;
-    grid-template-columns: 300px auto;
-    padding-right: 300px;
+    grid-template-columns: 200px auto;
   `
 }
 

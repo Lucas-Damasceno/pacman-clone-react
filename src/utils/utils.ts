@@ -67,3 +67,14 @@ export const getNewPositionXY = (positionXY: [number,number], direction: Directi
 
   return [newX, newY]
 }
+
+export const getContraryDirection = (direction: Directions) => {
+  const directions: IndexObject<Directions, Directions> = {
+    up: "down",
+    right: "left",
+    down: "up",
+    left: "right",
+  }
+
+  return directions[direction]
+}

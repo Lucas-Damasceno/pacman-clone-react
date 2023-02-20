@@ -1,4 +1,4 @@
-import { atom, RecoilState, selectorFamily } from 'recoil'
+import { atom, RecoilState, selectorFamily, waitForAll } from 'recoil'
 import Directions from '../types/directions';
 import { IndexObject } from '../types/indexObject';
 
@@ -35,9 +35,7 @@ const createGhostInitialValue = (ghostName: GhostNames, positionXY: [number, num
   })
 }
 
-const usedGhosts: GhostNames[] = ['clyde', 'blinky', 'pinky', 'inky'];
-
-let ghostStates: IndexObject<GhostNames, RecoilState<GhostStateType>> = {
+const ghostStates: IndexObject<GhostNames, RecoilState<GhostStateType>> = {
   blinky: createGhostInitialValue('blinky', [13.5, 12]),
   clyde: createGhostInitialValue('clyde', [15.5, 15]),
   inky: createGhostInitialValue('inky', [11.5,15]),
@@ -45,7 +43,7 @@ let ghostStates: IndexObject<GhostNames, RecoilState<GhostStateType>> = {
 }
 
 const GhostStateFamily = selectorFamily({
-  key: 'MyMultipliedNumber',
+  key: 'GhostStateFamily',
   get: (ghostName: GhostNames) => ({get}) => {
     return get(ghostStates[ghostName]);
   },
@@ -53,7 +51,10 @@ const GhostStateFamily = selectorFamily({
   set: (ghostName: GhostNames) => ({set}, newValue) => {
     set(ghostStates[ghostName], newValue);
   },
+
+  
 })
 
+export const AllGhostStates = waitForAll(Object.values(ghostStates));
 
 export default GhostStateFamily
